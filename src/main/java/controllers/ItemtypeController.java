@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import beans.ItemTypes;
@@ -37,41 +40,42 @@ public class ItemtypeController {
 		int count = itemService.getItemtypesByItemName(itemtypes.getName());
 		if (count > 0) {
 			redir.addFlashAttribute("alert", "Itemtype name already exist.Please Use another Itemtype Name!");
-			return "redirect:/additemtypes";
+			return "redirect:/viewitemtype";
 		}
 		
 		itemService.saveItemType(itemtypes);
 		return "redirect:/additemtypes";
 	}
-//
-//	// For View Itemtype
-//	@RequestMapping("/Viewitemtype")
-//	public String viewitemtype(Model m, HttpServletRequest req, HttpServletResponse res) {
-//		List<UserBean> list = dao.getitemtypes();
-//		m.addAttribute("list", list);
-//		return "Viewitemtype";
-//	}
-//
-//	// For Clicking deleteItemtype in Viewuser
-//	@RequestMapping(value = "/deleteitemtype/{itemID}", method = RequestMethod.GET)
-//	public String deleterole(@PathVariable int itemID) {
-//		dao.deleteitemtype(itemID);
-//		return "redirect:/Viewitemtype";
-//	}
-//
-//	// For Clicking EditItemtype in View itemtype
-//	@RequestMapping(value = "/edititemtype/{itemID}")
-//	public String editrole(@PathVariable int itemID, Model m, HttpServletRequest req, HttpServletResponse re) {
-//		UserBean user = dao.getitemtypeById(itemID);
-//		m.addAttribute("command", user);
-//		return "edititemtype";
-//	}
-//
-//	// For EditSave Itemtype Button
-//	@RequestMapping(value = "/editsaveitemtype", method = RequestMethod.POST)
-//	public String editsaverole(@ModelAttribute("user") UserBean user) {
-//		dao.updateitemtype(user);
-//		return "redirect:/Viewitemtype";
-//	}
+
+	
+	@GetMapping("/viewitemtype")
+	public String viewitemtype(Model m, HttpServletRequest req, HttpServletResponse res) {
+		List<ItemTypes> list = itemService.getItemTypes();
+		m.addAttribute("list", list);
+		return "viewitemtype";
+	}
+	
+	
+	@GetMapping(value = "/edititemtype")
+	public String editrole(@RequestParam("itemtypeId")int itemID, Model m, HttpServletRequest req, HttpServletResponse re) {
+		ItemTypes itemTypes = itemService.getitemtypeById(itemID);
+		m.addAttribute("itemtypes", itemTypes);
+		return "edititemtype";
+	}
+	
+	@PostMapping(value = "/editsaveitemtype")
+	public String editsaverole(@ModelAttribute("itemtypes") ItemTypes itemtypes,RedirectAttributes redir) {
+		itemService.updateItemType(itemtypes);
+		return "redirect:/viewitemtype";
+	}
+	
+	@GetMapping(value = "/deleteitemtype")
+	public String deleterole(@RequestParam("itemtypeId")int itemID,RedirectAttributes redir) throws Exception {
+		itemService.deleteItemtype(itemID);
+		return "redirect:/viewitemtype";
+	}
+
+
+
 
 }

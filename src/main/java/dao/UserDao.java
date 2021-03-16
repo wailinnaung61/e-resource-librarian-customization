@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import beans.Data;
+import beans.ItemTypes;
 import beans.UserBean;
 import beans.bibliosingledata;
 
@@ -488,39 +489,6 @@ public class UserDao {
 
 	}
 
-
-	public List<UserBean> getitemtypes() {
-		return template.query("select * from itemtypes", new RowMapper<UserBean>() {
-			public UserBean mapRow(ResultSet rs, int row) throws SQLException {
-				UserBean e = new UserBean();
-				e.setItemID(rs.getInt(1));
-				e.setItemtypes(rs.getString(2));
-				e.setItemcode(rs.getString(3));
-				return e;
-			}
-		});
-	}
-
-	public int deleteitemtype(int itemID) {
-		String sql = "delete from itemtypes where itemID=" + itemID + "";
-		return template.update(sql);
-
-	}
-
-	public UserBean getitemtypeById(int itemID) {
-		String sql = "select itemID,itemtypes,itemcode from itemtypes where itemID=?";
-		return template.queryForObject(sql, new Object[] { itemID },
-				new BeanPropertyRowMapper<UserBean>(UserBean.class));
-	}
-
-	public int updateitemtype(UserBean u) {
-		String sql = "UPDATE itemtypes SET itemtypes='" + u.getItemtypes() + "',itemcode='" + u.getItemcode()
-				+ "' WHERE itemID=" + u.getItemID() + "";
-
-		return template.update(sql);
-
-	}
-
 	public List<UserBean> getCollectionname() {
 		return template.query("select colTitle from collections", new RowMapper<UserBean>() {
 			public UserBean mapRow(ResultSet rs, int row) throws SQLException {
@@ -795,5 +763,6 @@ public class UserDao {
 		}
 
 	}
+
 
 }

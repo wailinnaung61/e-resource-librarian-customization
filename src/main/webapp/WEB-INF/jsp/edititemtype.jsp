@@ -1,50 +1,65 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>  
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Edit Role</title>
+  <title>Add ItemTypes</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
  
-  <link rel="stylesheet" href="../resources/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="resources/plugins/fontawesome-free/css/all.min.css">
  
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-  <link rel="stylesheet" href="../resources/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="resources/dist/css/adminlte.min.css">
   
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <style type="text/css">
+<style type="text/css">
 aside
 {
 background-color:#475B9E;
 }
-.btn
+.header
 {
-background-color:#475B9E;
+background-color: #475B9E;
+}
+.textheader
+{
+color: white;
+}
+.btncreate
+{
+background-color: #475B9E;
 color:white;
 }
-.cardbg
-{
-background-color:#475B9E;
-color:white;
-}
-.btn:hover
+.btncreate:hover
 {
 background-color:#667cc4;
 color:white;
 }
-.userbg
-{
-background-color:#475B9E;
-color:white;
+.old i {
+    margin-left: -30px;
+    cursor: pointer;
 }
-</style>
+.oldpassword
+{
+width:99%;
+height:40px;
+border-radius:5px;
+border:1px solid #CED4DA;
+padding:10px;
+}
+.oldpassword:hover
+{
+border-color: skyblue;
+}
+.combo
+{
+width:99%;
+}
+</style> 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -105,53 +120,53 @@ color:white;
           <div class="col-md-12">
                <div class="card">
                
-	                <div class="card-header cardbg">
-	                <h3 class="card-title">Edit Item Type</h3>
+	                <div class="card-header header">
+	                <h3 class="card-title textheader">Edit Itemtype</h3>
 	                </div>
              
-             <form:form method="post" action="/Eresource/editsaveitemtype" role="form">
+             <form:form method="post" action="editsaveitemtype" modelAttribute="itemtypes">
              <div  class="row"> <!-- card row -->
              <div class="col-md-6"><!-- card left column -->
              
              
-              <form:input type="hidden" path="itemID" />
               
                 <div class="card-body">
                   <div class="form-group">
                     <label>Itemtype Description</label>
-                    <form:input type="text" class="form-control" id="" placeholder="Enter Description" path="itemtypes" required="required" />
+                    <form:input type="text" class="form-control" id="" placeholder="Enter Description" path="name" required="required"/>
                   </div>
-                  <div class="form-group">
-                    <label>Serial</label>
-                    <select class="form-control combo">                        						    						    
-                         	<option>Default</option>       
-                    </select>
-                  </div>
-                                    
-                 </div><!-- card-body -->
-                     
-                 </div><!-- card left column -->
-                 
-                 <div class="col-md-6"><!-- card right column -->
-                 
-                  <div class="card-body"><!-- card body -->
                   
+                  
+                </div>
+               
+
+             
+              
+              </div><!-- card left column -->
+              
+              <div class="col-md-6"><!-- card right column -->
+              
+              <form:hidden path="id" />
+
+                <div class="card-body">
                   <div class="form-group">
                     <label>Itemtype Code</label>
-                    <form:input type="text" class="form-control" id="" placeholder="Enter Code" path="itemcode" required="required" />
+                    <form:input type="text" class="form-control" id="" placeholder="Enter code" path="code" required="required"/>
                   </div>
-                  
-                 <button type="submit"  class="btn btn" style="float:right;">Save Change</button>
-                  
-                  
-                  </div><!-- card body -->
                  
-
-                 </div><!-- card right column -->
+                  <button type="submit" class="btn btncreate" style="float:right;">create Itemtype</button>
+                  
+                </div><!-- card body -->
               
-                 </div><!-- card row column -->
               
-                      
+              </div><!-- card right column -->
+              </div><!-- card row column -->
+              
+              <div class="row">
+              <div class="col-md-12"><p align="center" class="text-danger">${alert}</p><p align="center" class="text-success">${successful}</p></div>
+              </div>
+              
+              
                 </form:form>
               
             </div><!-- card -->
@@ -174,15 +189,13 @@ color:white;
 </div>
 
 
-<script src="../resources/plugins/jquery/jquery.min.js"></script>
-<script src="../resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../resources/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-<script src="../resources/dist/js/adminlte.min.js"></script>
-<script src="../resources/dist/js/demo.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-  bsCustomFileInput.init();
-});
-</script>
+
+
+<script src="resources/plugins/jquery/jquery.min.js"></script>
+<script src="resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="resources/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="resources/dist/js/adminlte.min.js"></script>
+<script src="resources/dist/js/demo.js"></script>
 </body>
 </html>
+		

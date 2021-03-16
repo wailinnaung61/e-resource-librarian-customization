@@ -132,14 +132,23 @@ color:white;
                   </tr>
                   </thead>
                   <tbody>
-             <c:forEach var="user" items="${list}">   
+             <c:forEach var="tempItemType" items="${list}" varStatus="c">  
+             
+              		<c:url var="updateLink" value="/edititemtype">
+						<c:param name="itemtypeId" value="${tempItemType.id}" />
+					</c:url>
+					
+					<c:url var="deleteLink" value="/deleteitemtype">
+						<c:param name="itemtypeId" value="${tempItemType.id}" />
+					</c:url>
+					
 				    <tr>
-				    <td>${user.itemID}</td>
-				    <td>${user.itemtypes}</td>
-				     <td>${user.itemcode}</td>
-				   <td><a href="edititemtype/${user.itemID}" class="btn btn-outline-primary btn-icon-only btn-circle"><i class="ti-pencil"></i></a></td>
+				    <td>${c.index+1}</td>
+				    <td>${tempItemType.name}</td>
+				    <td>${tempItemType.code}</td>
+				   <td><a href="${updateLink}" class="btn btn-outline-primary btn-icon-only btn-circle"><i class="ti-pencil"></i></a></td>
 				    <td>
-				    <a href="deleteitemtype/${user.itemID}" onclick="return confirm('Are you sure?')" class="btn btn-outline-danger btn-icon-only btn-circle"><i class="ti-trash" style="color:red"></i></a>
+				    <a href="${deleteLink}" onclick="return confirm('Are you sure?')" class="btn btn-outline-danger btn-icon-only btn-circle"><i class="ti-trash" style="color:red"></i></a>
 				    </td>
 				    </tr>
 		     </c:forEach> 

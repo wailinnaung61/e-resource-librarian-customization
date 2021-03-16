@@ -50,4 +50,12 @@ public interface ItemService {
 
 	void saveItemType(ItemTypes itemtypes);
 
+	List<ItemTypes> getItemTypes();
+
+	ItemTypes getitemtypeById(int itemID);
+
+	void updateItemType(ItemTypes itemtypes);
+
+	void deleteItemtype(int itemID) throws Exception;
+
 }

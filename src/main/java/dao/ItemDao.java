@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,6 +30,7 @@ import beans.ReadingHistory;
 import beans.SpecialRequest;
 import beans.SubItem;
 import beans.SyncData;
+import beans.UserBean;
 
 @Repository
 public class ItemDao {
@@ -751,11 +753,57 @@ public class ItemDao {
 	}
 
 	public void saveItemType(ItemTypes itemtypes) {
-
 		String insertSql = "insert into itemtypes(itemtypes,itemcode) values(?,?)";
 		Object[] params = new Object[] { itemtypes.name, itemtypes.code };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
 		this.template.update(insertSql, params, types);
 
+	}
+
+	public List<ItemTypes> getItemTypes() {
+		try {
+			return this.template.query("SELECT itemID,itemtypes,itemcode FROM itemtypes",
+					(rs, rowNum) -> new ItemTypes(rs.getInt(1),rs.getString(2), rs.getString(3)));
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		return new ArrayList<ItemTypes>();
+	}
+
+	public ItemTypes getitemtypeById(int itemID) {
+		List<ItemTypes> dataList = this.template.query("select itemID,itemtypes,itemcode from itemtypes where itemID="+itemID+"",
+				new RowMapper<ItemTypes>() {
+					public ItemTypes mapRow(ResultSet rs, int rowNum) throws SQLException {
+						ItemTypes d = new ItemTypes();
+						d.setId(rs.getInt(1));
+						d.setName(rs.getString(2));
+						d.setCode(rs.getString(3));
+
+						return d;
+					}
+				});
+		return dataList != null && dataList.size() > 0 ? dataList.get(0) : new ItemTypes();
+		
+	}
+
+	public void updateItemType(ItemTypes itemtypes) {
+		String insertSql = "update itemtypes set itemtypes = ? , itemcode = ? where itemID = ?";
+		Object[] params = new Object[] { itemtypes.name, itemtypes.code, itemtypes.id};
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
+		this.template.update(insertSql, params, types);
+		
+	}
+
+	public void deleteItemtype(int itemID) throws Exception {
+		int result = this.template.update("delete from itemtypes where itemID = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, itemID);
+			}
+		});
+		if (result != 1) {
+			throw new Exception("Failed to delete");
+		}
+		
 	}
 }

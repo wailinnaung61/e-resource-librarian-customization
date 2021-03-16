@@ -379,4 +379,26 @@ public class ItemServiceImpl implements ItemService {
 
 	}
 
+	@Override
+	public List<ItemTypes> getItemTypes() {
+		return itemDao.getItemTypes();
+	}
+
+	@Override
+	public ItemTypes getitemtypeById(int itemID) {
+		return itemDao.getitemtypeById(itemID);
+	}
+
+	@Override
+	public void updateItemType(ItemTypes itemtypes) {
+		itemDao.updateItemType(itemtypes);
+		
+	}
+
+	@Override
+	public void deleteItemtype(int itemID) throws Exception {
+		itemDao.deleteItemtype(itemID);
+		
+	}
+
 }

@@ -86,7 +86,7 @@ p {
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="${contextURL}/viewitemtypes" class="nav-link ll">
+						<a href="${contextURL}/viewitemtype" class="nav-link ll">
 							<i class="far fa-circle nav-icon text-white"></i>
 							<p>View Lists</p>
 						</a>

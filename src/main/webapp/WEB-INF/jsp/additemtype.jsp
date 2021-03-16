@@ -146,7 +146,6 @@ width:99%;
               
               <div class="col-md-6"><!-- card right column -->
               
-              
 
                 <div class="card-body">
                   <div class="form-group">

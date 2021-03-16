@@ -1,7 +1,7 @@
 package beans;
 
 public class ItemTypes {
-	int id;
+	public int id;
 	public String name;
 	public String code;
 
@@ -10,6 +10,11 @@ public class ItemTypes {
 
 	public ItemTypes(int id, String name, String code) {
 		this.id = id;
+		this.name = name;
+		this.code = code;
+	}
+	
+	public ItemTypes(String name, String code) {
 		this.name = name;
 		this.code = code;
 	}
