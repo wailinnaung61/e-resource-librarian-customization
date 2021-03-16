@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd  "
+	xmlns:p="http://www.springframework.org/schema/p">
+
+	<context:component-scan
+		base-package="controllers"></context:component-scan>
+	<context:component-scan base-package="services"></context:component-scan>
+	<context:component-scan base-package="dao"></context:component-scan>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+
+	<bean id="ds"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver"></property>
+
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/prod_eresource?serverTimezone=UTC" />
+		<property name="username" value="msis" />
+		<property name="password" value="m$!s13@4" />
+
+		<!-- <property name="url" value='jdbc:mysql://127.0.0.1:3306/eresourcedb?serverTimezone=UTC'></property> -->
+		<!-- <property name="username" value="root"></property> -->
+		<!-- <property name="password" value=""></property> -->
+
+		<property name="connectionProperties">
+			<props>
+				<prop key="useUnicode">yes</prop>
+				<prop key="characterEncoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="ds_remote"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver"></property>
+
+		<!-- <property name="url" value="jdbc:mysql://127.0.0.1:3306/koha_lib?serverTimezone=UTC"/> -->
+		<!-- <property name="username" value="root"/> -->
+		<!-- <property name="password" value=""/> -->
+
+
+		<!-- <property name="url" -->
+		<!-- value="jdbc:mysql://18.138.135.236:3306/koha_prod_ucspku?serverTimezone=UTC" 
+			/> -->
+		<!-- <property name="username" value="msis" /> -->
+		<!-- <property name="password" value="m$!s13@4" /> -->
+
+
+		<property name="url"
+			value="jdbc:mysql://54.151.173.191:3306/koha_prod_koha_ssbu?serverTimezone=UTC"></property>
+		<property name="username" value="msis"></property>
+		<property name="password" value="m$!s13@4"></property>
+
+		<property name="connectionProperties">
+			<props>
+				<prop key="useUnicode">yes</prop>
+				<prop key="characterEncoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Spring Email Sender Bean Configuration -->
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="mail.nlmnpt.gov.mm" />
+		<property name="port" value="587" />
+		<property name="username" value="nlnptreply@nlmnpt.gov.mm" />
+		<property name="password" value="78CDsDke9M" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="-1" />
+	</bean>
+
+	<bean id="jt" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+
+	<bean id="jt_remote"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="ds_remote"></property>
+	</bean>
+
+	<bean id="syncdao" class="dao.SyncDao">
+		<property name="template" ref="jt_remote"></property>
+	</bean>
+
+	<bean id="dao" class="dao.UserDao">
+		<property name="template" ref="jt"></property>
+	</bean>
+
+	<bean id="itemDao" class="dao.ItemDao">
+		<property name="template" ref="jt"></property>
+	</bean>
+
+	<mvc:resources mapping="/resources/**"
+		location="/resources/" cache-period="31556926" />
+
+	<mvc:annotation-driven />
+</beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+	<properties>
+		<property name="LOG_DIR">/mnt/e_resources/logs/</property>
+	</properties>
+  	<Appenders>
+  		<RollingFile name="librarian" fileName="${LOG_DIR}/librarian.log"
+  		 filePattern="${LOG_DIR}/librarian-%d{dd-MM-yyyy}.log" ignoreExceptions="false">
+  			<PatternLayout charset="UTF-8">
+  				<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</pattern>
+  			</PatternLayout>
+  			<Policies>
+  				<TimeBasedTriggeringPolicy interval="1" />
+  			</Policies>
+  			<DefaultRolloverStrategy max="5" />
+  		</RollingFile>  		
+	</Appenders>
+  	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="librarian"/>
+		</Root>
+  	</Loggers>
+</Configuration>

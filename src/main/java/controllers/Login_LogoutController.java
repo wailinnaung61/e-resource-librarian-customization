@@ -1,0 +1,51 @@
+package controllers;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import dao.UserDao;
+
+@Controller
+public class Login_LogoutController {
+	@Autowired
+	UserDao dao;
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(ModelMap model) {
+		return "login";
+	}
+	
+	
+	@RequestMapping("/logout")
+	public String logout(Model m, HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+		session.removeAttribute("loginname");
+		session.removeAttribute("role");
+		return "redirect:/";
+	}
+
+	@RequestMapping("/detail")
+	public String userview(Model m, HttpServletRequest req, HttpServletResponse res) {
+		return "detail";
+	}
+
+	@RequestMapping("/")
+	public String userviewmain(Model m, HttpServletRequest req, HttpServletResponse res) {
+		return "Adminview";
+	}
+
+	@RequestMapping("/advancepage")
+	public String advancepage(Model m, HttpServletRequest req, HttpServletResponse res) {
+		return "advancepage";
+	}
+
+	@RequestMapping("/searchresult")
+	public String searchresult(Model m, HttpServletRequest req, HttpServletResponse res) {
+		return "searchresult";
+	}
+}
