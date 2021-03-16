@@ -41,7 +41,7 @@ import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-	
+
 	private Logger logger = LogManager.getLogger(this.getClass());
 
 	@Autowired
@@ -115,12 +115,14 @@ public class ItemServiceImpl implements ItemService {
 					}
 					if (sitem.getResourcefile() != null && sitem.getResourcefile().getSize() > 0) {
 						deleteOldResource(Constants.RESTRICTED_RESOURCES, sitem.getOldresourceurl());
-						sitem.setResourceurl(uploadResource(item.getItemnumber(), biblio.getBiblionumber(), sitem, type));
+						sitem.setResourceurl(
+								uploadResource(item.getItemnumber(), biblio.getBiblionumber(), sitem, type));
 					}
-					
-					boolean isRestriced = (sitem.getResourceurl().endsWith(".docx") || sitem.getResourceurl().endsWith(".pdf")) && (sitem.getAccesslevel() == 2);
+
+					boolean isRestriced = (sitem.getResourceurl().endsWith(".docx")
+							|| sitem.getResourceurl().endsWith(".pdf")) && (sitem.getAccesslevel() == 2);
 					boolean isChanged = sitem.isChanged_access();
-					
+
 					if (isRestriced || (isRestriced && isChanged)) {
 						deleteOldResource(Constants.PUBLIC_RESOURCES, sitem.getOldresourceurl());
 						uploadPublicDoc(sitem.getResourceurl(), type, sitem.getAccesspages());
@@ -142,7 +144,7 @@ public class ItemServiceImpl implements ItemService {
 		try {
 			File f = new File(Constants.RESOURCE_BASE_URL + resourcePath + "/" + oldresourceurl);
 			f.delete();
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 		}
 	}
@@ -156,7 +158,7 @@ public class ItemServiceImpl implements ItemService {
 	public String uploadResource(int itemNumber, int bNumber, SubItem item, String type) {
 		MultipartFile file = item.getResourcefile();
 		String oFileName = file.getOriginalFilename();
-		if(oFileName.length() > 200) {
+		if (oFileName.length() > 200) {
 			String fileType = oFileName.substring(oFileName.lastIndexOf("."));
 			oFileName = oFileName.substring(0, 200) + "." + fileType;
 		}
@@ -184,7 +186,7 @@ public class ItemServiceImpl implements ItemService {
 			FileOutputStream outStream = new FileOutputStream(targetFile);
 			int count = 0;
 			byte[] bufferedBytes = new byte[1024];
-			while((count = fis.read(bufferedBytes)) != -1) {
+			while ((count = fis.read(bufferedBytes)) != -1) {
 				outStream.write(bufferedBytes, 0, count);
 			}
 			outStream.close();
@@ -193,7 +195,7 @@ public class ItemServiceImpl implements ItemService {
 			 * 
 			 * byte[] bytes = file.getBytes(); Files.write(path, bytes);
 			 */
-			
+
 			return fileName;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -223,8 +225,8 @@ public class ItemServiceImpl implements ItemService {
 		PDDocument doc = null;
 		List<PDDocument> pages = null;
 		try {
-			pdf = PDDocument
-					.load(new File(Constants.RESOURCE_BASE_URL + Constants.RESTRICTED_RESOURCES + resourceURL), MemoryUsageSetting.setupTempFileOnly());
+			pdf = PDDocument.load(new File(Constants.RESOURCE_BASE_URL + Constants.RESTRICTED_RESOURCES + resourceURL),
+					MemoryUsageSetting.setupTempFileOnly());
 			doc = new PDDocument();
 			Splitter splitter = new Splitter();
 			pages = splitter.split(pdf);
@@ -238,21 +240,21 @@ public class ItemServiceImpl implements ItemService {
 			if (!directory.exists()) {
 				directory.mkdirs();
 			}
-			
+
 			FileOutputStream fos = new FileOutputStream(new File(filePath + resourceURL));
 			doc.save(fos);
-			
+
 			logger.info("Saved public pdf : {}", filePath + resourceURL);
 		} catch (Exception ex) {
 			logger.error("Error Occurred Uploading {},` {}", resourceURL, ex);
 		} finally {
-			if(doc != null) {
+			if (doc != null) {
 				doc.close();
 			}
-			if(pdf != null) {
+			if (pdf != null) {
 				pdf.close();
 			}
-			if(pages != null && pages.size() > 0) {
+			if (pages != null && pages.size() > 0) {
 				for (PDDocument p : pages) {
 					p.close();
 				}
@@ -322,7 +324,7 @@ public class ItemServiceImpl implements ItemService {
 	public Map<String, List<ReadingHistory>> getItemsPopularityByAgeReport(String from, String to) {
 		return itemDao.getItemsPopularityByAgeByAgeReport(formatDate(from), formatDate(to));
 	}
-	
+
 	public String formatDate(String date) {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		DateFormat new_df = new SimpleDateFormat("yyy-MM-dd");
@@ -345,7 +347,7 @@ public class ItemServiceImpl implements ItemService {
 				if (type == null || "".equals(type.trim())) {
 					type = Constants.UNCATEGORIZED_RESOURCE;
 				}
-				if(!f.exists()) {
+				if (!f.exists()) {
 					uploadPublicDoc(subItem.resourceurl, type, subItem.accesspages);
 				}
 			} catch (Exception ex) {
@@ -358,11 +360,23 @@ public class ItemServiceImpl implements ItemService {
 	public void deleteBiblio(int biblionumber) {
 		List<Data> dList = itemDao.GetItemsByBiblioNumbers(Collections.singletonList(biblionumber));
 		List<Integer> deleteItemNumbers = dList.stream().map(Data::getItemnumber).collect(Collectors.toList());
-		if(deleteItemNumbers.size() > 0) {
+		if (deleteItemNumbers.size() > 0) {
 			itemDao.deleteUnlinkedResources(deleteItemNumbers);
 		}
 		itemDao.deleteBiblio(biblionumber);
 		utilService.removeStaticResources(dList);
 		utilService.deleteSearchIndex(biblionumber);
 	}
+
+	@Override
+	public int getItemtypesByItemName(String name) {
+		return itemDao.getItemtypesByItemName(name);
+	}
+
+	@Override
+	public void saveItemType(ItemTypes itemtypes) {
+		itemDao.saveItemType(itemtypes);
+
+	}
+
 }

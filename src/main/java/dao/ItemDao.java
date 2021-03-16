@@ -19,6 +19,8 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
 import beans.Data;
 import beans.Item;
 import beans.ItemTypes;
@@ -28,10 +30,11 @@ import beans.SpecialRequest;
 import beans.SubItem;
 import beans.SyncData;
 
+@Repository
 public class ItemDao {
 
 	private Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	JdbcTemplate template;
 
 	public void InsertBiblio(final List<SyncData> biblio) {
@@ -58,7 +61,7 @@ public class ItemDao {
 						}
 					});
 		} catch (DuplicateKeyException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -86,7 +89,7 @@ public class ItemDao {
 						}
 					});
 		} catch (DuplicateKeyException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -117,7 +120,7 @@ public class ItemDao {
 						}
 					});
 		} catch (DuplicateKeyException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -188,7 +191,7 @@ public class ItemDao {
 						ps.setString(9, biblio.get(i).getSummary());
 						ps.setInt(10, biblio.get(i).getBiblionumber());
 					}
-				
+
 					public int getBatchSize() {
 						return biblio.size();
 					}
@@ -230,13 +233,12 @@ public class ItemDao {
 
 	public List<Data> GetBiblioItem(String type, int id) {
 		String sql = "select b.biblionumber, bi.biblioitemnumber, i.itemnumber, i.keyword, s.resourceid, s.downloadable,"
-					+ " s.resourceurl, s.accesslevel, s.accesspages, i.bookcover, b.title, b.author, i.barcode, i.itemcallnumber, i.collection"
-					+ " from biblio b"
-					+ " left outer join biblioitems bi on b.biblionumber = bi.biblionumber"
-					+ " left outer join items i on i.biblioitemnumber = bi.biblioitemnumber"
+				+ " s.resourceurl, s.accesslevel, s.accesspages, i.bookcover, b.title, b.author, i.barcode, i.itemcallnumber, i.collection"
+				+ " from biblio b" + " left outer join biblioitems bi on b.biblionumber = bi.biblionumber"
+				+ " left outer join items i on i.biblioitemnumber = bi.biblioitemnumber"
 //					+ " left outer join collections_tracking ct on ct.itemnumber = i.itemnumber"
 //					+ " left outer join collections c on c.colId = ct.colId"
-					+ " left outer join subitems s on s.itemnumber = i.itemnumber where ";
+				+ " left outer join subitems s on s.itemnumber = i.itemnumber where ";
 		if ("item".equalsIgnoreCase(type)) {
 			sql = sql.concat("i.itemnumber = " + id);
 		} else if ("biblio".equalsIgnoreCase(type)) {
@@ -302,6 +304,7 @@ public class ItemDao {
 						ps.setString(2, items.get(i).getBookcover());
 						ps.setInt(3, items.get(i).getItemnumber());
 					}
+
 					public int getBatchSize() {
 						return items.size();
 					}
@@ -340,7 +343,7 @@ public class ItemDao {
 						}
 					});
 		} catch (DuplicateKeyException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -364,7 +367,7 @@ public class ItemDao {
 						}
 					});
 		} catch (DuplicateKeyException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -422,13 +425,14 @@ public class ItemDao {
 
 	public List<Patron> getPatronList(String last_sync) {
 		String sql = "SELECT borrowernumber, cardnumber, userid, email, surname, title, dateofbirth, city, category FROM borrowers";
-		if(last_sync != null) {
+		if (last_sync != null) {
 			sql = String.format("%s where last_sync > '%s'", sql, last_sync);
 		}
 		return this.template.query(sql,
 				(rs, rowNum) -> new Patron(rs.getInt("borrowernumber"), rs.getString("cardnumber"),
 						rs.getString("userid"), null, null, rs.getString("email"), rs.getString("surname"),
-						rs.getString("title"), rs.getDate("dateofbirth"), rs.getString("city"), rs.getString("category")));
+						rs.getString("title"), rs.getDate("dateofbirth"), rs.getString("city"),
+						rs.getString("category")));
 	}
 
 	public Patron getLastPatronInfo() {
@@ -487,7 +491,7 @@ public class ItemDao {
 						ps.setDate(8, d == null ? null : new java.sql.Date(d.getTime()));
 						ps.setString(9, update_patrons.get(i).getCity());
 						ps.setString(10, update_patrons.get(i).getCategory());
-						
+
 						ps.setInt(11, update_patrons.get(i).getBorrowernumber());
 					}
 
@@ -522,32 +526,35 @@ public class ItemDao {
 	}
 
 	public void updateSpecialRequestById(int id, String status_str) throws Exception {
-		int status = this.template.update("UPDATE specialrequests SET status = ? WHERE id = ?", new PreparedStatementSetter() {
-			
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setString(1, status_str);
-				ps.setInt(2, id);
-			}
-		});
-		if(status != 1) throw new Exception("Failed to update");
+		int status = this.template.update("UPDATE specialrequests SET status = ? WHERE id = ?",
+				new PreparedStatementSetter() {
+
+					@Override
+					public void setValues(PreparedStatement ps) throws SQLException {
+						ps.setString(1, status_str);
+						ps.setInt(2, id);
+					}
+				});
+		if (status != 1)
+			throw new Exception("Failed to update");
 	}
-	
+
 	public List<ReadingHistory> getReadingHistory(String from, String to) {
 		String filtered = "";
 		if (from != null && to != null) {
 			filtered = String.format(" where read_on between '%s' and '%s'", from, to);
-		} else if(from != null) {
+		} else if (from != null) {
 			filtered = String.format(" where read_on >= '%s'", from);
 		} else if (to != null) {
 			filtered = String.format(" where read_on <= '%s'", to);
 		}
-		
-		List<ReadingHistory> history = this.template.query("SELECT b.title, coalesce(CONCAT(br.title, br.surname), 'Anonymous') AS borrowername, ipaddress, read_on FROM reading_history rh"
-				+ " LEFT OUTER JOIN borrowers br ON br.borrowernumber = rh.borrowerid"
-				+ " INNER JOIN items i on i.itemnumber = rh.itemid"
-				+ " INNER JOIN biblio b on b.biblionumber = i.biblionumber" + filtered
-				+ " order by read_on desc",
+
+		List<ReadingHistory> history = this.template.query(
+				"SELECT b.title, coalesce(CONCAT(br.title, br.surname), 'Anonymous') AS borrowername, ipaddress, read_on FROM reading_history rh"
+						+ " LEFT OUTER JOIN borrowers br ON br.borrowernumber = rh.borrowerid"
+						+ " INNER JOIN items i on i.itemnumber = rh.itemid"
+						+ " INNER JOIN biblio b on b.biblionumber = i.biblionumber" + filtered
+						+ " order by read_on desc",
 				new RowMapper<ReadingHistory>() {
 
 					@Override
@@ -564,7 +571,8 @@ public class ItemDao {
 	}
 
 	public String getPortalUrlAndSecretCode() {
-		this.template.update("UPDATE index_reloading_info SET secret_code = UUID(), last_sync = now() WHERE active = 1 and id <> 0");
+		this.template.update(
+				"UPDATE index_reloading_info SET secret_code = UUID(), last_sync = now() WHERE active = 1 and id <> 0");
 		List<String> urls = this.template.query("SELECT url, secret_code FROM index_reloading_info WHERE active = 1",
 				new RowMapper<String>() {
 					@Override
@@ -572,64 +580,59 @@ public class ItemDao {
 						String url = rs.getString("url");
 						String code = rs.getString("secret_code");
 						String result = url.replace("{code}", code);
-						return 	result;
+						return result;
 					}
 				});
 		return urls.get(0);
 	}
 
 	public List<ReadingHistory> getItemsPopularityReport(String from, String to) {
-		
+
 		String filtered = "";
 		if (from != null && to != null) {
 			filtered = String.format(" where read_on between '%s' and '%s'", from, to);
-		} else if(from != null) {
+		} else if (from != null) {
 			filtered = String.format(" where read_on >= '%s'", from);
 		} else if (to != null) {
 			filtered = String.format(" where read_on <= '%s'", to);
 		}
-		
+
 		String sql = "select b.title, concat(it.itemtypes, coalesce(concat(' - ', i.enumchron), '')) as itemtype, rh.count"
-					+ " from items i inner join"
-					+ " (select itemid, count(borrowerid) as count"
-					+ " from reading_history" + filtered
-					+ " group by itemid) rh on rh.itemid = i.itemNumber"
-					+ " inner join biblio b on b.biblionumber = i.biblionumber"
-					+ " left outer join itemtypes it on i.itype = it.itemcode";
-		
-		return this.template.query(sql
-			, new RowMapper<ReadingHistory>() {
-				@Override
-				public ReadingHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
-					ReadingHistory hist = new ReadingHistory();
-					hist.setTitle(rs.getString("title"));
-					hist.setItemtype(rs.getString("itemtype"));
-					hist.setReadcount(rs.getInt("count"));
-					return hist;
-				}
+				+ " from items i inner join" + " (select itemid, count(borrowerid) as count" + " from reading_history"
+				+ filtered + " group by itemid) rh on rh.itemid = i.itemNumber"
+				+ " inner join biblio b on b.biblionumber = i.biblionumber"
+				+ " left outer join itemtypes it on i.itype = it.itemcode";
+
+		return this.template.query(sql, new RowMapper<ReadingHistory>() {
+			@Override
+			public ReadingHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ReadingHistory hist = new ReadingHistory();
+				hist.setTitle(rs.getString("title"));
+				hist.setItemtype(rs.getString("itemtype"));
+				hist.setReadcount(rs.getInt("count"));
+				return hist;
+			}
 		});
 	}
 
 	public Map<String, List<ReadingHistory>> getItemsPopularityByAgeByAgeReport(String from, String to) {
-		
+
 		String filtered = "";
 		if (from != null && to != null) {
 			filtered = String.format(" where read_on between '%s' and '%s'", from, to);
-		} else if(from != null) {
+		} else if (from != null) {
 			filtered = String.format(" where read_on >= '%s'", from);
 		} else if (to != null) {
 			filtered = String.format(" where read_on <= '%s'", to);
 		}
-		
+
 		String sql = "select b.title, concat(it.itemtypes, coalesce(concat(' - ', i.enumchron), '')) as itemtype, rh.count, coalesce(concat(rh.age, '-', rh.age + 9), 'Unknown') as age"
-						+ " from items i inner join"
-						+ " (select r.itemid, count(r.borrowerid) as count, floor((YEAR(CURDATE()) - YEAR(dateofbirth))/10) * 10 as age"
-						+ " from reading_history r"
-						+ " inner join borrowers b on r.borrowerid = b.borrowernumber"
-						+ filtered
-						+ " group by itemid, age) rh on rh.itemid = i.itemNumber"
-						+ " inner join biblio b on b.biblionumber = i.biblionumber"
-						+ " left outer join itemtypes it on i.itype = it.itemcode";
+				+ " from items i inner join"
+				+ " (select r.itemid, count(r.borrowerid) as count, floor((YEAR(CURDATE()) - YEAR(dateofbirth))/10) * 10 as age"
+				+ " from reading_history r" + " inner join borrowers b on r.borrowerid = b.borrowernumber" + filtered
+				+ " group by itemid, age) rh on rh.itemid = i.itemNumber"
+				+ " inner join biblio b on b.biblionumber = i.biblionumber"
+				+ " left outer join itemtypes it on i.itype = it.itemcode";
 		List<ReadingHistory> historyList = this.template.query(sql, new RowMapper<ReadingHistory>() {
 			@Override
 			public ReadingHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -643,7 +646,8 @@ public class ItemDao {
 		});
 		SortedMap<String, List<ReadingHistory>> historyMap = new TreeMap<>();
 		for (ReadingHistory readingHistory : historyList) {
-			List<ReadingHistory> tmp_hist = historyMap.getOrDefault(readingHistory.getAgerange(), new ArrayList<ReadingHistory>());
+			List<ReadingHistory> tmp_hist = historyMap.getOrDefault(readingHistory.getAgerange(),
+					new ArrayList<ReadingHistory>());
 			tmp_hist.add(readingHistory);
 			historyMap.put(readingHistory.getAgerange(), tmp_hist);
 		}
@@ -654,12 +658,12 @@ public class ItemDao {
 		String filtered = "";
 		if (from != null && to != null) {
 			filtered = String.format(" where last_access between '%s' and '%s'", from, to);
-		} else if(from != null) {
+		} else if (from != null) {
 			filtered = String.format(" where last_access >= '%s'", from);
 		} else if (to != null) {
 			filtered = String.format(" where last_access <= '%s'", to);
 		}
-		return this.template.query("SELECT count(distinct(b.borrowernumber)) count, b.city FROM borrowers b" 
+		return this.template.query("SELECT count(distinct(b.borrowernumber)) count, b.city FROM borrowers b"
 				+ " inner join borrowers_access_log ba on b.borrowernumber = ba.borrowerid" + filtered
 				+ " group by city", (rs, rowNum) -> {
 					Patron p = new Patron();
@@ -668,12 +672,12 @@ public class ItemDao {
 					return p;
 				});
 	}
-	
+
 	public List<Patron> getPatronAccessReportByCategory(String from, String to) {
 		String filtered = "";
 		if (from != null && to != null) {
 			filtered = String.format(" where last_access between '%s' and '%s'", from, to);
-		} else if(from != null) {
+		} else if (from != null) {
 			filtered = String.format(" where last_access >= '%s'", from);
 		} else if (to != null) {
 			filtered = String.format(" where last_access <= '%s'", to);
@@ -689,47 +693,69 @@ public class ItemDao {
 	}
 
 	public int getPendingSpecialRequestCount() {
-		List<Integer> count_list =  this.template.query("select count(*) as count from specialrequests where status = 'pending'", 
-				(rs, rowNum) ->{
+		List<Integer> count_list = this.template
+				.query("select count(*) as count from specialrequests where status = 'pending'", (rs, rowNum) -> {
 					return rs.getInt("count");
 				});
 		return count_list.get(0);
 	}
 
 	public List<SubItem> getResourceUrlList(int offset, int count) {
-		return this.template
-					.query("select si.resourceurl, si.accesspages, i.collection from subitems si" 
-							+ " inner join items i on i.itemnumber = si.itemnumber" 
-							+ " where si.accesslevel = 2 and (si.resourceurl like '%.pdf' or si.resourceurl like '%.docx') limit " + offset + ", " + count,
-							(rs, rowNum) -> {
-								SubItem si = new SubItem();
-								si.setResourceurl(rs.getString("resourceurl"));
-								si.setAccesspages(rs.getInt("accesspages"));
-								si.setCollection(rs.getString("collection"));
-								return si;
-							});
+		return this.template.query("select si.resourceurl, si.accesspages, i.collection from subitems si"
+				+ " inner join items i on i.itemnumber = si.itemnumber"
+				+ " where si.accesslevel = 2 and (si.resourceurl like '%.pdf' or si.resourceurl like '%.docx') limit "
+				+ offset + ", " + count, (rs, rowNum) -> {
+					SubItem si = new SubItem();
+					si.setResourceurl(rs.getString("resourceurl"));
+					si.setAccesspages(rs.getInt("accesspages"));
+					si.setCollection(rs.getString("collection"));
+					return si;
+				});
 	}
 
 	public List<Data> GetItemsByBiblioNumbers(List<Integer> idList) {
 		String inSql = String.join(",", Collections.nCopies(idList.size(), "?"));
-		String sql = String.format("SELECT i.itemnumber, GROUP_CONCAT(si.resourceurl  separator '<<eresource-splitter>>') resources, i.bookcover FROM items i LEFT OUTER JOIN subitems si ON si.itemnumber = i.itemnumber WHERE i.biblionumber IN (%s) GROUP BY i.itemnumber", inSql);
+		String sql = String.format(
+				"SELECT i.itemnumber, GROUP_CONCAT(si.resourceurl  separator '<<eresource-splitter>>') resources, i.bookcover FROM items i LEFT OUTER JOIN subitems si ON si.itemnumber = i.itemnumber WHERE i.biblionumber IN (%s) GROUP BY i.itemnumber",
+				inSql);
 		return this.template.query(sql, idList.toArray(), (rs, rowNo) -> {
-					Data d = new Data();
-					d.setItemnumber(rs.getInt("itemnumber"));
-					d.setResourceUrl(rs.getString("resources"));
-					d.setBookcover(rs.getString("bookcover"));
-					return d;
+			Data d = new Data();
+			d.setItemnumber(rs.getInt("itemnumber"));
+			d.setResourceUrl(rs.getString("resources"));
+			d.setBookcover(rs.getString("bookcover"));
+			return d;
 		});
 	}
 
 	public void deleteUnlinkedResources(List<Integer> dList) {
 		String inSql = String.join(",", Collections.nCopies(dList.size(), "?"));
-		String sql = String.format("DELETE i, si FROM items i LEFT OUTER JOIN subitems si ON i.itemnumber = si.itemnumber WHERE i.itemnumber IN (%s)", inSql);
+		String sql = String.format(
+				"DELETE i, si FROM items i LEFT OUTER JOIN subitems si ON i.itemnumber = si.itemnumber WHERE i.itemnumber IN (%s)",
+				inSql);
 		this.template.update(sql, dList.toArray());
 	}
 
 	public void deleteBiblio(int biblionumber) {
-		this.template.update("DELETE b, bi, bm FROM biblio b LEFT OUTER JOIN biblioitems bi ON b.biblionumber = bi.biblionumber" +
-				" LEFT OUTER JOIN biblio_metadata bm ON b.biblionumber = bm.biblionumber WHERE b.biblionumber = " + biblionumber);
+		this.template.update(
+				"DELETE b, bi, bm FROM biblio b LEFT OUTER JOIN biblioitems bi ON b.biblionumber = bi.biblionumber"
+						+ " LEFT OUTER JOIN biblio_metadata bm ON b.biblionumber = bm.biblionumber WHERE b.biblionumber = "
+						+ biblionumber);
+	}
+
+	public int getItemtypesByItemName(String name) {
+		List<Integer> count_list = this.template
+				.query("select count(*) as count from itemtypes where itemtypes='" + name + "'", (rs, rowNum) -> {
+					return rs.getInt("count");
+				});
+		return count_list.get(0);
+	}
+
+	public void saveItemType(ItemTypes itemtypes) {
+
+		String insertSql = "insert into itemtypes(itemtypes,itemcode) values(?,?)";
+		Object[] params = new Object[] { itemtypes.name, itemtypes.code };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
+		this.template.update(insertSql, params, types);
+
 	}
 }

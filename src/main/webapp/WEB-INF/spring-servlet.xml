@@ -32,14 +32,14 @@
 		<property name="driverClassName"
 			value="com.mysql.cj.jdbc.Driver"></property>
 
-		<property name="url"
-			value="jdbc:mysql://127.0.0.1:3306/prod_eresource?serverTimezone=UTC" />
-		<property name="username" value="msis" />
-		<property name="password" value="m$!s13@4" />
+<!-- 		<property name="url" -->
+<!-- 			value="jdbc:mysql://127.0.0.1:3306/prod_eresource?serverTimezone=UTC" /> -->
+<!-- 		<property name="username" value="msis" /> -->
+<!-- 		<property name="password" value="m$!s13@4" /> -->
 
-		<!-- <property name="url" value='jdbc:mysql://127.0.0.1:3306/eresourcedb?serverTimezone=UTC'></property> -->
-		<!-- <property name="username" value="root"></property> -->
-		<!-- <property name="password" value=""></property> -->
+		<property name="url" value='jdbc:mysql://127.0.0.1:3306/eresourcedb?serverTimezone=UTC'></property>
+		<property name="username" value="root"></property>
+		<property name="password" value=""></property>
 
 		<property name="connectionProperties">
 			<props>
@@ -54,9 +54,9 @@
 		<property name="driverClassName"
 			value="com.mysql.jdbc.Driver"></property>
 
-		<!-- <property name="url" value="jdbc:mysql://127.0.0.1:3306/koha_lib?serverTimezone=UTC"/> -->
-		<!-- <property name="username" value="root"/> -->
-		<!-- <property name="password" value=""/> -->
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/koha_lib?serverTimezone=UTC"/>
+		<property name="username" value="root"/>
+		<property name="password" value=""/>
 
 
 		<!-- <property name="url" -->
@@ -66,10 +66,10 @@
 		<!-- <property name="password" value="m$!s13@4" /> -->
 
 
-		<property name="url"
-			value="jdbc:mysql://54.151.173.191:3306/koha_prod_koha_ssbu?serverTimezone=UTC"></property>
-		<property name="username" value="msis"></property>
-		<property name="password" value="m$!s13@4"></property>
+<!-- 		<property name="url" -->
+<!-- 			value="jdbc:mysql://54.151.173.191:3306/koha_prod_koha_ssbu?serverTimezone=UTC"></property> -->
+<!-- 		<property name="username" value="msis"></property> -->
+<!-- 		<property name="password" value="m$!s13@4"></property> -->
 
 		<property name="connectionProperties">
 			<props>

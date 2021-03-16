@@ -2,8 +2,11 @@ package beans;
 
 public class ItemTypes {
 	int id;
-	String name;
-	String code;
+	public String name;
+	public String code;
+
+	public ItemTypes() {
+	}
 
 	public ItemTypes(int id, String name, String code) {
 		this.id = id;

@@ -9,7 +9,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         		
         <property name="java-output-path" value="/librarian-customize/target/classes"/>
-        <property name="context-root" value="librarian"/>
+        <property name="context-root" value="librarian-customize"/>
         	
     </wb-module>
     

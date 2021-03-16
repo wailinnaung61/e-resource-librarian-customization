@@ -71,28 +71,52 @@ p {
 				</ul>
 			</li>
 
-<!-- 			<li class="nav-item has-treeview"> -->
-<!-- 				<a href="#" class="nav-link ll"> <i class="nav-icon fas fa-user text-white"></i> -->
-<!-- 					<p> -->
-<!-- 						Role <i class="fas fa-angle-left right"></i> -->
-<!-- 					</p> -->
-<!-- 				</a> -->
-<!-- 				<ul class="nav nav-treeview"> -->
-<!-- 					<li class="nav-item"> -->
-<%-- 						<a href="${contextURL}/AddRole" --%>
-<!-- 							class="nav-link ll"> -->
-<!-- 							<i class="far fa-circle nav-icon text-white"></i> -->
-<!-- 							<p>Add new Role</p> -->
-<!-- 						</a> -->
-<!-- 					</li> -->
-<!-- 					<li class="nav-item"> -->
-<%-- 						<a href="${contextURL}/ViewRole" class="nav-link ll"> --%>
-<!-- 							<i class="far fa-circle nav-icon text-white"></i> -->
-<!-- 							<p>Role Lists</p> -->
-<!-- 						</a> -->
-<!-- 					</li> -->
-<!-- 				</ul> -->
-<!-- 			</li> -->
+			<li class="nav-item has-treeview">
+				<a href="#" class="nav-link ll"> <i class="nav-icon fas fa-user text-white"></i>
+					<p>
+						Itemtypes <i class="fas fa-angle-left right"></i>
+					</p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="${contextURL}/additemtypes"
+							class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>Add Item Types</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="${contextURL}/viewitemtypes" class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>View Lists</p>
+						</a>
+					</li>
+				</ul>
+			</li>
+			
+			<li class="nav-item has-treeview">
+				<a href="#" class="nav-link ll"> <i class="nav-icon fas fa-user text-white"></i>
+					<p>
+						Role <i class="fas fa-angle-left right"></i>
+					</p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="${contextURL}/AddRole"
+							class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>Add new Role</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="${contextURL}/ViewRole" class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>Role Lists</p>
+						</a>
+					</li>
+				</ul>
+			</li>
+			
 
 			<li class="nav-item">
 				<a href="${contextURL}/bibliolist" class="nav-link ll"> 

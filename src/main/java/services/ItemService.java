@@ -46,4 +46,8 @@ public interface ItemService {
 
 	void deleteBiblio(int biblionumber);
 
+	int getItemtypesByItemName(String name);
+
+	void saveItemType(ItemTypes itemtypes);
+
 }

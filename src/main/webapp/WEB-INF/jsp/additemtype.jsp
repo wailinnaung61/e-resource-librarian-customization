@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Add User</title>
+  <title>Add ItemTypes</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -124,7 +124,7 @@ width:99%;
 	                <h3 class="card-title textheader">create Itemtype</h3>
 	                </div>
              
-             <form:form method="post" action="saveitemtype" role="form">
+             <form:form method="post" action="saveItemtype" modelAttribute="itemtypes">
              <div  class="row"> <!-- card row -->
              <div class="col-md-6"><!-- card left column -->
              
@@ -133,7 +133,7 @@ width:99%;
                 <div class="card-body">
                   <div class="form-group">
                     <label>Itemtype Description</label>
-                    <form:input type="text" class="form-control" id="" placeholder="Enter Description" path="itemtypes" required="required"/>
+                    <form:input type="text" class="form-control" id="" placeholder="Enter Description" path="name" required="required"/>
                   </div>
                   
                   
@@ -151,10 +151,10 @@ width:99%;
                 <div class="card-body">
                   <div class="form-group">
                     <label>Itemtype Code</label>
-                    <form:input type="text" class="form-control" id="" placeholder="Enter code" path="itemcode" required="required"/>
+                    <form:input type="text" class="form-control" id="" placeholder="Enter code" path="code" required="required"/>
                   </div>
                  
-                  <button type="submit" class="btn btncreate" onclick="return Validate()" style="float:right;">create Itemtype</button>
+                  <button type="submit" class="btn btncreate" style="float:right;">create Itemtype</button>
                   
                 </div><!-- card body -->
               

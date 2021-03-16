@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import beans.Data;
 import beans.UserBean;
 import beans.bibliosingledata;
-import beans.test;
 
 public class UserDao {
 	JdbcTemplate template;
@@ -489,19 +488,6 @@ public class UserDao {
 
 	}
 
-	public int itemtypebyitemtype(String itemtypes) {
-		String sql = "SELECT count(*) FROM itemtypes WHERE itemtypes ='" + itemtypes + "'";
-		int count = template.queryForObject(sql, Integer.class);
-		return count;
-	}
-
-	public int saveitemtype(UserBean user) {
-		String sql = "INSERT INTO itemtypes(itemtypes,itemcode) VALUES('" + user.getItemtypes() + "','"
-				+ user.getItemcode() + "')";
-
-		return template.update(sql);
-
-	}
 
 	public List<UserBean> getitemtypes() {
 		return template.query("select * from itemtypes", new RowMapper<UserBean>() {
@@ -618,14 +604,13 @@ public class UserDao {
 
 	public List<bibliosingledata> getsinglebibliodata() {
 
-		return template.query("select i.itemnumber, i.biblionumber, i.biblioitemnumber, i.barcode," +
-						" i.booksellerid, i.homebranch, i.itemcallnumber," +
-						" bi.collectiontitle, bi.publishercode, bi.editionstatement," +
-						" bi.place, b.author, b.title, b.notes, b.timestamp," +
-						" b.datecreated, i.keyword, i.itype as itemtype, bi.publicationyear, bi.isbn " +
-						" from biblio b inner join items i on i.biblionumber = b.biblionumber" +
-						" left outer join biblioitems bi on bi.biblionumber = b.biblionumber" +
-						" ORDER BY b.timestamp DESC",
+		return template.query("select i.itemnumber, i.biblionumber, i.biblioitemnumber, i.barcode,"
+				+ " i.booksellerid, i.homebranch, i.itemcallnumber,"
+				+ " bi.collectiontitle, bi.publishercode, bi.editionstatement,"
+				+ " bi.place, b.author, b.title, b.notes, b.timestamp,"
+				+ " b.datecreated, i.keyword, i.itype as itemtype, bi.publicationyear, bi.isbn "
+				+ " from biblio b inner join items i on i.biblionumber = b.biblionumber"
+				+ " left outer join biblioitems bi on bi.biblionumber = b.biblionumber" + " ORDER BY b.timestamp DESC",
 				new RowMapper<bibliosingledata>() {
 					public bibliosingledata mapRow(ResultSet rs, int row) throws SQLException {
 						bibliosingledata e = new bibliosingledata();
@@ -763,18 +748,6 @@ public class UserDao {
 						return e;
 					}
 				});
-	}
-
-	public ArrayList<test> getitemtype() {
-		return (ArrayList<test>) template.query("select itemtype from biblioitems", new RowMapper<test>() {
-
-			public test mapRow(ResultSet rs, int row) throws SQLException {
-				test e = new test();
-				e.setItemtypeformydatabase(rs.getString(1));
-
-				return e;
-			}
-		});
 	}
 
 	public UserDetails getUserByUsername(String username) {
