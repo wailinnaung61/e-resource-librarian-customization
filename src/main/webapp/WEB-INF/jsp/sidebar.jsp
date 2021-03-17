@@ -97,6 +97,30 @@ p {
 			<li class="nav-item has-treeview">
 				<a href="#" class="nav-link ll"> <i class="nav-icon fas fa-user text-white"></i>
 					<p>
+						Collection <i class="fas fa-angle-left right"></i>
+					</p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="${contextURL}/addcollection"
+							class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>Add Collection</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="${contextURL}/viewcollection" class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>View Lists</p>
+						</a>
+					</li>
+				</ul>
+			</li>
+			
+			
+			<li class="nav-item has-treeview">
+				<a href="#" class="nav-link ll"> <i class="nav-icon fas fa-user text-white"></i>
+					<p>
 						Role <i class="fas fa-angle-left right"></i>
 					</p>
 				</a>

@@ -93,7 +93,7 @@
 								<tbody>
 										<c:forEach var="d" items="${itemlist}" varStatus="c">
 											<tr>
-												<td>${c.index}</td>
+												<td>${c.index+1}</td>
 												<td>${d.name}</td>
 												<td>${d.code}</td>
 											</tr>

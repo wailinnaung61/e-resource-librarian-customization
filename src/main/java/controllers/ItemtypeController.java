@@ -44,7 +44,7 @@ public class ItemtypeController {
 		}
 		
 		itemService.saveItemType(itemtypes);
-		return "redirect:/additemtypes";
+		return "redirect:/viewitemtype";
 	}
 
 	

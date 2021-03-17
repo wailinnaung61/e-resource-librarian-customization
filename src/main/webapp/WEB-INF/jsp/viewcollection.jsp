@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>View Collection</title>
+  <title>View Itemtype</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
      
@@ -125,20 +125,30 @@ color:white;
                   <thead>
                   <tr class="trbg">
                     <th style="width:55px;">#</th>
-                    <th>Collection</th>
+                    <th>Collection Description</th>
+                    <th>Collection Code</th>
                     <th style="width:100px;">Edit</th>
                     <th style="width:100px;">Delete</th>
                   </tr>
                   </thead>
                   <tbody>
-             <c:forEach var="user" items="${list}">   
+             <c:forEach var="tempCollection" items="${list}" varStatus="c">  
+             
+              		<c:url var="updateLink" value="/editcollection">
+						<c:param name="collectionId" value="${tempCollection.id}" />
+					</c:url>
+					
+					<c:url var="deleteLink" value="/deletecollection">
+						<c:param name="collectionId" value="${tempCollection.id}" />
+					</c:url>
+					
 				    <tr>
-				    <td>${user.collectionid}</td>
-				    <td>${user.collection}</td>
-				     
-				   <td><a href="editcollection/${user.collectionid}" class="btn btn-outline-primary btn-icon-only btn-circle"><i class="ti-pencil"></i></a></td>
+				    <td>${c.index+1}</td>
+				    <td>${tempCollection.name}</td>
+				    <td>${tempCollection.code}</td>
+				   <td><a href="${updateLink}" class="btn btn-outline-primary btn-icon-only btn-circle"><i class="ti-pencil"></i></a></td>
 				    <td>
-				    <a href="deletecollection/${user.collectionid}" onclick="return confirm('Are you sure?')" class="btn btn-outline-danger btn-icon-only btn-circle"><i class="ti-trash" style="color:red"></i></a>
+				    <a href="${deleteLink}" onclick="return confirm('Are you sure?')" class="btn btn-outline-danger btn-icon-only btn-circle"><i class="ti-trash" style="color:red"></i></a>
 				    </td>
 				    </tr>
 		     </c:forEach> 
@@ -146,7 +156,8 @@ color:white;
                   <tfoot>
                   <tr class="trbg">
                     <th>#</th>
-                    <th>Collection</th>
+                    <th>Collection Description</th>
+                    <th>Collection Code</th>
                     <th>Edit</th>
                     <th>Delete</th>
                   </tr>

@@ -25,7 +25,9 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import beans.BiblioSearchType;
+import beans.Collection;
 import beans.Constants;
 import beans.Data;
 import beans.Item;
@@ -400,5 +402,41 @@ public class ItemServiceImpl implements ItemService {
 		itemDao.deleteItemtype(itemID);
 		
 	}
+
+	@Override
+	public int getCollectionByCollectionName(String name) {
+		return itemDao.getCollectionByCollectionName(name);
+	}
+	
+	@Override
+	public void saveCollection(Collection collection) {
+		itemDao.saveCollection(collection);
+
+	}
+
+	@Override
+	public List<Collection> getCollections() {
+		return itemDao.getCollections();
+
+	}
+
+	@Override
+	public void deleteCollection(int collectionID) throws Exception {
+		itemDao.deleteCollection(collectionID);
+		
+	}
+
+	@Override
+	public Collection getCollectionById(int collectionID) {
+		return itemDao.getCollectionById(collectionID);
+
+	}
+
+	@Override
+	public void updateCollection(Collection collection) {
+		itemDao.updateCollection(collection);
+	}
+	
+	
 
 }

@@ -1,66 +1,77 @@
-/*
- * package controllers;
- * 
- * import java.util.List; import javax.servlet.http.HttpServletRequest; import
- * javax.servlet.http.HttpServletResponse; import
- * javax.servlet.http.HttpSession; import
- * org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.stereotype.Controller; import
- * org.springframework.ui.Model; import
- * org.springframework.web.bind.annotation.ModelAttribute; import
- * org.springframework.web.bind.annotation.PathVariable; import
- * org.springframework.web.bind.annotation.RequestMapping; import
- * org.springframework.web.bind.annotation.RequestMethod; import
- * org.springframework.web.servlet.mvc.support.RedirectAttributes; import
- * beans.UserBean; import dao.UserDao;
- * 
- * @Controller public class CollectionController {
- * 
- * @Autowired UserDao dao;
- * 
- * // For Add Collection
- * 
- * @RequestMapping("/Addcollection") public String AddRole(Model m,
- * HttpServletRequest req, HttpServletResponse res) { m.addAttribute("command",
- * new UserBean()); return "Addcollection"; }
- * 
- * // For Clicking Create Collection Button
- * 
- * @RequestMapping(value = "/savecollection", method = RequestMethod.POST)
- * public String saverole(@ModelAttribute("user") UserBean user,
- * RedirectAttributes redir) { int count =
- * dao.collectionbycollection(user.getCollection());
- * 
- * if (count > 0) { redir.addFlashAttribute("alert",
- * "Collection name already exist.Please Use another Collection Name!"); return
- * "redirect:/Addcollection"; } else { dao.savecollection(user); //
- * redir.addFlashAttribute("successful", "Role Created Successful!"); return
- * "redirect:/Viewcollection"; } }
- * 
- * // For View Collection
- * 
- * @RequestMapping("/Viewcollection") public String viewcollection(Model m,
- * HttpServletRequest req, HttpServletResponse res) { List<UserBean> list =
- * dao.getCollections(); m.addAttribute("list", list); return "Viewcollection";
- * }
- * 
- * // For Clicking deleteRole in Viewuser
- * 
- * @RequestMapping(value = "/deletecollection/{collectionid}", method =
- * RequestMethod.GET) public String deleterole(@PathVariable int collectionid) {
- * dao.deletecollection(collectionid); return "redirect:/Viewcollection"; }
- * 
- * // For Clicking Editcollection in View collection
- * 
- * @RequestMapping(value = "/editcollection/{collectionid}") public String
- * editrole(@PathVariable int collectionid, Model m, HttpServletRequest req,
- * HttpServletResponse re) { UserBean user =
- * dao.getCollectionById(collectionid); m.addAttribute("command", user); return
- * "collectionedit"; }
- * 
- * // For EditSave Role Button
- * 
- * @RequestMapping(value = "/editsavecollection", method = RequestMethod.POST)
- * public String editsaverole(@ModelAttribute("user") UserBean user) {
- * dao.updatecollection(user); return "redirect:/Viewcollection"; } }
- */
+
+package controllers;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import beans.Collection;
+import beans.ItemTypes;
+import services.ItemService;
+
+@Controller
+public class CollectionController {
+
+	@Autowired
+	ItemService itemService;
+
+	@GetMapping("/addcollection")
+	public String AddCollection(Model m, HttpServletRequest req, HttpServletResponse res) {
+
+		m.addAttribute("collection", new Collection());
+		return "addcollection";
+	}
+
+
+	@PostMapping(value = "/saveCollection")
+	public String saveRole(@ModelAttribute("collection") Collection collection, RedirectAttributes redir) {
+		int count = itemService.getCollectionByCollectionName(collection.getName());
+
+		if (count > 0) {
+			redir.addFlashAttribute("alert", "Collection name already exist.Please Use another Collection Name!");
+			return "redirect:/addcollection";
+		}
+		itemService.saveCollection(collection);
+		    return "redirect:/viewcollection";
+	}
+
+	@GetMapping("/viewcollection")
+	public String viewcollection(Model m, HttpServletRequest req, HttpServletResponse res) {
+		List<Collection> list = itemService.getCollections();
+		m.addAttribute("list", list);
+		return "viewcollection";
+	}
+	
+	
+	@GetMapping(value = "/deletecollection")
+	public String deleterole(@RequestParam("collectionId")int collectionID,RedirectAttributes redir) throws Exception {
+		itemService.deleteCollection(collectionID);
+		return "redirect:/viewcollection";
+	}
+	
+	@GetMapping(value = "/editcollection")
+	public String editrole(@RequestParam("collectionId")int collectionID, Model m, HttpServletRequest req, HttpServletResponse re) {
+		Collection collections = itemService.getCollectionById(collectionID);
+		m.addAttribute("collection", collections);
+		return "editcollection";
+	}
+	
+	@PostMapping(value = "/editsavecollection")
+	public String editsaverole(@ModelAttribute("collection") Collection collection,RedirectAttributes redir) {
+		itemService.updateCollection(collection);
+		return "redirect:/viewcollection";
+	}
+	
+	
+	
+
+}

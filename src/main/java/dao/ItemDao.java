@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import beans.Collection;
 import beans.Data;
 import beans.Item;
 import beans.ItemTypes;
@@ -375,7 +376,7 @@ public class ItemDao {
 
 	public void DeleteAndUpdateItemsTypes(List<ItemTypes> itemtypes) {
 		try {
-			this.template.execute("DELETE FROM itemtypes where itemID <> 0");
+			this.template.execute("DELETE FROM itemtypes where status=0");
 			this.template.batchUpdate("INSERT INTO itemtypes (itemtypes, itemcode) values (?, ?)",
 					new BatchPreparedStatementSetter() {
 
@@ -397,7 +398,7 @@ public class ItemDao {
 
 	public List<ItemTypes> getItemTypesList() {
 		try {
-			return this.template.query("SELECT itemID, itemtypes, itemcode FROM itemtypes",
+			return this.template.query("SELECT itemID, itemtypes, itemcode FROM itemtypes order by status asc",
 					(rs, rowNum) -> new ItemTypes(rs.getInt(1), rs.getString(2), rs.getString(3)));
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
@@ -753,16 +754,16 @@ public class ItemDao {
 	}
 
 	public void saveItemType(ItemTypes itemtypes) {
-		String insertSql = "insert into itemtypes(itemtypes,itemcode) values(?,?)";
-		Object[] params = new Object[] { itemtypes.name, itemtypes.code };
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
+		String insertSql = "insert into itemtypes(itemtypes,itemcode,status) values(?,?,?)";
+		Object[] params = new Object[] { itemtypes.name, itemtypes.code,1 };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR,Types.INTEGER};
 		this.template.update(insertSql, params, types);
 
 	}
 
 	public List<ItemTypes> getItemTypes() {
 		try {
-			return this.template.query("SELECT itemID,itemtypes,itemcode FROM itemtypes",
+			return this.template.query("SELECT itemID,itemtypes,itemcode FROM itemtypes order by status asc",
 					(rs, rowNum) -> new ItemTypes(rs.getInt(1),rs.getString(2), rs.getString(3)));
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
@@ -805,5 +806,65 @@ public class ItemDao {
 			throw new Exception("Failed to delete");
 		}
 		
+	}
+
+	public int getCollectionByCollectionName(String name) {
+		List<Integer> count_list = this.template
+				.query("select count(*) as count from collections where colTitle='" + name + "'", (rs, rowNum) -> {
+					return rs.getInt("count");
+				});
+		return count_list.get(0);
+	}
+
+	public void saveCollection(Collection collection) {
+		String insertSql = "insert into collections(colTitle,colDes) values(?,?)";
+		Object[] params = new Object[] { collection.name, collection.code };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
+		this.template.update(insertSql, params, types);		
+	}
+
+	public List<Collection> getCollections() {
+		try {
+			return this.template.query("SELECT colId,colTitle,colDes FROM collections",
+					(rs, rowNum) -> new Collection(rs.getInt(1),rs.getString(2), rs.getString(3)));
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		return new ArrayList<Collection>();
+	}
+
+	public void deleteCollection(int collectionID) throws Exception {
+		int result = this.template.update("delete from collections where colId = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, collectionID);
+			}
+		});
+		if (result != 1) {
+			throw new Exception("Failed to delete");
+		}
+		
+	}
+
+	public Collection getCollectionById(int collectionID) {
+		List<Collection> dataList = this.template.query("select colId,colTitle,colDes from collections where colId="+collectionID+"",
+				new RowMapper<Collection>() {
+					public Collection mapRow(ResultSet rs, int rowNum) throws SQLException {
+						Collection d = new Collection();
+						d.setId(rs.getInt(1));
+						d.setName(rs.getString(2));
+						d.setCode(rs.getString(3));
+
+						return d;
+					}
+				});
+		return dataList != null && dataList.size() > 0 ? dataList.get(0) : new Collection();
+	}
+
+	public void updateCollection(Collection collection) {
+		String insertSql = "update collections set colTitle = ? , colDes = ? where colId = ?";
+		Object[] params = new Object[] { collection.name, collection.code, collection.id};
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
+		this.template.update(insertSql, params, types);		
 	}
 }

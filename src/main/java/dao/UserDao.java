@@ -123,25 +123,7 @@ public class UserDao {
 				});
 	}
 
-	public List<UserBean> checkuser(UserBean u) {
 
-		/*
-		 * Md5PasswordEncoder encoderMD5 = new Md5PasswordEncoder(); String password =
-		 * encoderMD5.encodePassword(u.getPassword(), null);
-		 * 
-		 * String
-		 * sql="SELECT u.username,u.password,r.rolename FROM usertb u,roletb r WHERE u.username ='"
-		 * +u.getUsername()+"' and u.password='"+password+"' and u.roleid=r.roleid";
-		 * 
-		 * return template.query(sql,new RowMapper<UserBean>(){ public UserBean
-		 * mapRow(ResultSet rs, int row) throws SQLException { UserBean e=new
-		 * UserBean(); e.setUsername(rs.getString(1)); e.setPassword(rs.getString(2));
-		 * e.setRolename(rs.getString(3));
-		 * 
-		 * return e; } });
-		 */
-		return null;
-	}
 
 	public List<UserBean> getRoles() {
 		return template.query("select * from roletb", new RowMapper<UserBean>() {

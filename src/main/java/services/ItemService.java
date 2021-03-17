@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import beans.BiblioSearchType;
+import beans.Collection;
 import beans.Data;
 import beans.ItemTypes;
 import beans.Patron;
@@ -57,5 +58,17 @@ public interface ItemService {
 	void updateItemType(ItemTypes itemtypes);
 
 	void deleteItemtype(int itemID) throws Exception;
+
+	int getCollectionByCollectionName(String name);
+
+	void saveCollection(Collection collection);
+
+	List<Collection> getCollections();
+
+	void deleteCollection(int collectionID) throws Exception;
+
+	Collection getCollectionById(int collectionID);
+
+	void updateCollection(Collection collection);
 
 }
