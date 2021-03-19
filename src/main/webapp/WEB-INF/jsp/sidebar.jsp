@@ -91,6 +91,12 @@ p {
 							<p>View Lists</p>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a href="${contextURL}/importitemtype" class="nav-link ll">
+							<i class="far fa-circle nav-icon text-white"></i>
+							<p>Import</p>
+						</a>
+					</li>
 				</ul>
 			</li>
 			

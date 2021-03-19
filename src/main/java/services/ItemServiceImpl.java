@@ -436,6 +436,12 @@ public class ItemServiceImpl implements ItemService {
 	public void updateCollection(Collection collection) {
 		itemDao.updateCollection(collection);
 	}
+
+	@Override
+	public void saveItemTypebyExcel(List<ItemTypes> itemTypesList) {
+		itemDao.saveItemTypebyExcel(itemTypesList);
+		
+	}
 	
 	
 

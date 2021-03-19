@@ -867,4 +867,32 @@ public class ItemDao {
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
 		this.template.update(insertSql, params, types);		
 	}
+
+	public void saveItemTypebyExcel(List<ItemTypes> itemTypesList) {
+		try {
+			this.template.batchUpdate(
+					"insert into itemtypes(itemtypes,itemcode,status) values (?,?,?)",
+					new BatchPreparedStatementSetter() {
+
+						public void setValues(PreparedStatement ps, int i) throws SQLException {
+							ps.setString(1, itemTypesList.get(i).getName());
+							ps.setString(2, itemTypesList.get(i).getCode());
+							ps.setInt(3,1);
+						}
+
+						public int getBatchSize() {
+							return itemTypesList.size();
+						}
+					});
+		} catch (DuplicateKeyException e) {
+			// e.printStackTrace();
+		}
+		deleteDuplicateDataItemTypes();
+		
+	}
+	
+	public void deleteDuplicateDataItemTypes()
+	{
+		this.template.update("DELETE c1 FROM  itemtypes c1 INNER JOIN itemtypes c2 WHERE c1.itemID > c2.itemID AND c1.itemtypes = c2.itemtypes");
+	}
 }

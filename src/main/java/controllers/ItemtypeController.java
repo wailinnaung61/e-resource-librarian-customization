@@ -40,7 +40,7 @@ public class ItemtypeController {
 		int count = itemService.getItemtypesByItemName(itemtypes.getName());
 		if (count > 0) {
 			redir.addFlashAttribute("alert", "Itemtype name already exist.Please Use another Itemtype Name!");
-			return "redirect:/viewitemtype";
+			return "redirect:/additemtypes";
 		}
 		
 		itemService.saveItemType(itemtypes);
