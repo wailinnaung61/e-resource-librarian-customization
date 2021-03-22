@@ -71,6 +71,6 @@ public interface ItemService {
 
 	void updateCollection(Collection collection);
 
-	void saveItemTypebyExcel(List<ItemTypes> itemTypesList);
+	void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList);
 
 }

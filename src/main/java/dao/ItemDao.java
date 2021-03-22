@@ -868,7 +868,7 @@ public class ItemDao {
 		this.template.update(insertSql, params, types);		
 	}
 
-	public void saveItemTypebyExcel(List<ItemTypes> itemTypesList) {
+	public void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList) {
 		try {
 			this.template.batchUpdate(
 					"insert into itemtypes(itemtypes,itemcode,status) values (?,?,?)",

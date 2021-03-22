@@ -84,16 +84,11 @@ background-color:#475B9E;
  
   <div class="content-wrapper">
   
-<%--  		<form:form action="saveExcelItemtype" method="post" modelAttribute="fileItems" enctype="multipart/form-data">		 --%>
-<%--  			<form:input type="file" path="fileobj" name="file" accept=".xlsx" /> --%>
-<!-- 				<input type="submit" value="save"/> -->
-<%--  		</form:form>  --%>
-  
   <form action="saveExcelItemtype" method="post" enctype="multipart/form-data">  
-		Select File: <input type="file" name="file" accept=".xlsx"/>  
+		Select File: <input type="file" name="file" required accept=".xlsx,.csv"/>  
 		<input type="submit" value="Upload File"/>  
 </form> 
-<button id="button-a">Create Excel</button>             
+<button onclick="download_csv_file()"> Download CSV </button>
   </div>
   
   <footer class="main-footer">
@@ -116,33 +111,38 @@ background-color:#475B9E;
 <script src="resources/dist/js/adminlte.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script> -->
+<script src="resources/FileSaver.js/dist/FileSaver.min.js"></script>
 <script>
-        var wb = XLSX.utils.book_new();
-        wb.Props = {
-                Title: "SheetJS Tutorial",
-                Subject: "Test",
-                Author: "Red Stapler",
-                CreatedDate: new Date(2017,12,19)
-        };
-        
-        wb.SheetNames.push("Test Sheet");
-        var ws_data = [['hello' , 'world']];
-        var ws = XLSX.utils.aoa_to_sheet(ws_data);
-        wb.Sheets["Test Sheet"] = ws;
-        var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
-        function s2ab(s) {
+//create CSV file data in an array
+var csvFileData = [
+   ['Alan Walker', 'Singer'],
+   ['Cristiano Ronaldo', 'Footballer'],
+   ['Saina Nehwal', 'Badminton Player'],
+   ['Arijit Singh', 'Singer'],
+   ['Terence Lewis', 'Dancer']
+];
   
-                var buf = new ArrayBuffer(s.length);
-                var view = new Uint8Array(buf);
-                for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
-                
-        }
-        $("#button-a").click(function(){
-                saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'test.xlsx');
-        });
-  
+//create a user-defined function to download CSV file 
+function download_csv_file() {
+
+    //define the heading for each row of the data
+    var csv = 'ItemType,ItemCode\n';
+    
+    //merge the data with CSV
+    csvFileData.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+    });
+   
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    
+    //provide the name for the CSV file to be downloaded
+    hiddenElement.download = 'Famous Personalities.csv';
+    hiddenElement.click();
+}
 </script>
 </body>
 </html>

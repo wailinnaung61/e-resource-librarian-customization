@@ -438,8 +438,8 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public void saveItemTypebyExcel(List<ItemTypes> itemTypesList) {
-		itemDao.saveItemTypebyExcel(itemTypesList);
+	public void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList) {
+		itemDao.saveItemTypebyExcelorCSV(itemTypesList);
 		
 	}
 	

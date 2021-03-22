@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +31,7 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import au.com.bytecode.opencsv.CSVReader;
 import beans.Fileitems;
 import beans.ItemTypes;
 import services.ItemService;
@@ -51,45 +53,81 @@ public class ImportExcelController implements ServletContextAware {
 	}
 
 	@PostMapping(value = "/saveExcelItemtype")
-	public String saveExcelItemType(@RequestParam("file") MultipartFile multipartfile,HttpServletRequest req, HttpServletResponse res,RedirectAttributes redir)
-			throws IOException {
+	public String saveExcelItemType(@RequestParam("file") MultipartFile multipartfile, HttpServletRequest req,
+			HttpServletResponse res, RedirectAttributes redir) throws IOException {
+
+		String extension = "";
 
 		String fileName = uploadExcelFile(multipartfile);
 
-		String excelPath = servletContext.getRealPath("/resources/excels/" + fileName);
-
-		FileInputStream file = new FileInputStream(excelPath);
-
-		BufferedInputStream excelBIS = new BufferedInputStream(file);
-
-		XSSFWorkbook excelImportToJTable = new XSSFWorkbook(excelBIS);
-
-		XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
-
-		for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
-
-			Cell cell2 = excelSheet.getRow(row).getCell(0);
-
-			cell2.setCellType(CellType.STRING);
-			XSSFRow excelRow = excelSheet.getRow(row);
-			XSSFCell excelItemtypes = excelRow.getCell(0);
-			XSSFCell excelItemcodes = excelRow.getCell(1);
-
-			ItemTypes itemTypes = new ItemTypes();
-
-			itemTypes.setName(excelItemtypes.toString());
-			itemTypes.setCode(excelItemcodes.toString());
-
-			itemTypesList.add(itemTypes);
+		int index = fileName.lastIndexOf('.');
+		if (index > 0) {
+			extension = fileName.substring(index + 1);
 		}
 
-		if (itemTypesList != null) {
+		if (extension.equals("xlsx")) {
 
-			itemService.saveItemTypebyExcel(itemTypesList);
+			String excelPath = servletContext.getRealPath("/resources/excels/" + fileName);
 
+			FileInputStream file = new FileInputStream(excelPath);
+
+			BufferedInputStream excelBIS = new BufferedInputStream(file);
+
+			XSSFWorkbook excelImportToJTable = new XSSFWorkbook(excelBIS);
+
+			XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+			for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+
+				Cell cell2 = excelSheet.getRow(row).getCell(0);
+
+				cell2.setCellType(CellType.STRING);
+				XSSFRow excelRow = excelSheet.getRow(row);
+				XSSFCell excelItemtypes = excelRow.getCell(0);
+				XSSFCell excelItemcodes = excelRow.getCell(1);
+
+				ItemTypes itemTypes = new ItemTypes();
+
+				itemTypes.setName(excelItemtypes.toString());
+				itemTypes.setCode(excelItemcodes.toString());
+
+				itemTypesList.add(itemTypes);
+			}
+			itemService.saveItemTypebyExcelorCSV(itemTypesList);
+			return "redirect:/viewitemtype";
+		}
+		
+		else if (extension.equals("csv")) {
+			
+			List<ItemTypes> itemTypesList=new ArrayList<ItemTypes>();
+			 
+			CSVReader reader = new CSVReader(
+					new FileReader(servletContext.getRealPath("/resources/excels/" + fileName)));
+			
+			String [] nextLine;
+			int iteration=0;
+			
+	        while ((nextLine = reader.readNext()) != null) {
+	        	if(iteration==0)
+	        	{
+	        		iteration++;
+	        		continue;
+	        	}
+	        	
+	            ItemTypes itemTypes=new ItemTypes();
+	            itemTypes.setName(nextLine[0].toString());
+	            itemTypes.setCode(nextLine[1].toString());
+	            
+	            itemTypesList.add(itemTypes);
+	            
+	        }
+	        
+	        itemService.saveItemTypebyExcelorCSV(itemTypesList);
+			return "redirect:/viewitemtype";
+	       
 		}
 
-		return "redirect:/viewitemtype";
+		return null;
 	}
 
 	private String uploadExcelFile(MultipartFile multipartFile) {
