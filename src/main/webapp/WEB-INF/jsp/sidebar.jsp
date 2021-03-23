@@ -147,6 +147,12 @@ p {
 				</ul>
 			</li>
 			
+			<li class="nav-item">
+				<a href="${contextURL}/addsinglebibliodata" class="nav-link ll"> 
+					<i class="nav-icon fas fa-th text-white"></i>
+					<p>Single Biblio</p>
+				</a>
+			</li>
 
 			<li class="nav-item">
 				<a href="${contextURL}/bibliolist" class="nav-link ll"> 
