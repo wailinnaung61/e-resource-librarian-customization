@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ import beans.Constants;
 import beans.Data;
 import beans.Item;
 import beans.ItemTypes;
+import beans.Members;
 import beans.Patron;
 import beans.ReadingHistory;
 import beans.SpecialRequest;
@@ -441,6 +443,26 @@ public class ItemServiceImpl implements ItemService {
 	public void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList) {
 		itemDao.saveItemTypebyExcelorCSV(itemTypesList);
 		
+	}
+
+	@Override
+	public void saveCollectionbyExcelorCSV(List<Collection> collectionList) {
+		itemDao.saveCollectionbyExcelorCSV(collectionList);		
+	}
+
+	@Override
+	public void saveMember(Members member,String password) throws ParseException {
+		itemDao.saveMember(member,password);
+	}
+
+	@Override
+	public List<Members> getMembers() {
+		return itemDao.getMembers();
+	}
+
+	@Override
+	public void deleteMember(int memberID) throws Exception {
+		itemDao.deleteMember(memberID);		
 	}
 	
 	

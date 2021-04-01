@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>View Itemtype</title>
+<title>View Members</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,21 +39,20 @@
 
 		</aside>
 
-
 		<div class="content-wrapper">
 
 			<div class="content-header">
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0">Collections List</h1>
+							<h1 class="m-0">Members List</h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
 								<li class="breadcrumb-item"><a
 									href="${pageContext.request.contextPath}/">Home</a></li>
-								<li class="breadcrumb-item active">Collections List</li>
+								<li class="breadcrumb-item active">Members List</li>
 							</ol>
 						</div>
 						<!-- /.col -->
@@ -72,7 +71,7 @@
 							<div class="card">
 
 								<div class="card-header">
-									<h3 class="card-title">View Collections</h3>
+									<h3 class="card-title">View Members</h3>
 								</div>
 
 								<div class="card-body">
@@ -80,27 +79,39 @@
 										<thead>
 											<tr class="bg-info">
 												<th style="width: 55px;">#</th>
-												<th>Collection Description</th>
-												<th>Collection Code</th>
+												<th>Surname</th>
+												<th>UserName</th>
+												<th>Email</th>
+												<th>CardNumber</th>
+												<th>Title</th>
+												<th>DateOfBirth</th>
+												<th>City</th>
+												<th>Category</th>
 												<th>Edit</th>
 												<th>Del</th>
 											</tr>
 										</thead>
 										<tbody>
-											<c:forEach var="tempCollection" items="${list}" varStatus="c">
+											<c:forEach var="tempMember" items="${list}" varStatus="c">
 
-												<c:url var="updateLink" value="/editcollection">
-													<c:param name="collectionId" value="${tempCollection.id}" />
+												<c:url var="updateLink" value="/updatemember">
+													<c:param name="memberId" value="${tempMember.id}" />
 												</c:url>
 
-												<c:url var="deleteLink" value="/deletecollection">
-													<c:param name="collectionId" value="${tempCollection.id}" />
+												<c:url var="deleteLink" value="/deletemember">
+													<c:param name="memberId" value="${tempMember.id}" />
 												</c:url>
 
 												<tr>
 													<td>${c.index+1}</td>
-													<td>${tempCollection.name}</td>
-													<td>${tempCollection.code}</td>
+													<td>${tempMember.surname}</td>
+													<td>${tempMember.username}</td>
+													<td>${tempMember.email}</td>
+													<td>${tempMember.cardNumber}</td>
+													<td>${tempMember.title}</td>
+													<td>${tempMember.dateOfBirth}</td>
+													<td>${tempMember.city}</td>
+													<td>${tempMember.category}</td>
 													<td><a href="${updateLink}"
 														class="btn btn-block bg-gradient-primary"><i
 															class="fa fa-edit"></i></a></td>

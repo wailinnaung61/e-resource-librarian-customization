@@ -20,15 +20,15 @@ public class Frameworks {
 
 		BookFramework title = new BookFramework("Title", "text", true, "title");
 		BookFramework author = new BookFramework("Author", "text", true, "author");
-		BookFramework notes = new BookFramework("Notes", "text", false, "notes");
+		BookFramework notes = new BookFramework("Notes", "textarea", false, "notes");
 		BookFramework publicationYear = new BookFramework("Publication Year", "text", true, "publicationyear");
 		BookFramework place = new BookFramework("Place", "text", false, "place");
 		BookFramework editionstatement = new BookFramework("Edition Statement", "text", false, "editionstatement");
 		BookFramework subject = new BookFramework("Subject", "text", false, "subject");
-		BookFramework content = new BookFramework("Content", "text", false, "content");
-		BookFramework summary = new BookFramework("Summary", "text", false, "summary");
+		BookFramework content = new BookFramework("Content", "textarea", false, "content");
+		BookFramework summary = new BookFramework("Summary", "textarea", false, "summary");
 		BookFramework isbn = new BookFramework("ISBN", "text", false, "isbn");
-		BookFramework itemtype = new BookFramework("Item Type", "selectbox", true, "itemtype",
+		BookFramework itemtype = new BookFramework("Item Types", "selectbox", true, "itemtype",
 				itemService.getItemTypes());
 
 		book_Framework.add(title);

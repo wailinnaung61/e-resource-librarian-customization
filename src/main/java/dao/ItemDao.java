@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -26,6 +28,7 @@ import beans.Collection;
 import beans.Data;
 import beans.Item;
 import beans.ItemTypes;
+import beans.Members;
 import beans.Patron;
 import beans.ReadingHistory;
 import beans.SpecialRequest;
@@ -755,8 +758,8 @@ public class ItemDao {
 
 	public void saveItemType(ItemTypes itemtypes) {
 		String insertSql = "insert into itemtypes(itemtypes,itemcode,status) values(?,?,?)";
-		Object[] params = new Object[] { itemtypes.name, itemtypes.code,1 };
-		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR,Types.INTEGER};
+		Object[] params = new Object[] { itemtypes.name, itemtypes.code, 1 };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
 		this.template.update(insertSql, params, types);
 
 	}
@@ -764,7 +767,7 @@ public class ItemDao {
 	public List<ItemTypes> getItemTypes() {
 		try {
 			return this.template.query("SELECT itemID,itemtypes,itemcode FROM itemtypes order by status asc",
-					(rs, rowNum) -> new ItemTypes(rs.getInt(1),rs.getString(2), rs.getString(3)));
+					(rs, rowNum) -> new ItemTypes(rs.getInt(1), rs.getString(2), rs.getString(3)));
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 		}
@@ -772,7 +775,8 @@ public class ItemDao {
 	}
 
 	public ItemTypes getitemtypeById(int itemID) {
-		List<ItemTypes> dataList = this.template.query("select itemID,itemtypes,itemcode from itemtypes where itemID="+itemID+"",
+		List<ItemTypes> dataList = this.template.query(
+				"select itemID,itemtypes,itemcode from itemtypes where itemID=" + itemID + "",
 				new RowMapper<ItemTypes>() {
 					public ItemTypes mapRow(ResultSet rs, int rowNum) throws SQLException {
 						ItemTypes d = new ItemTypes();
@@ -784,15 +788,15 @@ public class ItemDao {
 					}
 				});
 		return dataList != null && dataList.size() > 0 ? dataList.get(0) : new ItemTypes();
-		
+
 	}
 
 	public void updateItemType(ItemTypes itemtypes) {
 		String insertSql = "update itemtypes set itemtypes = ? , itemcode = ? where itemID = ?";
-		Object[] params = new Object[] { itemtypes.name, itemtypes.code, itemtypes.id};
+		Object[] params = new Object[] { itemtypes.name, itemtypes.code, itemtypes.id };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
 		this.template.update(insertSql, params, types);
-		
+
 	}
 
 	public void deleteItemtype(int itemID) throws Exception {
@@ -805,7 +809,7 @@ public class ItemDao {
 		if (result != 1) {
 			throw new Exception("Failed to delete");
 		}
-		
+
 	}
 
 	public int getCollectionByCollectionName(String name) {
@@ -820,13 +824,13 @@ public class ItemDao {
 		String insertSql = "insert into collections(colTitle,colDes) values(?,?)";
 		Object[] params = new Object[] { collection.name, collection.code };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
-		this.template.update(insertSql, params, types);		
+		this.template.update(insertSql, params, types);
 	}
 
 	public List<Collection> getCollections() {
 		try {
 			return this.template.query("SELECT colId,colTitle,colDes FROM collections",
-					(rs, rowNum) -> new Collection(rs.getInt(1),rs.getString(2), rs.getString(3)));
+					(rs, rowNum) -> new Collection(rs.getInt(1), rs.getString(2), rs.getString(3)));
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 		}
@@ -843,11 +847,12 @@ public class ItemDao {
 		if (result != 1) {
 			throw new Exception("Failed to delete");
 		}
-		
+
 	}
 
 	public Collection getCollectionById(int collectionID) {
-		List<Collection> dataList = this.template.query("select colId,colTitle,colDes from collections where colId="+collectionID+"",
+		List<Collection> dataList = this.template.query(
+				"select colId,colTitle,colDes from collections where colId=" + collectionID + "",
 				new RowMapper<Collection>() {
 					public Collection mapRow(ResultSet rs, int rowNum) throws SQLException {
 						Collection d = new Collection();
@@ -863,21 +868,20 @@ public class ItemDao {
 
 	public void updateCollection(Collection collection) {
 		String insertSql = "update collections set colTitle = ? , colDes = ? where colId = ?";
-		Object[] params = new Object[] { collection.name, collection.code, collection.id};
+		Object[] params = new Object[] { collection.name, collection.code, collection.id };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
-		this.template.update(insertSql, params, types);		
+		this.template.update(insertSql, params, types);
 	}
 
 	public void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList) {
 		try {
-			this.template.batchUpdate(
-					"insert into itemtypes(itemtypes,itemcode,status) values (?,?,?)",
+			this.template.batchUpdate("insert into itemtypes(itemtypes,itemcode,status) values (?,?,?)",
 					new BatchPreparedStatementSetter() {
 
 						public void setValues(PreparedStatement ps, int i) throws SQLException {
 							ps.setString(1, itemTypesList.get(i).getName());
 							ps.setString(2, itemTypesList.get(i).getCode());
-							ps.setInt(3,1);
+							ps.setInt(3, 1);
 						}
 
 						public int getBatchSize() {
@@ -888,11 +892,76 @@ public class ItemDao {
 			// e.printStackTrace();
 		}
 		deleteDuplicateDataItemTypes();
-		
+
 	}
-	
-	public void deleteDuplicateDataItemTypes()
-	{
-		this.template.update("DELETE c1 FROM  itemtypes c1 INNER JOIN itemtypes c2 WHERE c1.itemID > c2.itemID AND c1.itemtypes = c2.itemtypes");
+
+	public void deleteDuplicateDataItemTypes() {
+		this.template.update(
+				"DELETE c1 FROM  itemtypes c1 INNER JOIN itemtypes c2 WHERE c1.itemID > c2.itemID AND c1.itemtypes = c2.itemtypes");
+	}
+
+	public void deleteDuplicateDataCollection() {
+		this.template.update(
+				"DELETE c1 FROM  collections c1 INNER JOIN collections c2 WHERE c1.colId > c2.colId AND c1.colTitle = c2.colTitle");
+	}
+
+	public void saveCollectionbyExcelorCSV(List<Collection> collectionList) {
+		try {
+			this.template.batchUpdate("insert into collections(colTitle,colDes,status) values (?,?,?)",
+					new BatchPreparedStatementSetter() {
+
+						public void setValues(PreparedStatement ps, int i) throws SQLException {
+							ps.setString(1, collectionList.get(i).getName());
+							ps.setString(2, collectionList.get(i).getCode());
+							ps.setInt(3, 1);
+						}
+
+						public int getBatchSize() {
+							return collectionList.size();
+						}
+					});
+		} catch (DuplicateKeyException e) {
+			// e.printStackTrace();
+		}
+		deleteDuplicateDataCollection();
+	}
+
+	String timestamp = "yyyy-MM-dd HH:mm:ss";
+	SimpleDateFormat timeStamp = new SimpleDateFormat(timestamp);
+	int status = 1;
+
+	public void saveMember(Members member, String password) throws ParseException {
+		Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(member.dateOfBirth);
+		String insertSql = "insert into borrowers(cardnumber,userid,password,last_sync,email,surname,title,dateofbirth,city,category,status) values(?,?,?,?,?,?,?,?,?,?,?)";
+		Object[] params = new Object[] { member.cardNumber, member.username, password, timeStamp.format(new Date()),
+				member.email, member.surname, member.title, date1, member.city, member.category, status };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
+		this.template.update(insertSql, params, types);
+	}
+
+	public List<Members> getMembers() {
+		try {
+			return this.template.query(
+					"SELECT borrowernumber,cardnumber,userid,last_sync,email,surname,title,dateofbirth,city,category FROM borrowers",
+					(rs, rowNum) -> new Members(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+							rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
+							rs.getString(10)));
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		return new ArrayList<Members>();
+	}
+
+	public void deleteMember(int memberID) throws Exception {
+		int result = this.template.update("delete from borrowers where borrowernumber = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, memberID);
+			}
+		});
+		if (result != 1) {
+			throw new Exception("Failed to delete");
+		}
 	}
 }

@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Import Item Types</title>
+<title>Import Collections</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -62,14 +62,14 @@
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0">Import ItemTypes</h1>
+							<h1 class="m-0">Import Collections</h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
 								<li class="breadcrumb-item"><a
 									href="${pageContext.request.contextPath}/">Home</a></li>
-								<li class="breadcrumb-item active">Import ItemTypes</li>
+								<li class="breadcrumb-item active">Import Collections</li>
 							</ol>
 						</div>
 						<!-- /.col -->
@@ -86,11 +86,12 @@
 						<div class="col-md-10" style="margin: auto;">
 							<div class="card card-info">
 								<div class="card-header">
-									<h3 class="card-title">Import ItemTypes</h3>
+									<h3 class="card-title">Import Collections</h3>
 								</div>
 								<div class="card-body">
-									<form action="saveExcelItemtype" method="post"
+									<form action="savecollection" method="post"
 										enctype="multipart/form-data">
+
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -162,7 +163,7 @@
 		function download_csv_file() {
 
 			//define the heading for each row of the data
-			var csv = 'ItemType,ItemCode\n';
+			var csv = 'Collection,Collectioncode\n';
 
 			//merge the data with CSV
 			csvFileData.forEach(function(row) {

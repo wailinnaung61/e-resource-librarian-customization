@@ -28,7 +28,7 @@ public class RoleController {
 
 		if (count > 0) {
 			redir.addFlashAttribute("alert", "Role name already exist.Please Use another Rolename!");
-			return "redirect:/AddRole";
+			return "redirect:/addrole";
 		} else {
 			dao.saverole(user);
 			// redir.addFlashAttribute("successful", "Role Created Successful!");
@@ -37,10 +37,10 @@ public class RoleController {
 	}
 
 	// For Add Role
-	@RequestMapping("AddRole")
+	@RequestMapping("addrole")
 	public String AddRole(Model m, HttpServletRequest req, HttpServletResponse res) {
 		m.addAttribute("command", new UserBean());
-		return "AddRole";
+		return "addrole";
 	}
 
 	// For View Role

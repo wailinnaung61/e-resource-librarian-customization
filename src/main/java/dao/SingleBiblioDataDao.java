@@ -2,16 +2,19 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import beans.BookFramework;
+import beans.Data;
 
 public class SingleBiblioDataDao {
 
@@ -61,7 +64,7 @@ public class SingleBiblioDataDao {
 
 	}
 
-	private int biblioLatestinfo() {
+	public int biblioLatestinfo() {
 		String sql = "SELECT biblionumber FROM biblio order by 1 desc limit 1";
 		int id = template.queryForObject(sql, Integer.class);
 		return id;
@@ -90,6 +93,45 @@ public class SingleBiblioDataDao {
 		} catch (DuplicateKeyException e) {
 			// e.printStackTrace();
 		}
+	}
+
+	public void addItem(Data data) {
+		
+		int biblioItemNumber=getBiblioitemNumber(data);
+		String insertSql = "insert into items(biblionumber,biblioitemnumber,booksellerid,homebranch,itemcallnumber,barcode,enumchron,timestamp,itype,publisheddate,collection) values(?,?,?,?,?,?,?,?,?,?,?)";
+		Object[] params = new Object[] { data.biblionumber, biblioItemNumber, data.booksellerid,data.homebranch,data.itemcallnumber,data.barcode,data.enumchron,timeStamp.format(new Date()),data.itemtype,dateCreated.format(new Date()),data.collection};
+		int[] types = new int[] { Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
+		this.template.update(insertSql, params, types);				
+	}
+	
+	private int getBiblioitemNumber(Data data)
+	{
+		String sql = "SELECT biblioitemnumber FROM biblioitems where biblionumber="+data.biblionumber+"";
+		int id = template.queryForObject(sql, Integer.class);
+		return id;
+	}
+
+	public List<Data> getItemsbyBiblioData(int biblioLatestinfo) {
+		try {
+			return this.template.query("SELECT booksellerid,homebranch,itemcallnumber,barcode,itype,publisheddate,collection,itemnumber FROM items where biblionumber="+biblioLatestinfo+"",
+					(rs, rowNum) -> new Data(rs.getString(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getString(5), rs.getString(6),rs.getString(7),rs.getInt(8)));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ArrayList<Data>();
+	}
+
+	public void deleteItem(int itemID) throws Exception {
+		int result = this.template.update("delete from items where itemnumber = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, itemID);
+			}
+		});
+		if (result != 1) {
+			throw new Exception("Failed to delete");
+		}
+		
 	}
 
 }

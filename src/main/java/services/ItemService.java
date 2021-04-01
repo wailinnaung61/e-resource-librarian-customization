@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import beans.BiblioSearchType;
 import beans.Collection;
 import beans.Data;
 import beans.ItemTypes;
+import beans.Members;
 import beans.Patron;
 import beans.ReadingHistory;
 import beans.SpecialRequest;
@@ -72,5 +74,13 @@ public interface ItemService {
 	void updateCollection(Collection collection);
 
 	void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList);
+	
+	void saveCollectionbyExcelorCSV(List<Collection> collectionList);
+
+	void saveMember(Members member,String Password) throws ParseException;
+
+	List<Members> getMembers();
+
+	void deleteMember(int memberID) throws Exception;
 
 }
