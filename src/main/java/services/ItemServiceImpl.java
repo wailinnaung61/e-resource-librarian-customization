@@ -396,20 +396,20 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void updateItemType(ItemTypes itemtypes) {
 		itemDao.updateItemType(itemtypes);
-		
+
 	}
 
 	@Override
 	public void deleteItemtype(int itemID) throws Exception {
 		itemDao.deleteItemtype(itemID);
-		
+
 	}
 
 	@Override
 	public int getCollectionByCollectionName(String name) {
 		return itemDao.getCollectionByCollectionName(name);
 	}
-	
+
 	@Override
 	public void saveCollection(Collection collection) {
 		itemDao.saveCollection(collection);
@@ -425,7 +425,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void deleteCollection(int collectionID) throws Exception {
 		itemDao.deleteCollection(collectionID);
-		
+
 	}
 
 	@Override
@@ -442,17 +442,17 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void saveItemTypebyExcelorCSV(List<ItemTypes> itemTypesList) {
 		itemDao.saveItemTypebyExcelorCSV(itemTypesList);
-		
+
 	}
 
 	@Override
 	public void saveCollectionbyExcelorCSV(List<Collection> collectionList) {
-		itemDao.saveCollectionbyExcelorCSV(collectionList);		
+		itemDao.saveCollectionbyExcelorCSV(collectionList);
 	}
 
 	@Override
-	public void saveMember(Members member,String password) throws ParseException {
-		itemDao.saveMember(member,password);
+	public void saveMember(Members member, String password) throws ParseException {
+		itemDao.saveMember(member, password);
 	}
 
 	@Override
@@ -462,9 +462,17 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public void deleteMember(int memberID) throws Exception {
-		itemDao.deleteMember(memberID);		
+		itemDao.deleteMember(memberID);
 	}
-	
-	
+
+	@Override
+	public Members getmemberById(int memberID) {
+		return itemDao.getmemberById(memberID);
+	}
+
+	@Override
+	public void updateMember(Members members) throws ParseException {
+		itemDao.updateMember(members);
+	}
 
 }

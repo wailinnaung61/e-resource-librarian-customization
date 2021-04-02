@@ -931,12 +931,16 @@ public class ItemDao {
 	int status = 1;
 
 	public void saveMember(Members member, String password) throws ParseException {
-		Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(member.dateOfBirth);
+		SimpleDateFormat originalFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date;
+		date = originalFormat.parse(member.getDateOfBirth());
 		String insertSql = "insert into borrowers(cardnumber,userid,password,last_sync,email,surname,title,dateofbirth,city,category,status) values(?,?,?,?,?,?,?,?,?,?,?)";
 		Object[] params = new Object[] { member.cardNumber, member.username, password, timeStamp.format(new Date()),
-				member.email, member.surname, member.title, date1, member.city, member.category, status };
+				member.email, member.surname, member.title, targetFormat.format(date).toString(), member.city,
+				member.category, status };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
-				Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
+				Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
 		this.template.update(insertSql, params, types);
 	}
 
@@ -954,14 +958,59 @@ public class ItemDao {
 	}
 
 	public void deleteMember(int memberID) throws Exception {
-		int result = this.template.update("delete from borrowers where borrowernumber = ?", new PreparedStatementSetter() {
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, memberID);
-			}
-		});
+		int result = this.template.update("delete from borrowers where borrowernumber = ?",
+				new PreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps) throws SQLException {
+						ps.setInt(1, memberID);
+					}
+				});
 		if (result != 1) {
 			throw new Exception("Failed to delete");
 		}
+	}
+
+	public Members getmemberById(int memberID) {
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat targetFormat = new SimpleDateFormat("MM/dd/yyyy");
+		List<Members> dataList = this.template.query(
+				"select borrowernumber,cardnumber,userid,email,surname,title,dateofbirth,city,category from borrowers where borrowernumber="
+						+ memberID + "",
+				new RowMapper<Members>() {
+					public Members mapRow(ResultSet rs, int rowNum) throws SQLException {
+						Date date;
+						Members d = new Members();
+						d.setId(rs.getInt(1));
+						d.setCardNumber(rs.getString(2));
+						d.setUsername(rs.getString(3));
+						d.setEmail(rs.getString(4));
+						d.setSurname(rs.getString(5));
+						d.setTitle(rs.getString(6));
+						try {
+							date = originalFormat.parse(rs.getString(7));
+							d.setDateOfBirth(targetFormat.format(date).toString());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						d.setCity(rs.getString(8));
+						d.setCategory(rs.getString(9));
+
+						return d;
+					}
+				});
+		return dataList != null && dataList.size() > 0 ? dataList.get(0) : new Members();
+	}
+
+	public void updateMember(Members members) throws ParseException {
+		SimpleDateFormat originalFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date;
+		date = originalFormat.parse(members.dateOfBirth);		
+		String insertSql = "update borrowers set surname = ? , userid = ? , email=? , title=? , dateofbirth=? , cardnumber=? , city=? , category=? where borrowernumber = ?";
+		Object[] params = new Object[] { members.surname, members.username, members.email, members.title,
+				targetFormat.format(date).toString(), members.cardNumber, members.city, members.category, members.id };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
+		this.template.update(insertSql, params, types);
 	}
 }

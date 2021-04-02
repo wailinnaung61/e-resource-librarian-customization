@@ -83,4 +83,8 @@ public interface ItemService {
 
 	void deleteMember(int memberID) throws Exception;
 
+	Members getmemberById(int memberID);
+
+	void updateMember(Members members) throws ParseException;
+
 }

@@ -63,6 +63,19 @@ public class MemberController {
 		return "redirect:/viewmember";
 	}
 	
+	@GetMapping(value = "/updatemember")
+	public String editrole(@RequestParam("memberId")int memberID, Model m, HttpServletRequest req, HttpServletResponse re) {
+		Members members = itemService.getmemberById(memberID);
+		m.addAttribute("members", members);
+		return "editmember";
+	}
+	
+	@PostMapping(value = "/editsavemember")
+	public String editsaverole(@ModelAttribute("members") Members members,RedirectAttributes redir) throws ParseException {
+		itemService.updateMember(members);
+		return "redirect:/viewmember";
+	}
+	
 	
 
 }
