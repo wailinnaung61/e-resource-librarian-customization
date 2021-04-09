@@ -150,6 +150,12 @@
                 </a>
               </li> 
               <li class="nav-item">
+                <a href="${contextURL}/importitem" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Import Items</p>
+                </a>
+              </li> 
+              <li class="nav-item">
                 <a href="${contextURL}/biblioitemdetail" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Records Detail</p>

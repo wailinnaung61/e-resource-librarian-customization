@@ -77,8 +77,8 @@ public class SyncController {
 	@GetMapping(value = "/sync/patrons")
 	public RedirectView syncPatrons(RedirectAttributes redir) {
 		try {
-			String last_sync = syncService.syncPatrons();
-			redir.addAttribute("last_sync", last_sync);
+			syncService.syncPatrons();
+			redir.addFlashAttribute("synced", true);
 		} catch(Exception ex) {
 			logger.error(ex.getMessage());
 		}

@@ -22,6 +22,7 @@
 <link rel="stylesheet"
 	href="resources/AdminLTE/dist/css/adminlte.min.css">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
 

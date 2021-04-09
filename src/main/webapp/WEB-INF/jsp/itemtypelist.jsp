@@ -2,147 +2,176 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="beans.BiblioSyncTypes" %>
+<%@ page import="beans.BiblioSyncTypes"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Admin View</title>
+<title>Synchronize ItemTypes</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="resources/themify-icons/themify-icons.css">
-
-<link rel="stylesheet" href="resources/themify-icons/ie7/ie7.css">
-
+<!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet"
-	href="resources/plugins/fontawesome-free/css/all.min.css">
-
-<link rel="stylesheet" href="resources/plugins/jqvmap/jqvmap.min.css">
-
-<link rel="stylesheet" href="resources/dist/css/adminlte.min.css">
-
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
 <link rel="stylesheet"
-	href="resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
+	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- Theme style -->
+<link rel="stylesheet"
+	href="resources/AdminLTE/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
-		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" data-widget="pushmenu" href="#" role="btton">
-						<i class="fas fa-bars" style="color: black;"></i>
-					</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				<li>
-					<font size="4px" style="font-family: Times New Roman, Times, serif">${loginname}</font>
-					&nbsp;
-					<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-				    <g id="USER_3_" enable-background="new">
-					<g id="USER">
-		    		<g>
-					<path d="M32,0C14.327,0,0,14.327,0,32s14.327,32,32,32s32-14.327,32-32S49.673,0,32,0z M51.253,49.43
-					c-3.767-1.826-2.382-0.398-7.31-2.427c-5.041-2.073-6.235-2.749-6.235-2.749L37.664,39.5c0,0,1.888-1.422,2.477-5.917
-					c1.178,0.338,1.578-1.372,1.642-2.464c0.069-1.055,0.696-4.346-0.745-4.052c0.295-2.197,0.527-4.183,0.421-5.235
-					c-0.36-3.691-2.931-7.544-9.42-7.826c-5.517,0.282-9.098,4.138-9.46,7.829c-0.104,1.052,0.108,3.036,0.403,5.236
-					c-1.441-0.297-0.821,2.999-0.758,4.054c0.07,1.092,0.46,2.809,1.641,2.469c0.587,4.495,2.475,5.93,2.475,5.93L26.293,44.3
-					c0,0-1.195,0.724-6.236,2.796c-4.927,2.027-3.544,0.512-7.31,2.334C8.568,44.816,6,38.715,6,32C6,17.641,17.641,6,32,6
-					c14.359,0,26,11.641,26,26C58,38.716,55.432,44.816,51.253,49.43z" />
-					</g>
-				</g>
-				</g>
-				</svg>
-				&emsp;&ensp;
-			</li>
-			</ul>
-		</nav>
+
+		<%@ include file="navbar.jsp"%>
 
 		<aside class="main-sidebar elevation-4">
+
 			<%@ include file="sidebar.jsp"%>
+
 		</aside>
 
 		<div class="content-wrapper">
-			<div>
-				<div class="card card" style="margin: 10px;">
-					<div class="card-header">
-						<h3 class="card-title">Recent Uploaded Records</h3>
-					</div>
-					<div class="card-body">
-						<div class="text-center m-3">
-								<c:if test="${synced eq true }">
-									<span class="p-3 text-success">
-										<i class="fa fa-check-circle"></i>Synchronized item types
-									</span>
-								</c:if>
-							<a href="${pageContext.request.contextPath}/sync/itemtypes" class="btn btn-primary">Sync item types</a>
+
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">ItemTypes List</h1>
 						</div>
-						
-						<div>
-							<table id="example2" class="table table-bordered table-striped table-hover">
-								<thead>
-									<tr>
-										<th style="width: 130px;">#</th>
-										<th style="width: 150px;">Item Types</th>
-										<th style="width: 150px;">Item code</th>
-									</tr>
-								</thead>
-								<tbody>
-										<c:forEach var="d" items="${itemlist}" varStatus="c">
-											<tr>
-												<td>${c.index+1}</td>
-												<td>${d.name}</td>
-												<td>${d.code}</td>
-											</tr>
-										</c:forEach>
-								</tbody>
-							</table>
+						<!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a
+									href="${pageContext.request.contextPath}/">Home</a></li>
+								<li class="breadcrumb-item active">Itemtypes List</li>
+							</ol>
 						</div>
+						<!-- /.col -->
 					</div>
+					<!-- /.row -->
 				</div>
+				<!-- /.container-fluid -->
 			</div>
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+
+								<div class="card-header">
+									<h3 class="card-title">View Itemtypes</h3>
+								</div>
+
+								<div class="card-body">
+
+									<div class="text-center m-3">
+										<c:if test="${synced eq true }">
+											<span class="p-3 text-success"> <i
+												class="fa fa-check-circle"></i>Synchronized item types
+											</span>
+										</c:if>
+										<a href="${pageContext.request.contextPath}/sync/itemtypes"
+											class="btn btn-info w-25"><i><b>Sync ItemTypes</b></i></a>
+									</div>
+
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Item Types</th>
+												<th>Item Codes</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="d" items="${itemlist}" varStatus="c">
+												<tr>
+													<td>${c.index+1}</td>
+													<td>${d.name}</td>
+													<td>${d.code}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
 		</div>
-		<footer class="main-footer"> </footer>
+		<%@ include file="footer.jsp"%>
 	</div>
-	<script src="resources/plugins/jquery/jquery.min.js"></script>
-	<script src="resources/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+
+	<!-- jQuery -->
+	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script
+		src="resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- DataTables  & Plugins -->
+	<script
+		src="resources/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="resources/AdminLTE/plugins/jszip/jszip.min.js"></script>
+	<script src="resources/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="resources/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script
+		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="resources/AdminLTE/dist/js/adminlte.min.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="resources/AdminLTE/dist/js/demo.js"></script>
+	<!-- Page specific script -->
 	<script>
-		$.widget.bridge('uibutton', $.ui.button)
-	</script>
-	<script src="resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="resources/plugins/chart.js/Chart.min.js"></script>
-	<script src="resources/plugins/sparklines/sparkline.js"></script>
-	<script src="resources/plugins/jqvmap/jquery.vmap.min.js"></script>
-	<script src="resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-	<script src="resources/plugins/jquery-knob/jquery.knob.min.js"></script>
-	<script src="resources/plugins/moment/moment.min.js"></script>
-	<script src="resources/plugins/daterangepicker/daterangepicker.js"></script>
-	<script
-		src="resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-	<script src="resources/plugins/summernote/summernote-bs4.min.js"></script>
-	<script
-		src="resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-	<script src="resources/dist/js/adminlte.js"></script>
-	<script src="resources/dist/js/pages/dashboard.js"></script>
-	<script src="resources/dist/js/demo.js"></script>
-	<script src="resources/plugins/datatables/jquery.dataTables.min.js"></script>
-	<script
-		src="resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-	<script
-		src="resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-	<script
-		src="resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-	<script>
-		
 		$(function() {
+			$("#example1").DataTable(
+					{
+						"paging" : true,
+						"responsive" : true,
+						"lengthChange" : false,
+						"autoWidth" : false,
+						"buttons" : [ "copy", "csv", "excel", "pdf", "print",
+								"colvis" ]
+					}).buttons().container().appendTo(
+					'#example1_wrapper .col-md-6:eq(0)');
+
 			$('#example2').DataTable({
 				"paging" : true,
 				"lengthChange" : false,
 				"searching" : false,
-				"ordering" : false,
+				"ordering" : true,
 				"info" : true,
 				"autoWidth" : false,
 				"responsive" : true,

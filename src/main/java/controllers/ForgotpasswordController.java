@@ -1,124 +1,119 @@
 package controllers;
 
-import java.util.Random;
+import java.io.UnsupportedEncodingException;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import beans.UserBean;
-import dao.UserDao;
+import config.Utility;
+import net.bytebuddy.utility.RandomString;
+import services.ForgotPasswordService;
 
 @Controller
-
+@RequestMapping("/reset")
 public class ForgotpasswordController {
-
-	static String emailToRecipient, emailSubject, emailMessage;
-	static final String emailFromRecipient = "nlnptreply@nlmnpt.gov.mm";
-	static int num;
+	@Autowired
+	private JavaMailSender mailSender;
 
 	@Autowired
-	private JavaMailSender mailSenderObj;
-
-	@Autowired
-	UserDao dao;
-
-	@RequestMapping("/validatecode")
-	public String validte(Model m) {
-		m.addAttribute("command", new UserBean());
-		return "validatecode";
+	private ForgotPasswordService forgotPasswordService;
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
-	@RequestMapping("/forgotpassword")
-	public String forgotpassword(@ModelAttribute("user") UserBean user, Model m, HttpServletRequest req,
-			HttpServletResponse res) {
-
-		String email = dao.getemailbyusernameforforgotpassword(user.getUsername());
-		m.addAttribute("command", new UserBean());
-		m.addAttribute("email", email);
+	@GetMapping("/forgotpassword")
+	public String showForgotPasswordForm() {
 		return "forgotpassword";
 	}
 
-	@RequestMapping("/getcode")
-	public String getcode(@ModelAttribute("user") UserBean user, Model m) {
+	@PostMapping("/forgotpassword")
+	public String processForgotPassword(Model model, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		String email = req.getParameter("email");
+		String token = RandomString.make(30);
 
-		emailToRecipient = user.getEmail();
-		Random rand = new Random();
-		num = rand.nextInt(9000000) + 1000000;
+		try {
+			forgotPasswordService.updateResetPasswordToken(token, email);
+			String resetPasswordLink = Utility.getSiteURL(req) + "/reset/resetpassword?token=" + token;
+			sendEmail(email, resetPasswordLink);
+			model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
 
-		// Reading Email Form Input Parameters
+		} catch (Error ex) {
+		} catch (UnsupportedEncodingException | MessagingException e) {
+		}
 
-		emailSubject = "Nay Pyi Taw Library Account Password Reset Code";
-
-		emailMessage = "Please use this code to reset the password for the Nay Pyi Taw Library E-Resource account "
-				+ user.getEmail() + ".\n\nHere is your code: " + num + "\n\nThanks,\nNay Pyi Taw Library Team";
-		emailToRecipient = user.getEmail();
-
-		// Logging The Email Form Parameters For Debugging Purpose
-		System.out.println("\nReceipient?= " + emailToRecipient + ", Subject?= " + emailSubject + ", Message?= "
-				+ emailMessage + "\n");
-
-		mailSenderObj.send(new MimeMessagePreparator() {
-			public void prepare(MimeMessage mimeMessage) throws Exception {
-				MimeMessageHelper mimeMsgHelperObj = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				mimeMsgHelperObj.setTo(emailToRecipient);
-				mimeMsgHelperObj.setFrom(emailFromRecipient);
-				mimeMsgHelperObj.setText(emailMessage);
-				mimeMsgHelperObj.setSubject(emailSubject);
-
-			}
-		});
-		System.out.println("\nMessage Send Successfully.... !\n");
-		m.addAttribute("command", new UserBean());
-		m.addAttribute("mail", emailToRecipient);
-		return "validatecode";
+		return "forgotpassword";
 	}
 
-	@RequestMapping("/resetpassword")
-	public String passwordreset(@ModelAttribute("user") UserBean user, Model m, RedirectAttributes redir) {
+	public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
 
-		System.out.println(user.getCode());
-		System.out.println(num);
+		helper.setFrom("e-resources@admin.com", "E-resources");
+		helper.setTo(recipientEmail);
 
-		if (user.getCode() != num) {
-			System.out.println("unequal");
-			redir.addFlashAttribute("error", "Wrong Code Number");
-			return "redirect:/validatecode";
+		String subject = "Here's the link to reset your password";
 
+		String content = "<p>Hello,</p>" + "<p>You have requested to reset your password.</p>"
+				+ "<p>Click the link below to change your password:</p>" + "<p><a href=\"" + link
+				+ "\">Change my password</a></p>" + "<br>" + "<p>Ignore this email if you do remember your password, "
+				+ "or you have not made the request.</p>";
+
+		helper.setSubject(subject);
+
+		helper.setText(content, true);
+
+		mailSender.send(message);
+	}
+
+	@GetMapping("/resetpassword")
+	public String showResetPasswordForm(@RequestParam("token") String token, Model model, RedirectAttributes redir) {
+		UserBean users = forgotPasswordService.getByResetPasswordToken(token);
+		model.addAttribute("token", token);
+
+		if (users == null) {
+			model.addAttribute("alert", "Invalid Token");
+			return "forgotpassword";
 		} else {
-			System.out.println("equal");
-			m.addAttribute("command", new UserBean());
 			return "resetpassword";
 		}
 	}
 
-	/*
-	 * @RequestMapping("/resetchange") public String
-	 * resetchange(@ModelAttribute("user") UserBean user){
-	 * System.out.println(user.getChangepassword()); Md5PasswordEncoder encoderMD5 =
-	 * new Md5PasswordEncoder(); String newpassword =
-	 * encoderMD5.encodePassword(user.getChangepassword(), null);
-	 * System.out.println(emailToRecipient);
-	 * dao.resetchangepassword(newpassword,emailToRecipient); return "redirect:/"; }
-	 */
+	@PostMapping("/resetpassword")
+	public String processResetPassword(HttpServletRequest request, Model model, RedirectAttributes redir) {
+		String token = request.getParameter("token");
+		String password = request.getParameter("password");
 
-	/*
-	 * @RequestMapping(value="/savefile",method=RequestMethod.POST) public void
-	 * upload(@RequestParam CommonsMultipartFile file,HttpSession session){ String
-	 * path=session.getServletContext().getRealPath("/"); String
-	 * filename=file.getOriginalFilename();
-	 * 
-	 * System.out.println(path+" "+filename);
-	 * 
-	 * }
-	 */
+		UserBean users = forgotPasswordService.getByResetPasswordToken(token);
+
+		if (users == null) {
+			model.addAttribute("alert", "Invalid Token");
+			return "resetpassword";
+		} else {
+			forgotPasswordService.updatePassword(users,passwordEncoder().encode( password));
+
+			model.addAttribute("message", "You have successfully changed your password.");
+		}
+
+		return "resetpassword";
+	}
 
 }

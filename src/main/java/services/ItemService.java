@@ -87,4 +87,8 @@ public interface ItemService {
 
 	void updateMember(Members members) throws ParseException;
 
+	List<Data> removeCollection(List<Data> dataList);
+
+	int saveItemsbyExcelorCSV(List<Data> dataList,int recordNumber);
+
 }

@@ -65,10 +65,10 @@
 	<!-- Spring Email Sender Bean Configuration -->
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="mail.nlmnpt.gov.mm" />
+		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="nlnptreply@nlmnpt.gov.mm" />
-		<property name="password" value="78CDsDke9M" />
+		<property name="username" value="wailinnaung12mm@gmail.com" />
+		<property name="password" value="wailinnaung" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.transport.protocol">smtp</prop>

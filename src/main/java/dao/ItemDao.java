@@ -18,9 +18,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +34,6 @@ import beans.ReadingHistory;
 import beans.SpecialRequest;
 import beans.SubItem;
 import beans.SyncData;
-import beans.UserBean;
 
 @Repository
 public class ItemDao {
@@ -1005,12 +1004,84 @@ public class ItemDao {
 		SimpleDateFormat originalFormat = new SimpleDateFormat("MM/dd/yyyy");
 		SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date;
-		date = originalFormat.parse(members.dateOfBirth);		
+		date = originalFormat.parse(members.dateOfBirth);
 		String insertSql = "update borrowers set surname = ? , userid = ? , email=? , title=? , dateofbirth=? , cardnumber=? , city=? , category=? where borrowernumber = ?";
 		Object[] params = new Object[] { members.surname, members.username, members.email, members.title,
 				targetFormat.format(date).toString(), members.cardNumber, members.city, members.category, members.id };
 		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
 				Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER };
 		this.template.update(insertSql, params, types);
+	}
+
+	public List<Data> removeCollection(List<Data> dataList) {
+
+		for (Data d : dataList) {
+			String sql = "";
+			sql = "Select colDes from collections where colDes='" + d.getCollection() + "'";
+
+			if (sql != null && !sql.isEmpty()) {
+				dataList.remove(d);
+			}
+		}
+
+		for (Data d : dataList) {
+			System.out.println(d.getCollection());
+		}
+
+		return null;
+	}
+
+	private int getBiblioitemNumber(int recordNumber) {
+		String sql = "SELECT biblioitemnumber FROM biblioitems where biblionumber=" + recordNumber + "";
+		int id = template.queryForObject(sql, Integer.class);
+		return id;
+	}
+
+	public int saveItemsbyExcelorCSV(List<Data> dataList, int recordNumber) {
+		String timestamp = "yyyy-MM-dd HH:mm:ss";
+		SimpleDateFormat timeStamp = new SimpleDateFormat(timestamp);
+		
+		int biblioItemNumber=getBiblioitemNumber(recordNumber);
+		
+		SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+		SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    
+		try {
+			this.template.batchUpdate(
+					"insert into temp_import_items(booksellerid,homebranch,itemcallnumber,barcode,itemtypecode,publisheddate,collectioncode,datetime,biblionumber,biblioitemnumber) values (?,?,?,?,?,?,?,?,?,?)",
+					new BatchPreparedStatementSetter() {
+
+						public void setValues(PreparedStatement ps, int i) throws SQLException {
+							Date date;
+							ps.setString(1, dataList.get(i).getBooksellerid());
+							ps.setString(2, dataList.get(i).getHomebranch());
+							ps.setString(3, dataList.get(i).getItemcallnumber());
+							ps.setString(4, dataList.get(i).getBarcode());
+							ps.setString(5, dataList.get(i).getItemtype());
+							try {
+								date = originalFormat.parse(dataList.get(i).getPublicationyear());
+								ps.setString(6, targetFormat.format(date).toString());
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							ps.setString(7, dataList.get(i).getCollection());
+							ps.setString(8, timeStamp.format(new Date()));
+							ps.setInt(9, recordNumber);
+							ps.setInt(10, biblioItemNumber);
+						}
+
+						public int getBatchSize() {
+							return dataList.size();
+						}
+					});
+		} catch (DuplicateKeyException e) {
+		}
+		int count=template.update("insert into items(booksellerid,homebranch,itemcallnumber,barcode,itype,collection,publisheddate,biblionumber,biblioitemnumber)"
+				+ "select booksellerid,homebranch,itemcallnumber,barcode,itemtypecode,collectioncode,publisheddate,biblionumber,biblioitemnumber "
+				+ "from temp_import_items ti,collections c,itemtypes i where ti.collectioncode=c.colDes and ti.itemtypecode=i.itemcode");
+		template.update("truncate table temp_import_items");
+		
+		return count;
+
 	}
 }

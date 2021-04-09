@@ -19,7 +19,14 @@ public class UserBean {
 	private String itemtypes;
 	private String itemcode;
 	private int itemID;
+	private String resetPasswordToken;
 	
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
 	public String getChangepassword() {
 		return changepassword;
 	}	

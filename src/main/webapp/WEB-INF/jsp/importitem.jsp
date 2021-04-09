@@ -5,10 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>View Itemtype</title>
-
+<meta charset="ISO-8859-1">
+<title>Import Item</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Google Font: Source Sans Pro -->
@@ -45,14 +43,14 @@
 				<div class="container-fluid">
 					<div class="row mb-2">
 						<div class="col-sm-6">
-							<h1 class="m-0">Create Items</h1>
+							<h1 class="m-0">Import Items</h1>
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
 							<ol class="breadcrumb float-sm-right">
 								<li class="breadcrumb-item"><a
 									href="${pageContext.request.contextPath}/">Home</a></li>
-								<li class="breadcrumb-item active">Create Items</li>
+								<li class="breadcrumb-item active">Import Item</li>
 							</ol>
 						</div>
 						<!-- /.col -->
@@ -62,12 +60,68 @@
 				<!-- /.container-fluid -->
 			</div>
 			<!-- /.content-header -->
-
 			<section class="content">
 				<div class="container-fluid">
 					<div class="row">
-
 						<div class="col-md-12">
+							<div class="row mb-2">
+								<div class="col-md-10 mr-auto ml-auto">
+									<form:form action="importitemsearch" modelAttribute="data"
+										method="post">
+										<div class="input-group w-50 float-right">
+											<form:input type="number" class="form-control"
+												value="${bibliodata}"
+												placeholder="Search with Record Number" path="biblionumber"
+												required="required" />
+											<span class="input-group-append">
+												<button type="submit" class="btn btn-info btn-flat">Go</button>
+											</span>
+										</div>
+									</form:form>
+								</div>
+							</div>
+
+							<div class="card col-md-10 mr-auto ml-auto">
+								<div class="card-body">
+									<form action="saveExcelItem" method="post"
+										enctype="multipart/form-data">
+										<div class="row">
+											<div class="col-md-12">
+												<input type="hidden" class="form-control w-25"
+													value="${bibliodata}" name="recordnumber" required readonly />
+												<div class="form-group">
+													<label for="exampleInputFile">File input</label>
+													<div class="input-group">
+														<div class="custom-file">
+															<input type="file" class="custom-file-input"
+																id="exampleInputFile" name="file" required
+																accept=".xlsx,.csv"> <label
+																class="custom-file-label" for="exampleInputFile">Choose
+																file</label>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+
+													<input type="submit" value="Upload" class="btn btn-info" />
+													<input type="submit" value="Download Sample CSV File"
+														onclick="download_csv_file()"
+														class="btn btn-warning text-white" style="float: right;" />
+
+												</div>
+												<c:if test="${alert ne null }">
+													<div class="alert alert-danger text-center" role="alert">${alert}</div>
+												</c:if>
+
+											</div>
+											<!-- column -->
+										</div>
+										<!-- row -->
+									</form>
+								</div>
+								<!-- card body -->
+							</div>
+
 							<div class="card">
 								<!-- /.card-header -->
 								<div class="card-body">
@@ -90,8 +144,8 @@
 												<c:when test="${itemdata ne null }">
 													<c:forEach var="tempItems" items="${itemdata}"
 														varStatus="c">
-														
-														<c:url var="deletelink" value="/deleteitem">
+
+														<c:url var="deletelink" value="/deleteimportitem">
 															<c:param name="itemId" value="${tempItems.itemnumber}" />
 														</c:url>
 														<tr>
@@ -117,125 +171,9 @@
 								</div>
 								<!-- /.card-body -->
 							</div>
-
-							<div class="card">
-
-								<div class="card-header header bg-info">
-									<h3 class="card-title textheader">Create Item</h3>
-								</div>
-
-								<div class="row">
-									<!-- card row -->
-									<div class="col-md-6" style="margin: auto;">
-										<!-- card left column -->
-										<div class="card-body">
-											<form:form action="additemsearch" modelAttribute="data"
-												method="post">
-												<div class="input-group">
-													<form:input type="number" class="form-control"
-														value="${bibliodata}"
-														placeholder="Search with Record Number"
-														path="biblionumber" required="required" />
-													<span class="input-group-append">
-														<button type="submit" class="btn btn-info btn-flat">Go</button>
-													</span>
-												</div>
-											</form:form>
-										</div>
-									</div>
-								</div>
-								<form:form method="post" action="saveitems"
-									modelAttribute="data">
-									<div class="row">
-										<!-- card row -->
-										<div class="col-md-6">
-											<!-- card left column -->
-											<div class="card-body">
-
-												<div class="form-group">
-													<label>Record Number</label>
-													<form:input type="text" class="form-control"
-														value="${bibliodata}" placeholder="Enter Record Number"
-														path="biblionumber" required="required" readonly="true" />
-												</div>
-												<div class="form-group">
-													<label>BookSeller Id</label>
-													<form:input type="text" class="form-control" id=""
-														placeholder="Enter BooksellerId" path="booksellerid" />
-												</div>
-												<div class="form-group">
-													<label>HomeBranch</label>
-													<form:input type="text" class="form-control" id=""
-														placeholder="Enter HomeBranch" path="homebranch" />
-												</div>
-												<div class="form-group">
-													<label>Item Call Number</label>
-													<form:input type="text" class="form-control" id=""
-														placeholder="Enter Itemcallnumber" path="itemcallnumber"
-														required="required" />
-												</div>
-											</div>
-										</div>
-										<!-- card left column -->
-
-										<div class="col-md-6">
-											<!-- card right column -->
-											<div class="card-body">
-
-												<div class="form-group">
-													<label>Barcode</label>
-													<form:input type="text" class="form-control" id=""
-														placeholder="Enter Barcode" path="barcode"
-														required="required" />
-												</div>
-												<div class="form-group">
-													<label>Item Type</label>
-													<form:select class="form-control select w-100"
-														path="itemtype">
-														<c:forEach var="e" items="${itemtypes}">
-															<option value="${e.code}">${e.name}</option>
-														</c:forEach>
-													</form:select>
-												</div>
-
-												<div class="form-group">
-													<label>Published Date</label>
-													<form:input type="text" class="form-control" id=""
-														placeholder="Enter PublishedDate" path="publicationyear"
-														required="required" />
-												</div>
-
-												<div class="form-group">
-													<label>Collection</label>
-													<form:select class="form-control select w-100"
-														path="collection">
-														<c:forEach var="e" items="${collections}">
-															<option value="${e.name}">${e.name}</option>
-														</c:forEach>
-													</form:select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<p align="center" class="text-danger">${alert}</p>
-											<p align="center" class="text-success">${successful}</p>
-										</div>
-									</div>
-									<div class="card-footer">
-										<button type="submit" class="btn btn-info">Submit</button>
-									</div>
-								</form:form>
-							</div>
-							<!-- card -->
 						</div>
-						<!-- column -->
-
 					</div>
-					<!-- row -->
 				</div>
-				<!-- container -->
 			</section>
 
 		</div>
@@ -302,6 +240,43 @@
 				"responsive" : true,
 			});
 		});
+
+		//create CSV file data in an array
+		var csvFileData = [
+				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
+						'Alan Walker', 'Singer', 'Alan Walker' ],
+				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
+						'Alan Walker', 'Singer', 'Alan Walker' ],
+				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
+						'Alan Walker', 'Singer', 'Alan Walker' ],
+				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
+						'Alan Walker', 'Singer', 'Alan Walker' ],
+				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
+						'Alan Walker', 'Singer', 'Alan Walker' ] ];
+
+		//create a user-defined function to download CSV file 
+		function download_csv_file() {
+
+			//define the heading for each row of the data
+			var csv = 'BookSellerId,HomeBranch,ItemCallNumber,Barcode,ItemTypeCode,PublishedDate,CollectionCode\n';
+
+			//merge the data with CSV
+			csvFileData.forEach(function(row) {
+				csv += row.join(',');
+				csv += "\n";
+			});
+
+			var hiddenElement = document.createElement('a');
+			hiddenElement.href = 'data:text/csv;charset=utf-8,'
+					+ encodeURI(csv);
+			hiddenElement.target = '_blank';
+
+			//provide the name for the CSV file to be downloaded
+			hiddenElement.download = 'SimpleItem.csv';
+			hiddenElement.click();
+		}
 	</script>
+
+
 </body>
 </html>

@@ -13,10 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import beans.BiblioFrameworkType;
@@ -147,4 +144,35 @@ public class SinglebibliodataController {
 		return "redirect:/additem";
 	}
 
+	@GetMapping(value = "/importitem")
+	public String importItem(Model m, HttpServletRequest req, HttpServletResponse res) {
+		m.addAttribute("data", new Data());
+		return "importitem";
+	}
+
+	@PostMapping(value = "/importitemsearch")
+	public String importItemSearch(Model m, HttpServletRequest req, HttpServletResponse res,
+			@ModelAttribute("data") Data data, RedirectAttributes redir) {
+
+		itemDatas = singleBiblioDataService.getItemsbyBiblioData(data.getBiblionumber());
+
+		boolean checkitemDatas = itemDatas.isEmpty();
+
+		if (checkitemDatas == false) {
+			m.addAttribute("itemdata", itemDatas);
+			m.addAttribute("bibliodata",data.getBiblionumber());
+			return "importitem";
+		} else {
+			redir.addFlashAttribute("bibliodata", null);
+			redir.addFlashAttribute("alert", "Record can't found");
+			return "redirect:/importitem";
+		}
+	}
+
+	@GetMapping(value = "/deleteimportitem")
+	public String deleteImportItem(@RequestParam("itemId") int itemID, RedirectAttributes redir) throws Exception {
+		singleBiblioDataService.deleteItem(itemID);
+		return "redirect:/importitem";
+	}
+	
 }

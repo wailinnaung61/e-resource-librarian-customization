@@ -1,14 +1,19 @@
 package dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,8 +22,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import beans.Collection;
 import beans.Data;
 import beans.ItemTypes;
+import beans.Members;
 import beans.UserBean;
 import beans.bibliosingledata;
 
@@ -122,8 +129,6 @@ public class UserDao {
 					}
 				});
 	}
-
-
 
 	public List<UserBean> getRoles() {
 		return template.query("select * from roletb", new RowMapper<UserBean>() {
@@ -746,5 +751,41 @@ public class UserDao {
 
 	}
 
+	public int findByEmail(String email) {
+		String sql = "SELECT count(*) FROM usertb WHERE email ='" + email + "'";
+		int count = template.queryForObject(sql, Integer.class);
+		return count;
+
+	}
+
+	public void saveToken(String token, String email) {
+		String insertSql = "update usertb set reset_password_token = ? where email = ?";
+		Object[] params = new Object[] { token, email };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR };
+		this.template.update(insertSql, params, types);
+	}
+
+	public UserBean getByResetPasswordToken(String token) {
+		List<UserBean> dataList = this.template.query(
+				"select id,name,username,email from usertb where reset_password_token='" + token + "'",
+				new RowMapper<UserBean>() {
+					public UserBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+						UserBean d = new UserBean();
+						d.setId(rs.getInt(1));
+						d.setName(rs.getString(2));
+						d.setUsername(rs.getString(3));
+						d.setEmail(rs.getString(4));
+						return d;
+					}
+				});
+		return dataList != null && dataList.size() > 0 ? dataList.get(0) : null;
+	}
+
+	public void updatepassword(UserBean users, String password) {
+		String insertSql = "update usertb set password = ? where email = ? and name=? and username=?";
+		Object[] params = new Object[] { password, users.getEmail(), users.getName(), users.getUsername() };
+		int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
+		this.template.update(insertSql, params, types);
+	}
 
 }

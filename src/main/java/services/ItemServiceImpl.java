@@ -475,4 +475,16 @@ public class ItemServiceImpl implements ItemService {
 		itemDao.updateMember(members);
 	}
 
+	@Override
+	public List<Data> removeCollection(List<Data> dataList) {
+		return itemDao.removeCollection(dataList);
+		
+	}
+
+	@Override
+	public int  saveItemsbyExcelorCSV(List<Data> dataList,int recordNumber) {
+		return itemDao.saveItemsbyExcelorCSV(dataList,recordNumber);
+		
+	}
+
 }
