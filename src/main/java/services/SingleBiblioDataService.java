@@ -15,4 +15,6 @@ public interface SingleBiblioDataService {
 
 	void deleteItem(int itemID) throws Exception;
 
+	int checkBiblioNumber(int biblioNumber);
+
 }

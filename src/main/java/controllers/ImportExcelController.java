@@ -37,6 +37,7 @@ import beans.Data;
 import beans.Fileitems;
 import beans.ItemTypes;
 import services.ItemService;
+import services.SingleBiblioDataService;
 
 @Controller
 public class ImportExcelController implements ServletContextAware {
@@ -44,11 +45,10 @@ public class ImportExcelController implements ServletContextAware {
 	@Autowired
 	ItemService itemService;
 
-	private ServletContext servletContext;
+	@Autowired
+	private SingleBiblioDataService singleBiblioDataService;
 
-	List<ItemTypes> itemTypesList = new ArrayList<ItemTypes>();
-	List<Collection> collectionList = new ArrayList<Collection>();
-	List<Data> dataList=new ArrayList<Data>();
+	private ServletContext servletContext;
 
 	@GetMapping(value = "/importitemtype")
 	public String importItemType(Model m, HttpServletRequest req, HttpServletResponse res) {
@@ -70,6 +70,7 @@ public class ImportExcelController implements ServletContextAware {
 		}
 
 		if (extension.equals("xlsx")) {
+			List<ItemTypes> itemTypesList = new ArrayList<ItemTypes>();
 
 			String excelPath = servletContext.getRealPath("/resources/excels/" + fileName);
 
@@ -154,6 +155,7 @@ public class ImportExcelController implements ServletContextAware {
 		}
 
 		if (extension.equals("xlsx")) {
+			List<Collection> collectionList = new ArrayList<Collection>();
 
 			String excelPath = servletContext.getRealPath("/resources/excels/" + fileName);
 
@@ -230,15 +232,14 @@ public class ImportExcelController implements ServletContextAware {
 		}
 	}
 
-	@PostMapping(value="/saveExcelItem")
+	@PostMapping(value = "/saveExcelItem")
 	public String saveExcelItem(@RequestParam("file") MultipartFile multipartfile, HttpServletRequest req,
-			HttpServletResponse res, RedirectAttributes redir,Model m) throws IOException
-	{
-		String recordNumber=req.getParameter("recordnumber");
-		
-		if(recordNumber != null && !recordNumber.isEmpty()){
-			
-			//start process
+			HttpServletResponse res, RedirectAttributes redir, Model m) throws IOException {
+		String recordNumber = req.getParameter("biblionumber");
+
+		if (recordNumber != null && !recordNumber.isEmpty()) {
+
+			// start process
 			String extension = "";
 			String fileName = uploadExcelFile(multipartfile);
 			int index = fileName.lastIndexOf('.');
@@ -247,6 +248,8 @@ public class ImportExcelController implements ServletContextAware {
 			}
 
 			if (extension.equals("xlsx")) {
+
+				List<Data> dataList = new ArrayList<Data>();
 
 				String excelPath = servletContext.getRealPath("/resources/excels/" + fileName);
 
@@ -271,7 +274,7 @@ public class ImportExcelController implements ServletContextAware {
 					XSSFCell itemTypeCode = excelRow.getCell(4);
 					XSSFCell publishedDate = excelRow.getCell(5);
 					XSSFCell collectionCode = excelRow.getCell(6);
-					
+
 					Data data = new Data();
 
 					data.setBooksellerid(bookSellerid.toString());
@@ -283,23 +286,29 @@ public class ImportExcelController implements ServletContextAware {
 					data.setCollection(collectionCode.toString());
 
 					dataList.add(data);
+
 				}
-				//List<Data> newCollectionList=itemService.removeCollection(dataList);
-				itemService.saveItemsbyExcelorCSV(dataList,Integer.parseInt(recordNumber));
+
+				// save excel data
+				int count = itemService.saveItemsbyExcelorCSV(dataList, Integer.parseInt(recordNumber));
 				
-				return "redirect:/importitem";
+				// get itemsData
+				List<Data> itemDatas = singleBiblioDataService.getItemsbyBiblioData(Integer.parseInt(recordNumber));
+
+				m.addAttribute("message", count + " items has been added");
+				m.addAttribute("bibliodata", recordNumber);
+				m.addAttribute("itemdata", itemDatas);
+				return "importitem";
 			}
 
-
-			//end process
-		}
-		else
-		{
-		redir.addFlashAttribute("alert", "Record can't found");
-		return "redirect:/importitem";
+			// end process
+		} else {
+			redir.addFlashAttribute("alert", "Record can't found");
+			redir.addFlashAttribute("bibliodata", null);
+			return "redirect:/importitem";
 		}
 		return null;
-				
+
 	}
 
 	public void setServletContext(ServletContext servletContext) {

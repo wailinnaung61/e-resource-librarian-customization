@@ -66,18 +66,17 @@
 						<div class="col-md-12">
 							<div class="row mb-2">
 								<div class="col-md-10 mr-auto ml-auto">
-									<form:form action="importitemsearch" modelAttribute="data"
-										method="post">
+									<form action="importitemsearch" method="get">
 										<div class="input-group w-50 float-right">
-											<form:input type="number" class="form-control"
+											<input type="number" class="form-control"
 												value="${bibliodata}"
-												placeholder="Search with Record Number" path="biblionumber"
-												required="required" />
-											<span class="input-group-append">
+												placeholder="Search with Record Number" name="biblionumber"
+												id="biblionumber" required="required" /> <span
+												class="input-group-append">
 												<button type="submit" class="btn btn-info btn-flat">Go</button>
 											</span>
 										</div>
-									</form:form>
+									</form>
 								</div>
 							</div>
 
@@ -88,7 +87,7 @@
 										<div class="row">
 											<div class="col-md-12">
 												<input type="hidden" class="form-control w-25"
-													value="${bibliodata}" name="recordnumber" required readonly />
+													value="${bibliodata}" name="biblionumber" required readonly />
 												<div class="form-group">
 													<label for="exampleInputFile">File input</label>
 													<div class="input-group">
@@ -112,6 +111,11 @@
 												<c:if test="${alert ne null }">
 													<div class="alert alert-danger text-center" role="alert">${alert}</div>
 												</c:if>
+												<c:if test="${message ne null }">
+													<span class="p-3 text-success text-center"><i
+														class="fa fa-check-circle"></i>${message}
+													</span>
+												</c:if>
 
 											</div>
 											<!-- column -->
@@ -129,9 +133,10 @@
 										<thead>
 											<tr class="bg-info">
 												<th style="width: 55px;">#</th>
+												<th>Item Number</th>
 												<th>Bookseller id</th>
 												<th>Homebranch</th>
-												<th>Item Call Number</th>
+												<th>Call Number</th>
 												<th>Barcode</th>
 												<th>Itemtype</th>
 												<th>Published Date</th>
@@ -147,8 +152,10 @@
 
 														<c:url var="deletelink" value="/deleteimportitem">
 															<c:param name="itemId" value="${tempItems.itemnumber}" />
+															<c:param name="biblionumber" value="${bibliodata}" />
 														</c:url>
 														<tr>
+															<td>${c.index+1}</td>
 															<td>${tempItems.itemnumber}</td>
 															<td>${tempItems.booksellerid}</td>
 															<td>${tempItems.homebranch}</td>
@@ -168,6 +175,13 @@
 
 										</tbody>
 									</table>
+									<br>
+									<c:if test="${bibliodata ne null }">
+											<a
+												href="${pageContext.request.contextPath}/additemsearch?biblionumber=${bibliodata}"
+												class="btn btn-secondary" role="button"
+												aria-pressed="true"><<< Create Single Item</a>
+										</c:if>
 								</div>
 								<!-- /.card-body -->
 							</div>
@@ -244,15 +258,15 @@
 		//create CSV file data in an array
 		var csvFileData = [
 				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
-						'Alan Walker', 'Singer', 'Alan Walker' ],
+						'Alan Walker', '3/24/2021', 'Alan Walker' ],
 				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
-						'Alan Walker', 'Singer', 'Alan Walker' ],
+						'Alan Walker', '3/24/2021', 'Alan Walker' ],
 				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
-						'Alan Walker', 'Singer', 'Alan Walker' ],
+						'Alan Walker', '3/24/2021', 'Alan Walker' ],
+				[ 'Alan Walker', 'singer', 'Alan Walker', 'Singer',
+						'Alan Walker', '3/24/2021', 'Alan Walker' ],
 				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
-						'Alan Walker', 'Singer', 'Alan Walker' ],
-				[ 'Alan Walker', 'Singer', 'Alan Walker', 'Singer',
-						'Alan Walker', 'Singer', 'Alan Walker' ] ];
+						'Alan Walker', '3/24/2021', 'Alan Walker' ] ];
 
 		//create a user-defined function to download CSV file 
 		function download_csv_file() {

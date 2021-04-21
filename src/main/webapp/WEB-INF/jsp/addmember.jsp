@@ -27,7 +27,8 @@
 <link rel="stylesheet"
 	href="resources/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 <!-- Select2 -->
-<link rel="stylesheet" href="resources/AdminLTE/plugins/select2/css/select2.min.css">
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/select2/css/select2.min.css">
 <link rel="stylesheet"
 	href="resources/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <!-- Bootstrap4 Duallistbox -->
@@ -37,7 +38,8 @@
 <link rel="stylesheet"
 	href="resources/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css">
 <!-- Theme style -->
-<link rel="stylesheet" href="resources/AdminLTE/dist/css/adminlte.min.css">
+<link rel="stylesheet"
+	href="resources/AdminLTE/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -106,14 +108,15 @@
 												</div>
 												<div class="form-group">
 													<label>Password</label>
-													<form:input type="password" class="form-control" id="txtPassword"
-														placeholder="Enter Password" path="password"
-														required="required" />
+													<form:input type="password" class="form-control"
+														id="password" placeholder="Enter Password"
+														path="password" required="required" />
 												</div>
 												<div class="form-group">
 													<label>Confirm Password</label> <input type="password"
 														class="form-control" id="txtConfirmPassword"
-														placeholder="Enter Confirm Password" required />
+														placeholder="Enter Confirm Password"
+														oninput="checkPasswordMatch(this);" required />
 												</div>
 												<div class="form-group">
 													<label>Email</label>
@@ -180,7 +183,8 @@
 										</div>
 									</div>
 									<div class="card-footer">
-										<button type="submit" class="btn btn-info" onclick="return Validate()">Submit</button>
+										<button type="submit" class="btn btn-info"
+											onclick="return Validate()">Submit</button>
 									</div>
 
 								</form:form>
@@ -248,15 +252,14 @@
 			});
 
 		})
-		
-		function Validate() {
-			var password = document.getElementById("txtPassword").value;
-			var confirmPassword = document.getElementById("txtConfirmPassword").value;
-			if (password != confirmPassword) {
-				alert("Password and ConfirmPassword do not match.");
-				return false;
+
+		function checkPasswordMatch(fieldConfirmPassword) {
+			if (fieldConfirmPassword.value != $("#password").val()) {
+				fieldConfirmPassword
+						.setCustomValidity("Passwords do not match!");
+			} else {
+				fieldConfirmPassword.setCustomValidity("");
 			}
-			return true;
 		}
 	</script>
 </body>

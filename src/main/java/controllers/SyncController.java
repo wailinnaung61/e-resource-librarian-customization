@@ -27,6 +27,7 @@ public class SyncController {
 	
 	@Autowired
 	SyncService syncService;
+
 	
 	@PostMapping(value = "/sync/biblioitems", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Data>> syncBiblioItemsbyItemList(@RequestParam("syncType") String syncType,
@@ -62,7 +63,7 @@ public class SyncController {
 		}
 		return new RedirectView("/bibliolist", true);
 	}
-
+	
 	@GetMapping(value = "/sync/itemtypes")
 	public RedirectView syncItemType(RedirectAttributes redir) {
 		try {

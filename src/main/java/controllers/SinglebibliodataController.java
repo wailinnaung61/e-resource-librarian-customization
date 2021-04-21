@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import beans.BiblioFrameworkType;
 import beans.BookFramework;
@@ -77,8 +78,8 @@ public class SinglebibliodataController {
 
 			itemDatas = singleBiblioDataService.getItemsbyBiblioData(singleBiblioDataDao.biblioLatestinfo());
 
-			m.addAttribute("itemdata", itemDatas);
 			m.addAttribute("bibliodata", singleBiblioDataDao.biblioLatestinfo());
+			m.addAttribute("itemdata", itemDatas);
 			m.addAttribute("itemtypes", itemtype);
 			m.addAttribute("collections", collection);
 			m.addAttribute("data", new Data());
@@ -89,20 +90,25 @@ public class SinglebibliodataController {
 	@PostMapping("/saveitems")
 	public String saveItems(Model m, HttpServletRequest req, HttpServletResponse res, @ModelAttribute("data") Data data,
 			RedirectAttributes redir) {
-		if (data != null) {
+		if (data != null && data.getBiblionumber()!=null) {
 			singleBiblioDataService.addItem(data);
+			List<Collection> collection = itemService.getCollections();
+			List<ItemTypes> itemtype = itemService.getItemTypes();
+			itemDatas = singleBiblioDataService.getItemsbyBiblioData(data.getBiblionumber());
+
+			m.addAttribute("itemtypes", itemtype);
+			m.addAttribute("collections", collection);
+			m.addAttribute("bibliodata", data.biblionumber);
+			m.addAttribute("itemdata", itemDatas);
+			return "additem";
+
 		}
-
-		List<Collection> collection = itemService.getCollections();
-		List<ItemTypes> itemtype = itemService.getItemTypes();
-
-		itemDatas = singleBiblioDataService.getItemsbyBiblioData(data.getBiblionumber());
-
-		m.addAttribute("itemdata", itemDatas);
-		m.addAttribute("itemtypes", itemtype);
-		m.addAttribute("collections", collection);
-		m.addAttribute("bibliodata", data.biblionumber);
-		return "additem";
+		else
+		{
+			redir.addFlashAttribute("bibliodata", null);
+			redir.addFlashAttribute("alert", "Record can't found");
+			return "redirect:/additem";
+		}
 	}
 
 	@GetMapping("/additem")
@@ -115,21 +121,24 @@ public class SinglebibliodataController {
 		return "additem";
 	}
 
-	@PostMapping("/additemsearch")
-	public String addItemSearch(Model m, HttpServletRequest req, HttpServletResponse res,
-			@ModelAttribute("data") Data data, RedirectAttributes redir) {
+	@GetMapping("/additemsearch")
+	public String addItemSearch(Model m, HttpServletRequest req, HttpServletResponse res, RedirectAttributes redir) {
 
-		List<Collection> collection = itemService.getCollections();
-		List<ItemTypes> itemtype = itemService.getItemTypes();
+		int checkBiblioNumber = 0;
+		int biblioNumber = Integer.parseInt(req.getParameter("biblionumber"));
+		checkBiblioNumber = singleBiblioDataService.checkBiblioNumber(biblioNumber);
 
-		itemDatas = singleBiblioDataService.getItemsbyBiblioData(data.getBiblionumber());
+		if (checkBiblioNumber > 0) {
+			List<Collection> collection = itemService.getCollections();
+			List<ItemTypes> itemtype = itemService.getItemTypes();
+			itemDatas = singleBiblioDataService.getItemsbyBiblioData(biblioNumber);
 
-		boolean checkitemDatas = itemDatas.isEmpty();
-
-		if (checkitemDatas == false) {
+			m.addAttribute("bibliodata", biblioNumber);
 			m.addAttribute("itemdata", itemDatas);
 			m.addAttribute("itemtypes", itemtype);
 			m.addAttribute("collections", collection);
+			m.addAttribute("data", new Data());
+			m.addAttribute("message", "Record founded");
 			return "additem";
 		} else {
 			redir.addFlashAttribute("bibliodata", null);
@@ -139,40 +148,51 @@ public class SinglebibliodataController {
 	}
 
 	@GetMapping(value = "/deleteitem")
-	public String deleterole(@RequestParam("itemId") int itemID, RedirectAttributes redir) throws Exception {
+	public String deleterole(@RequestParam("itemId") int itemID, @RequestParam("biblionumber") int biblioNumber,
+			RedirectAttributes redir, HttpServletRequest req, RedirectAttributes redirectAttributes) throws Exception {
+		
 		singleBiblioDataService.deleteItem(itemID);
-		return "redirect:/additem";
+		redirectAttributes.addAttribute("biblionumber", biblioNumber);
+		return "redirect:/additemsearch";
 	}
 
 	@GetMapping(value = "/importitem")
 	public String importItem(Model m, HttpServletRequest req, HttpServletResponse res) {
-		m.addAttribute("data", new Data());
 		return "importitem";
 	}
 
-	@PostMapping(value = "/importitemsearch")
-	public String importItemSearch(Model m, HttpServletRequest req, HttpServletResponse res,
-			@ModelAttribute("data") Data data, RedirectAttributes redir) {
+	@GetMapping(value = "/importitemsearch")
+	public String importItemSearch2(Model m, HttpServletRequest req, HttpServletResponse res,
+			RedirectAttributes redir) {
 
-		itemDatas = singleBiblioDataService.getItemsbyBiblioData(data.getBiblionumber());
+		int checkBiblioNumber = 0;
+		int biblioNumber = Integer.parseInt(req.getParameter("biblionumber"));
 
-		boolean checkitemDatas = itemDatas.isEmpty();
+		checkBiblioNumber = singleBiblioDataService.checkBiblioNumber(biblioNumber);
 
-		if (checkitemDatas == false) {
+		if (checkBiblioNumber > 0) {
+
+			itemDatas = singleBiblioDataService.getItemsbyBiblioData(biblioNumber);
+
+			m.addAttribute("message", "Record founded");
+			m.addAttribute("bibliodata", biblioNumber);
 			m.addAttribute("itemdata", itemDatas);
-			m.addAttribute("bibliodata",data.getBiblionumber());
 			return "importitem";
 		} else {
-			redir.addFlashAttribute("bibliodata", null);
 			redir.addFlashAttribute("alert", "Record can't found");
+			redir.addFlashAttribute("bibliodata", null);
 			return "redirect:/importitem";
 		}
 	}
 
 	@GetMapping(value = "/deleteimportitem")
-	public String deleteImportItem(@RequestParam("itemId") int itemID, RedirectAttributes redir) throws Exception {
+	public String deleteImportItem(@RequestParam("itemId") int itemID, @RequestParam("biblionumber") int biblioNumber,
+			RedirectAttributes redir, HttpServletRequest req, RedirectAttributes redirectAttributes) throws Exception {
 		singleBiblioDataService.deleteItem(itemID);
-		return "redirect:/importitem";
+
+		redirectAttributes.addAttribute("biblionumber", biblioNumber);
+		return "redirect:/importitemsearch";
+
 	}
-	
+
 }

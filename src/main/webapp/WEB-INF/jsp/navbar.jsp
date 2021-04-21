@@ -7,9 +7,9 @@
 		<li class="nav-item d-none d-sm-inline-block"><a
 			href="${pageContext.request.contextPath}/" class="nav-link">Home</a></li>
 
-		<li class="nav-item"><a class="nav-link" data-widget="fullscreen"
+		<!-- <li class="nav-item"><a class="nav-link" data-widget="fullscreen"
 			href="#" role="button"> <i class="fas fa-expand-arrows-alt"></i>
-		</a></li>
+		</a></li> -->
 
 	</ul>
 

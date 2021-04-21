@@ -68,58 +68,8 @@
 					<div class="row">
 
 						<div class="col-md-12">
-							<div class="card">
-								<!-- /.card-header -->
-								<div class="card-body">
-									<table id="example1" class="table table-bordered table-striped">
-										<thead>
-											<tr class="bg-info">
-												<th style="width: 55px;">#</th>
-												<th>Bookseller id</th>
-												<th>Homebranch</th>
-												<th>Item Call Number</th>
-												<th>Barcode</th>
-												<th>Itemtype</th>
-												<th>Published Date</th>
-												<th>Collection</th>
-												<th>Del</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:choose>
-												<c:when test="${itemdata ne null }">
-													<c:forEach var="tempItems" items="${itemdata}"
-														varStatus="c">
-														
-														<c:url var="deletelink" value="/deleteitem">
-															<c:param name="itemId" value="${tempItems.itemnumber}" />
-														</c:url>
-														<tr>
-															<td>${tempItems.itemnumber}</td>
-															<td>${tempItems.booksellerid}</td>
-															<td>${tempItems.homebranch}</td>
-															<td>${tempItems.itemcallnumber}</td>
-															<td>${tempItems.barcode}</td>
-															<td>${tempItems.itemtype}</td>
-															<td>${tempItems.publicationyear}</td>
-															<td>${tempItems.collection}</td>
-															<td><a href="${deletelink}"
-																onclick="return confirm('Are you sure?')"
-																class="btn btn-block bg-gradient-danger"><i
-																	class="fa fa-trash"></i></a></td>
-														</tr>
-													</c:forEach>
-												</c:when>
-											</c:choose>
-
-										</tbody>
-									</table>
-								</div>
-								<!-- /.card-body -->
-							</div>
 
 							<div class="card">
-
 								<div class="card-header header bg-info">
 									<h3 class="card-title textheader">Create Item</h3>
 								</div>
@@ -129,18 +79,17 @@
 									<div class="col-md-6" style="margin: auto;">
 										<!-- card left column -->
 										<div class="card-body">
-											<form:form action="additemsearch" modelAttribute="data"
-												method="post">
+											<form action="additemsearch" method="get">
 												<div class="input-group">
-													<form:input type="number" class="form-control"
+													<input type="number" class="form-control"
 														value="${bibliodata}"
 														placeholder="Search with Record Number"
-														path="biblionumber" required="required" />
-													<span class="input-group-append">
+														name="biblionumber" id="biblionumber" required /> <span
+														class="input-group-append">
 														<button type="submit" class="btn btn-info btn-flat">Go</button>
 													</span>
 												</div>
-											</form:form>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -151,13 +100,9 @@
 										<div class="col-md-6">
 											<!-- card left column -->
 											<div class="card-body">
-
-												<div class="form-group">
-													<label>Record Number</label>
-													<form:input type="text" class="form-control"
-														value="${bibliodata}" placeholder="Enter Record Number"
-														path="biblionumber" required="required" readonly="true" />
-												</div>
+												<form:input type="hidden" class="form-control"
+													value="${bibliodata}" placeholder="Enter Record Number"
+													path="biblionumber" required="required" readonly="true" />
 												<div class="form-group">
 													<label>BookSeller Id</label>
 													<form:input type="text" class="form-control" id=""
@@ -174,6 +119,12 @@
 														placeholder="Enter Itemcallnumber" path="itemcallnumber"
 														required="required" />
 												</div>
+												<div class="form-group">
+													<label>Barcode</label>
+													<form:input type="text" class="form-control" id=""
+														placeholder="Enter Barcode" path="barcode"
+														required="required" />
+												</div>
 											</div>
 										</div>
 										<!-- card left column -->
@@ -181,13 +132,6 @@
 										<div class="col-md-6">
 											<!-- card right column -->
 											<div class="card-body">
-
-												<div class="form-group">
-													<label>Barcode</label>
-													<form:input type="text" class="form-control" id=""
-														placeholder="Enter Barcode" path="barcode"
-														required="required" />
-												</div>
 												<div class="form-group">
 													<label>Item Type</label>
 													<form:select class="form-control select w-100"
@@ -217,18 +161,80 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<p align="center" class="text-danger">${alert}</p>
-											<p align="center" class="text-success">${successful}</p>
+									<c:if test="${alert ne null }">
+										<div class="alert alert-danger text-center" role="alert">${alert}</div>
+									</c:if>
+									<c:if test="${message ne null }">
+										<div class="p-3 text-success text-center">
+											<i class="fa fa-check-circle"></i>${message}
 										</div>
-									</div>
+									</c:if>
 									<div class="card-footer">
 										<button type="submit" class="btn btn-info">Submit</button>
+										<c:if test="${bibliodata ne null }">
+											<a
+												href="${pageContext.request.contextPath}/importitemsearch?biblionumber=${bibliodata}"
+												class="btn btn-secondary float-right" role="button"
+												aria-pressed="true">Import >>></a>
+										</c:if>
 									</div>
 								</form:form>
 							</div>
 							<!-- card -->
+
+							<div class="card">
+								<!-- /.card-header -->
+								<div class="card-body">
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr class="bg-info">
+												<th style="width: 55px;">#</th>
+												<th>Item Number</th>
+												<th>Bookseller id</th>
+												<th>Homebranch</th>
+												<th>Call Number</th>
+												<th>Barcode</th>
+												<th>Itemtype</th>
+												<th>Published Date</th>
+												<th>Collection</th>
+												<th>Del</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:choose>
+												<c:when test="${itemdata ne null }">
+													<c:forEach var="tempItems" items="${itemdata}"
+														varStatus="c">
+
+														<c:url var="deletelink" value="/deleteitem">
+															<c:param name="itemId" value="${tempItems.itemnumber}" />
+															<c:param name="biblionumber" value="${bibliodata}" />
+														</c:url>
+														<tr>
+															<td>${c.index+1}</td>
+															<td>${tempItems.itemnumber}</td>
+															<td>${tempItems.booksellerid}</td>
+															<td>${tempItems.homebranch}</td>
+															<td>${tempItems.itemcallnumber}</td>
+															<td>${tempItems.barcode}</td>
+															<td>${tempItems.itemtype}</td>
+															<td>${tempItems.publicationyear}</td>
+															<td>${tempItems.collection}</td>
+															<td><a href="${deletelink}"
+																onclick="return confirm('Are you sure?')"
+																class="btn btn-block bg-gradient-danger"><i
+																	class="fa fa-trash"></i></a></td>
+														</tr>
+													</c:forEach>
+												</c:when>
+											</c:choose>
+
+										</tbody>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+
 						</div>
 						<!-- column -->
 

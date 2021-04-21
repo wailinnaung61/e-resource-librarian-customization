@@ -111,7 +111,7 @@
 												<div class="form-group">
 													<label>Password</label>
 													<div class="old">
-														<form:input type="password" id="txtPassword"
+														<form:input type="password" id="password"
 															placeholder="Enter Password" path="password"
 															class="form-control" required="required" />
 													</div>
@@ -120,8 +120,9 @@
 													<label>Confirm Password</label>
 													<div class="old">
 														<input type="password" class="form-control"
-															id="txtConfirmPassword" placeholder="Confirm Password"
-															required>
+															id="txtConfirmPassword"
+															oninput="checkPasswordMatch(this);"
+															placeholder="Confirm Password" required>
 													</div>
 												</div>
 
@@ -169,14 +170,13 @@
 	<script src="resources/AdminLTE/dist/js/adminlte.js"></script>
 	<script src="resources/AdminLTE/dist/js/demo.js"></script>
 	<script type="text/javascript">
-		function Validate() {
-			var password = document.getElementById("txtPassword").value;
-			var confirmPassword = document.getElementById("txtConfirmPassword").value;
-			if (password != confirmPassword) {
-				alert("Passwords do not match.");
-				return false;
+		function checkPasswordMatch(fieldConfirmPassword) {
+			if (fieldConfirmPassword.value != $("#password").val()) {
+				fieldConfirmPassword
+						.setCustomValidity("Passwords do not match!");
+			} else {
+				fieldConfirmPassword.setCustomValidity("");
 			}
-			return true;
 		}
 	</script>
 </body>

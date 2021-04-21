@@ -27,10 +27,10 @@ public class SyncServiceImpl implements SyncService {
 
 	@Override
 	public int SyncNewBiblioItems() {
-		Data item = itemDao.getLatestItemInfo();
+		Data item = itemDao.getLatestSyncItemInfo();
 
 		List<SyncData> biblioItems = syncDao.getBiblioItems(item.getItemnumber());
-		System.out.println("Synced item " + biblioItems.get(0).getItemnumber());
+		//System.out.println("Synced item " + biblioItems.get(0).getItemnumber());
 		itemDao.InsertBiblio(biblioItems);
 		itemDao.InsertBiblioItems(biblioItems);
 		itemDao.InsertItems(biblioItems);
@@ -44,6 +44,7 @@ public class SyncServiceImpl implements SyncService {
 			d.setEnumchron(x.getEnumchron());
 			return d;
 		}).collect(Collectors.toList());
+		
 		List<Integer> ids = dataList.stream().map(x -> x.getItemnumber()).collect(Collectors.toList());
 		utilService.rebuildIndexes(ids);
 		return item.getItemnumber();
@@ -99,7 +100,7 @@ public class SyncServiceImpl implements SyncService {
 	
 	@Override
 	public int GetNewBiblioItemCount() {
-		Data item = itemDao.getLatestItemInfo();
+		Data item = itemDao.getLatestSyncItemInfo();
 		return syncDao.getBiblioItemCount(item.getItemnumber());
 	}
 

@@ -39,7 +39,7 @@ public class SingleBiblioDataDao {
 	private void insertBiblio(List<BookFramework> listFramework) {
 		try {
 			this.template.batchUpdate(
-					"insert into biblio(author,title,notes,timestamp,datecreated,serial,subject,content,summary) values (?,?,?,?,?,?,?,?,?)",
+					"insert into biblio(author,title,notes,timestamp,datecreated,serial,subject,content,summary,status) values (?,?,?,?,?,?,?,?,?,?)",
 					new BatchPreparedStatementSetter() {
 
 						public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -52,6 +52,7 @@ public class SingleBiblioDataDao {
 							ps.setString(7, listFramework.get(i).getSubject());
 							ps.setString(8, listFramework.get(i).getContent());
 							ps.setString(9, listFramework.get(i).getSummary());
+							ps.setInt(10, 1);
 						}
 
 						public int getBatchSize() {
@@ -73,7 +74,7 @@ public class SingleBiblioDataDao {
 	private void insertBiblioItems(List<BookFramework> listFramework) {
 		try {
 			this.template.batchUpdate(
-					"insert into biblioitems(biblionumber,editionstatement,place,notes,itemtype,publicationyear,isbn) values (?,?,?,?,?,?,?)",
+					"insert into biblioitems(biblionumber,editionstatement,place,notes,itemtype,publicationyear,isbn,status) values (?,?,?,?,?,?,?,?)",
 					new BatchPreparedStatementSetter() {
 
 						public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -84,6 +85,7 @@ public class SingleBiblioDataDao {
 							ps.setString(5, listFramework.get(i).getItemtype());
 							ps.setString(6, listFramework.get(i).getPublicationyear());
 							ps.setString(7, listFramework.get(i).getIsbn());
+							ps.setInt(8, 1);
 						}
 
 						public int getBatchSize() {
@@ -96,25 +98,31 @@ public class SingleBiblioDataDao {
 	}
 
 	public void addItem(Data data) {
-		
-		int biblioItemNumber=getBiblioitemNumber(data);
-		String insertSql = "insert into items(biblionumber,biblioitemnumber,booksellerid,homebranch,itemcallnumber,barcode,enumchron,timestamp,itype,publisheddate,collection) values(?,?,?,?,?,?,?,?,?,?,?)";
-		Object[] params = new Object[] { data.biblionumber, biblioItemNumber, data.booksellerid,data.homebranch,data.itemcallnumber,data.barcode,data.enumchron,timeStamp.format(new Date()),data.itemtype,dateCreated.format(new Date()),data.collection};
-		int[] types = new int[] { Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR };
-		this.template.update(insertSql, params, types);				
+
+		int biblioItemNumber = getBiblioitemNumber(data);
+		String insertSql = "insert into items(biblionumber,biblioitemnumber,booksellerid,homebranch,itemcallnumber,barcode,enumchron,timestamp,itype,publisheddate,collection,status) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		Object[] params = new Object[] { data.biblionumber, biblioItemNumber, data.booksellerid, data.homebranch,
+				data.itemcallnumber, data.barcode, data.enumchron, timeStamp.format(new Date()), data.itemtype,
+				dateCreated.format(new Date()), data.collection, 1 };
+		int[] types = new int[] { Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
+				Types.INTEGER };
+		this.template.update(insertSql, params, types);
 	}
-	
-	private int getBiblioitemNumber(Data data)
-	{
-		String sql = "SELECT biblioitemnumber FROM biblioitems where biblionumber="+data.biblionumber+"";
+
+	private int getBiblioitemNumber(Data data) {
+		String sql = "SELECT biblioitemnumber FROM biblioitems where biblionumber=" + data.biblionumber + "";
 		int id = template.queryForObject(sql, Integer.class);
 		return id;
 	}
 
 	public List<Data> getItemsbyBiblioData(int biblioLatestinfo) {
 		try {
-			return this.template.query("SELECT booksellerid,homebranch,itemcallnumber,barcode,itype,publisheddate,collection,itemnumber FROM items where biblionumber="+biblioLatestinfo+"",
-					(rs, rowNum) -> new Data(rs.getString(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getString(5), rs.getString(6),rs.getString(7),rs.getInt(8)));
+			return this.template.query(
+					"SELECT booksellerid,homebranch,itemcallnumber,barcode,itype,publisheddate,collection,itemnumber FROM items where biblionumber="
+							+ biblioLatestinfo + "",
+					(rs, rowNum) -> new Data(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+							rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8)));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -131,7 +139,14 @@ public class SingleBiblioDataDao {
 		if (result != 1) {
 			throw new Exception("Failed to delete");
 		}
-		
+
+	}
+
+	public int checkBiblioNumber(int biblioNumber) {
+		String sql = "SELECT count(*) FROM biblio WHERE biblionumber =" + biblioNumber + "";
+		int count = template.queryForObject(sql, Integer.class);
+		return count;
+
 	}
 
 }

@@ -216,6 +216,18 @@ public class ItemDao {
 		return dataList != null && dataList.size() > 0 ? dataList.get(0) : new Data();
 	}
 
+	public Data getLatestSyncItemInfo() {
+		List<Data> dataList = this.template.query("select itemnumber from items where status="+0+" order by 1 desc limit 1",
+				new RowMapper<Data>() {
+					public Data mapRow(ResultSet rs, int rowNum) throws SQLException {
+						Data d = new Data();
+						d.setItemnumber(rs.getInt("itemnumber"));
+						return d;
+					}
+				});
+		return dataList != null && dataList.size() > 0 ? dataList.get(0) : new Data();
+	}
+
 	public void InsertResourceItem(SubItem item) {
 		String insertSql = "insert into subitems(accesslevel, accesspages, resourceurl, downloadable, itemnumber) values(?,?,?,?,?)";
 		Object[] params = new Object[] { item.accesslevel, item.accesspages, item.resourceurl, item.downloadable,
@@ -412,7 +424,7 @@ public class ItemDao {
 		try {
 			return this.template.query(
 					"select b.biblionumber, i.itemnumber, b.title, COALESCE(i.enumchron, '') as enumchron, COALESCE(b.author, '') as author from biblio b inner join items i on i.biblionumber = b.biblionumber where i.itemnumber > "
-							+ itemNumber,
+							+ itemNumber+" and i.status=0 and b.status=0",
 					(rs, rowNum) -> {
 						Data d = new Data();
 						d.setBiblionumber(rs.getInt("biblionumber"));
@@ -1040,12 +1052,12 @@ public class ItemDao {
 	public int saveItemsbyExcelorCSV(List<Data> dataList, int recordNumber) {
 		String timestamp = "yyyy-MM-dd HH:mm:ss";
 		SimpleDateFormat timeStamp = new SimpleDateFormat(timestamp);
-		
-		int biblioItemNumber=getBiblioitemNumber(recordNumber);
-		
+
+		int biblioItemNumber = getBiblioitemNumber(recordNumber);
+
 		SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MMMM-yyyy");
 		SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    
+
 		try {
 			this.template.batchUpdate(
 					"insert into temp_import_items(booksellerid,homebranch,itemcallnumber,barcode,itemtypecode,publisheddate,collectioncode,datetime,biblionumber,biblioitemnumber) values (?,?,?,?,?,?,?,?,?,?)",
@@ -1076,11 +1088,12 @@ public class ItemDao {
 					});
 		} catch (DuplicateKeyException e) {
 		}
-		int count=template.update("insert into items(booksellerid,homebranch,itemcallnumber,barcode,itype,collection,publisheddate,biblionumber,biblioitemnumber)"
-				+ "select booksellerid,homebranch,itemcallnumber,barcode,itemtypecode,collectioncode,publisheddate,biblionumber,biblioitemnumber "
-				+ "from temp_import_items ti,collections c,itemtypes i where ti.collectioncode=c.colDes and ti.itemtypecode=i.itemcode");
+		int count = template.update(
+				"insert into items(booksellerid,homebranch,itemcallnumber,barcode,itype,collection,publisheddate,biblionumber,biblioitemnumber)"
+						+ "select booksellerid,homebranch,itemcallnumber,barcode,itemtypecode,collectioncode,publisheddate,biblionumber,biblioitemnumber "
+						+ "from temp_import_items ti,collections c,itemtypes i where ti.collectioncode=c.colDes and ti.itemtypecode=i.itemcode");
 		template.update("truncate table temp_import_items");
-		
+
 		return count;
 
 	}

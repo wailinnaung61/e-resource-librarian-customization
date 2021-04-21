@@ -83,7 +83,7 @@
 											</span>
 										</c:if>	
 										<a href="${pageContext.request.contextPath}/sync/patrons"
-											class="btn btn-info w-25"><i><b>Sync patrons</b></i></a>
+											class="btn btn-info w-25"><i><b>Sync Members</b></i></a>
 									</div>
 
 									<table id="example1" class="table table-bordered table-striped">

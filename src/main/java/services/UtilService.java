@@ -29,11 +29,7 @@ public class UtilService {
 			try {
 				String portalURL = itemDao.getPortalUrlAndSecretCode();
 				String queryParams = ids.stream().map(x -> "ids=" + x).reduce((a, b) -> a + '&' + b).get();
-				/*
-				 * if(toDeleteList != null) { Optional<String> deleteParams =
-				 * toDeleteList.stream().map(x -> "rids=" + x).reduce((a, b) -> a + '&' + b);
-				 * queryParams += ("&" + deleteParams); }
-				 */
+				
 				portalURL = portalURL + '?' + queryParams;
 				OkHttpClient client = new OkHttpClient();
 				Request request = new Request.Builder().url(portalURL).build();
