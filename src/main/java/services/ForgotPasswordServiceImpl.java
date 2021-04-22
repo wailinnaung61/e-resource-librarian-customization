@@ -16,15 +16,17 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService{
 	@Autowired
 	UserDao userDao;
 	
-	public void updateResetPasswordToken(String token, String email) throws Exception {
+	public int updateResetPasswordToken(String token, String email) throws Exception {
 		UserBean userbean=new UserBean();
         int isHave = userDao.findByEmail(email);
         if (isHave > 0) {
             userbean.setResetPasswordToken(token);
             userDao.saveToken(token,email);
+            return isHave;
         } else {
-            throw new Exception("Could not find any customer with the email " + email);
+            return 0;
         }
+
     }
 
 	@Override

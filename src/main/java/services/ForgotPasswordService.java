@@ -4,7 +4,7 @@ import beans.UserBean;
 
 public interface ForgotPasswordService {
 	
-    public void updateResetPasswordToken(String token, String email)throws Exception;
+    public int updateResetPasswordToken(String token, String email)throws Exception;
 
 	public UserBean getByResetPasswordToken(String token);
 

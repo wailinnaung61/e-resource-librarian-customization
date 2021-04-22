@@ -50,17 +50,22 @@ public class ForgotpasswordController {
 		String email = req.getParameter("email");
 		String token = RandomString.make(30);
 
-		try {
-			forgotPasswordService.updateResetPasswordToken(token, email);
+		
+			int i=forgotPasswordService.updateResetPasswordToken(token, email);
+			if(i==0)
+			{
+				model.addAttribute("alert","Can't find your Email");
+				return "forgotpassword";
+			}
+			else
+			{
 			String resetPasswordLink = Utility.getSiteURL(req) + "/reset/resetpassword?token=" + token;
 			sendEmail(email, resetPasswordLink);
 			model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+			return "forgotpassword";
+			}
 
-		} catch (Error ex) {
-		} catch (UnsupportedEncodingException | MessagingException e) {
-		}
-
-		return "forgotpassword";
+		
 	}
 
 	public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
