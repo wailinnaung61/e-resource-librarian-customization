@@ -363,7 +363,18 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void deleteBiblio(int biblionumber) {
 		List<Data> dList = itemDao.GetItemsByBiblioNumbers(Collections.singletonList(biblionumber));
+		System.out.println("START");
+		/*
+		 * for (Data d : dList) { System.out.println(d.getItemnumber() + "  " +
+		 * d.getResourceUrl() + " " + d.getBookcover()); }
+		 * 
+		 * System.out.println("END");
+		 */
 		List<Integer> deleteItemNumbers = dList.stream().map(Data::getItemnumber).collect(Collectors.toList());
+		/*System.out.println("START START");
+		 * for (Integer d : deleteItemNumbers) { System.out.println(d); }
+		 * System.out.println("END END");
+		 */
 		if (deleteItemNumbers.size() > 0) {
 			itemDao.deleteUnlinkedResources(deleteItemNumbers);
 		}
@@ -478,13 +489,13 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public List<Data> removeCollection(List<Data> dataList) {
 		return itemDao.removeCollection(dataList);
-		
+
 	}
 
 	@Override
-	public int  saveItemsbyExcelorCSV(List<Data> dataList,int recordNumber) {
-		return itemDao.saveItemsbyExcelorCSV(dataList,recordNumber);
-		
+	public int saveItemsbyExcelorCSV(List<Data> dataList, int recordNumber) {
+		return itemDao.saveItemsbyExcelorCSV(dataList, recordNumber);
+
 	}
 
 }

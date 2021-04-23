@@ -732,6 +732,7 @@ public class ItemDao {
 
 	public List<Data> GetItemsByBiblioNumbers(List<Integer> idList) {
 		String inSql = String.join(",", Collections.nCopies(idList.size(), "?"));
+		
 		String sql = String.format(
 				"SELECT i.itemnumber, GROUP_CONCAT(si.resourceurl  separator '<<eresource-splitter>>') resources, i.bookcover FROM items i LEFT OUTER JOIN subitems si ON si.itemnumber = i.itemnumber WHERE i.biblionumber IN (%s) GROUP BY i.itemnumber",
 				inSql);
