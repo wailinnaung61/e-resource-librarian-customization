@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import beans.BiblioFrameworkType;
 import beans.BookFramework;
@@ -23,6 +22,7 @@ import beans.Collection;
 import beans.Data;
 import beans.ItemTypes;
 import config.Frameworks;
+import dao.ItemDao;
 import dao.SingleBiblioDataDao;
 import services.ItemService;
 import services.SingleBiblioDataService;
@@ -38,6 +38,9 @@ public class SinglebibliodataController {
 
 	@Autowired
 	ItemService itemService;
+
+	@Autowired
+	ItemDao itemDao;
 
 	@Autowired
 	private SingleBiblioDataService singleBiblioDataService;
@@ -90,7 +93,7 @@ public class SinglebibliodataController {
 	@PostMapping("/saveitems")
 	public String saveItems(Model m, HttpServletRequest req, HttpServletResponse res, @ModelAttribute("data") Data data,
 			RedirectAttributes redir) {
-		if (data != null && data.getBiblionumber()!=null) {
+		if (data != null && data.getBiblionumber() != null) {
 			singleBiblioDataService.addItem(data);
 			List<Collection> collection = itemService.getCollections();
 			List<ItemTypes> itemtype = itemService.getItemTypes();
@@ -102,9 +105,7 @@ public class SinglebibliodataController {
 			m.addAttribute("itemdata", itemDatas);
 			return "additem";
 
-		}
-		else
-		{
+		} else {
 			redir.addFlashAttribute("bibliodata", null);
 			redir.addFlashAttribute("alert", "Record can't found");
 			return "redirect:/additem";
@@ -150,8 +151,12 @@ public class SinglebibliodataController {
 	@GetMapping(value = "/deleteitem")
 	public String deleterole(@RequestParam("itemId") int itemID, @RequestParam("biblionumber") int biblioNumber,
 			RedirectAttributes redir, HttpServletRequest req, RedirectAttributes redirectAttributes) throws Exception {
-		
-		singleBiblioDataService.deleteItem(itemID);
+
+		// singleBiblioDataService.deleteItem(itemID);
+		List<Integer> deleteItemNumbers = new ArrayList<Integer>();
+		deleteItemNumbers.add(itemID);
+		itemDao.deleteUnlinkedResources(deleteItemNumbers);
+
 		redirectAttributes.addAttribute("biblionumber", biblioNumber);
 		return "redirect:/additemsearch";
 	}
@@ -188,7 +193,10 @@ public class SinglebibliodataController {
 	@GetMapping(value = "/deleteimportitem")
 	public String deleteImportItem(@RequestParam("itemId") int itemID, @RequestParam("biblionumber") int biblioNumber,
 			RedirectAttributes redir, HttpServletRequest req, RedirectAttributes redirectAttributes) throws Exception {
-		singleBiblioDataService.deleteItem(itemID);
+		
+		List<Integer> deleteItemNumbers = new ArrayList<Integer>();
+		deleteItemNumbers.add(itemID);
+		itemDao.deleteUnlinkedResources(deleteItemNumbers);
 
 		redirectAttributes.addAttribute("biblionumber", biblioNumber);
 		return "redirect:/importitemsearch";

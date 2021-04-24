@@ -363,8 +363,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void deleteBiblio(int biblionumber) {
 		List<Data> dList = itemDao.GetItemsByBiblioNumbers(Collections.singletonList(biblionumber));
-		System.out.println("START");
-		/*
+		/*System.out.println("START");	
 		 * for (Data d : dList) { System.out.println(d.getItemnumber() + "  " +
 		 * d.getResourceUrl() + " " + d.getBookcover()); }
 		 * 
