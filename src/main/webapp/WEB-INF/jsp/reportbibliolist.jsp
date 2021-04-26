@@ -76,7 +76,8 @@
 											class="table table-bordered table-hover table-responsive">
 											<thead>
 												<tr>
-													<th class="not-export-col">#</th>
+													<th>#</th>
+													<th class="not-export-col">Delete</th>
 													<th>RecordNumber</th>
 													<th>ItemNumber</th>
 													<th>Barcode</th>
@@ -99,16 +100,16 @@
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach var="data" items="${list}">
+												<c:forEach var="data" items="${list}" varStatus="c">
 													<c:forEach var="i" items="${data.items}" varStatus="ic">
 														<tr>
+														    <td>${c.index+1}</td>
 															<td>
 																<button class="del-btn btn btn-sm btn-danger"
 																	data-id="${data.biblionumber}">
 																	<i class="fa fa-trash"></i>
 																</button>
-															</td>
-
+															</td>															
 															<td>${data.biblionumber}</td>
 															<td>${i.itemnumber}</td>
 															<td>${i.barcode}</td>
@@ -162,6 +163,7 @@
 		src="resources/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 	<script
 		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+		
 	<script src="resources/AdminLTE/plugins/jszip/jszip.min.js"></script>
 	<script src="resources/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="resources/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
@@ -176,6 +178,7 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="resources/AdminLTE/dist/js/demo.js"></script>
 	<!-- Page specific script -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
 
 	<script>
 		const params = new URLSearchParams(window.location.search);
@@ -220,14 +223,13 @@
 			$("#example1").DataTable(
 					{
 						"paging" : true,
-						"responsive" : false,
+						"responsive" : true,
 						"lengthChange" : false,
 						"autoWidth" : false,
 						"buttons" : [ "copy", "csv", "excel", "pdf", "print",
 								"colvis" ]
 					}).buttons().container().appendTo(
 					'#example1_wrapper .col-md-6:eq(0)');
-
 			$('#example2').DataTable({
 				"paging" : true,
 				"lengthChange" : false,

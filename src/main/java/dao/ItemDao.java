@@ -520,7 +520,7 @@ public class ItemDao {
 	}
 
 	public List<SpecialRequest> getSpecialRequests() {
-		String sql = "SELECT sr.id, i.barcode, concat(b.title, ' - ', it.itemtypes, coalesce(concat(' - ', i.enumchron), '')) as title , CONCAT(br.title, br.surname) as username, status FROM specialrequests sr"
+		String sql = "SELECT sr.id, i.barcode, concat(b.title, ' - ', it.itemtypes, coalesce(concat(' - ', i.enumchron), '')) as title , CONCAT(br.title, br.surname) as username,sr.status FROM specialrequests sr"
 				+ " INNER JOIN subitems si ON si.resourceId = sr.itemid"
 				+ " INNER JOIN items i ON i.itemnumber = si.itemnumber"
 				+ " INNER JOIN biblio b ON b.biblionumber = i.biblionumber"
