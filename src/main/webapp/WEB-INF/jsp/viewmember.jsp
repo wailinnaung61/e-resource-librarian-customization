@@ -142,7 +142,6 @@
 		<%@ include file="footer.jsp"%>
 	</div>
 
-
 	<!-- jQuery -->
 	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
