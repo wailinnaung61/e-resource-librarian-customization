@@ -7,16 +7,27 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Admin View</title>
+<title>Items Detail</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="resources/themify-icons/themify-icons.css">
 
-<link rel="stylesheet" href="resources/themify-icons/ie7/ie7.css">
-
+<!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet"
-	href="resources/plugins/fontawesome-free/css/all.min.css">
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet"
+	href="resources/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- Theme style -->
+<link rel="stylesheet"
+	href="resources/AdminLTE/dist/css/adminlte.min.css">
 
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -29,33 +40,11 @@
 
 <link rel="stylesheet" href="resources/plugins/jqvmap/jqvmap.min.css">
 
-<link rel="stylesheet" href="resources/dist/css/adminlte.min.css">
-
-<link rel="stylesheet"
-	href="resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
-<link rel="stylesheet"
-	href="resources/plugins/daterangepicker/daterangepicker.css">
 
 <link rel="stylesheet"
 	href="resources/plugins/summernote/summernote-bs4.css">
 
-<!-- <link rel="stylesheet"
-	href="resources/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css"> -->
-
-<link
-	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
-	rel="stylesheet">
-<link rel="stylesheet" href="resources/plugins/bootstrap/css/bootstrap.min.css"/>
 <style type="text/css">
-tr {
-	text-align: center;
-}
-
-th {
-	text-align: center;
-}
-
 .browse {
 	color: blue;
 }
@@ -155,228 +144,292 @@ label {
 	vertical-align: baseline;
 	border-radius: .25em;
 }
-a.nav-link.active{
+
+a.nav-link.active {
 	font-weight: bold;
 }
-
 </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="modal" tabindex="-1" role="dialog">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title">Modal title</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <p>Do you want to delete this resource?</p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary">Yes, confirm.</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-	      </div>
-	    </div>
-	  </div>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Do you want to delete this resource?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">Yes,
+						confirm.</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="wrapper">
-		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
-					href="#" role="btton"><i class="fas fa-bars"
-						style="color: black;"></i></a></li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				<li><font size="4px"
-					style="font-family: Times New Roman, Times, serif">${loginname}</font>&nbsp;&nbsp;<svg
-						version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-						xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-						width="40px" height="40px" viewBox="0 0 64 64"
-						enable-background="new 0 0 64 64" xml:space="preserve">
-		    <g id="USER_3_" enable-background="new">
-			<g id="USER">
-		    <g>
-			<path d="M32,0C14.327,0,0,14.327,0,32s14.327,32,32,32s32-14.327,32-32S49.673,0,32,0z M51.253,49.43
-			c-3.767-1.826-2.382-0.398-7.31-2.427c-5.041-2.073-6.235-2.749-6.235-2.749L37.664,39.5c0,0,1.888-1.422,2.477-5.917
-			c1.178,0.338,1.578-1.372,1.642-2.464c0.069-1.055,0.696-4.346-0.745-4.052c0.295-2.197,0.527-4.183,0.421-5.235
-			c-0.36-3.691-2.931-7.544-9.42-7.826c-5.517,0.282-9.098,4.138-9.46,7.829c-0.104,1.052,0.108,3.036,0.403,5.236
-			c-1.441-0.297-0.821,2.999-0.758,4.054c0.07,1.092,0.46,2.809,1.641,2.469c0.587,4.495,2.475,5.93,2.475,5.93L26.293,44.3
-			c0,0-1.195,0.724-6.236,2.796c-4.927,2.027-3.544,0.512-7.31,2.334C8.568,44.816,6,38.715,6,32C6,17.641,17.641,6,32,6
-			c14.359,0,26,11.641,26,26C58,38.716,55.432,44.816,51.253,49.43z" />
-			</g>
-			</g>
-			</g>
-			</svg></li>
-				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-			</ul>
-		</nav>
+
+		<%@ include file="navbar.jsp"%>
 
 		<aside class="main-sidebar elevation-4">
+
 			<%@ include file="sidebar.jsp"%>
+
 		</aside>
 
 		<div class="content-wrapper">
-				<div class="card m-2">
-					<div class="card-header">
-						<h3 class="card-title">Search biblio items</h3>
-					</div>
-					<div class="card-body row">
-						<div class="mb-1">
-							<form:form class="form-inline" method="GET" modelAttribute="searchBean">
-								<form:select path="searchType" class="form-control mr-1">
-									<form:option value="item">Item</form:option>
-									<form:option value="biblio">Biblio</form:option>
-								</form:select>
-								<form:input type="text" path="id" class="form-control mr-1" required="required" placeholder="Enter item or biblio number"/>
-								<input type="submit" class="form-control" value="Go">
-							</form:form>
+
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">Records/Items Detail</h1>
 						</div>
+						<!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a
+									href="${pageContext.request.contextPath}/">Home</a></li>
+								<li class="breadcrumb-item active">Records | Items Detail</li>
+							</ol>
+						</div>
+						<!-- /.col -->
 					</div>
+					<!-- /.row -->
 				</div>
-			<c:choose>
-			<c:when test="${data != null }">
-			<form:form method="post" modelAttribute="data" enctype="multipart/form-data" id="detail-form">
-				<div class="card m-2">
-					<div class="card-header header">
-						<h3 class="card-title textheader">Biblio Detail</h3>
-					</div>
-					<div class="d-flex justify-content-around">
-						<div class="flex-fill m-3">
-							<label>Biblio Number</label>
-							<input type="number" class="form-control" name="biblionumber" value="${data.biblionumber}" readonly/>
-						</div>
-						<div class="flex-fill m-3">
-							<label>Title</label>
-							<input class="form-control" type="text" value="${data.title	}" readonly/>
-						</div>
-						<div class="flex-fill m-3">
-							<label>Author</label>
-							<input class="form-control" type="text" value="${data.author}" readonly/>
-						</div>
-					</div>
-				</div>
-				<div class="card m-2">
-					<div class="card-header header">
-						${("biblio" eq searchBean.searchType)? 'Item List':'Item Detail' }
-					</div>
-					<div class="card-body">
-						<c:forEach items="${data.items}" var="item" varStatus="i_c">
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
 							<div class="card m-2">
-								<form:hidden path="items[${i_c.index}].itemnumber"/>
-								<form:hidden path="items[${i_c.index}].collection"/> 
-								<div class="d-flex justify-content-around flex-wrap">
-								<div class="flex-fill p-3 mt-2">
-									<label>Bar code</label>
-									<input class="form-control" value="${data.items[i_c.index].barcode }" readonly/>
+								<div class="card-header bg-info">
+									<h3 class="card-title">Search Record items</h3>
 								</div>
-								<div class="flex-fill p-3 mt-2">
-									<label>Item Call Number</label>
-									<input class="form-control" value="${data.items[i_c.index].itemCallNumber }" readonly/>
-								</div>
-								<div class="flex-fill p-3 mt-2">
-									<label>Keyword</label>
-									<form:input class="form-control" path="items[${i_c.index}].keyword"/>
-								</div>
-								<div class="flex-fill p-3">
-									<ul class="nav">
-										<li class="nav-item">
-											<a href="#bc-upload-tab-${i_c.index}" data-toggle="pill" role="tab" class="nav-link active">Upload Book Cover file</a>
-										</li>
-										<li class="nav-item">
-											<a href="#bc-url-tab-${i_c.index}" data-toggle="pill" role="tab" class="nav-link ">Add Book Cover URL</a>
-										</li>
-									</ul>
-									<div class="tab-content file-upload-url" data-url="${data.items[i_c.index].bookcover}">
-										<div id="bc-upload-tab-${i_c.index}" class="tab-pane fade show active custom-file">
-											<input type="file" name="items[${i_c.index }].bookcoverfile" class="custom-file-input" id="file-upload-${i_c.index}"/>
-											<label class="custom-file-label" for="file-upload-${i_c.index}">Choose a file</label>
-										</div>
-										<div id="bc-url-tab-${i_c.index}" class="tab-pane fade">
-											<input type="text" name="items[${i_c.index }].bookcover" class="form-control" placeholder="Enter Url"/>
-										</div>
+								<div class="card-body row">
+									<div class="mb-1">
+										<form:form class="form-inline" method="GET"
+											modelAttribute="searchBean">
+											<form:select path="searchType" class="form-control mr-1">
+												<form:option value="item">Item</form:option>
+												<form:option value="biblio">Biblio</form:option>
+											</form:select>
+											<form:input type="text" path="id" class="form-control mr-1"
+												required="required"
+												placeholder="Enter item or biblio number" />
+											<input type="submit" class="form-control bg-info" value="Go">
+										</form:form>
 									</div>
 								</div>
 							</div>
-							<div class="card-subtitle w-100 p-1 mt-3 border-top bg-secondary">Resources</div>
-								<div class="d-flex justify-content-around flex-wrap resources p-3 border m-1 rounded" data-item-count="${i_c.index}" data-sitem-count="${data.items[i_c.index].subItems.size() }">
-									<div class="flex-fill w-100 resource-items">
-										<c:forEach items="${item.subItems}" var="sItem" varStatus="s_c">
-											<div class="d-flex justify-content-around flex-wrap border-bottom resource pt-2" id="resource-${i_c.index}-${s_c.index}">
-												<form:input type="hidden" path="items[${i_c.index }].subItems[${s_c.index }].resourceId" class="resource-id-${i_c.index}-${s_c.index}"/>
-												<div class="flex-fill w-100 d-flex justify-content-between">
-													<div># ${s_c.index + 1 }.</div> 
-													<div>
-														<button type="button" class="saved-item btn btn-sm btn-danger" data-index="${i_c.index}-${s_c.index}"><i class="fa fa-trash"></i></button>
-													</div>
+							<c:choose>
+								<c:when test="${data != null }">
+									<form:form method="post" modelAttribute="data"
+										enctype="multipart/form-data" id="detail-form">
+										<div class="card m-2">
+											<div class="card-header header bg-info">
+												<h3 class="card-title textheader">Records Detail</h3>
+											</div>
+											<div class="d-flex justify-content-around">
+												<div class="flex-fill m-3">
+													<label>Records Number</label> <input type="number"
+														class="form-control" name="biblionumber"
+														value="${data.biblionumber}" readonly />
 												</div>
-												<div class="flex-fill p-3 w-50">
-													<ul class="nav">
-														<li class="nav-item">
-															<a href="#uploadtab-${i_c.index}-${s_c.index}" data-toggle="pill" role="tab" class="nav-link active">Upload Resource file</a>
-														</li>
-														<li class="nav-item">
-															<a href="#urltab-${i_c.index}-${s_c.index}" data-toggle="pill" role="tab" class="nav-link">Add Resource URL</a>
-														</li>
-													</ul>
-													<div class="tab-content file-upload-url" data-url="${data.items[i_c.index].subItems[s_c.index].resourceurl}">
-														<div id="uploadtab-${i_c.index}-${s_c.index}" class="tab-pane fade show active custom-file">
-															<input type="file" name="items[${i_c.index }].subItems[${s_c.index }].resourcefile" class="custom-file-input" id="file-upload-${i_c.index}-${s_c.index}"/>
-															<label class="custom-file-label" for="file-upload-${i_c.index}-${s_c.index}">Choose a file</label>
-														</div>
-														<div id="urltab-${i_c.index}-${s_c.index}" class="tab-pane fade">
-															<input type="text" name="items[${i_c.index }].subItems[${s_c.index }].resourceurl" class="form-control" placeholder="Enter Url"/>
-														</div>
-													</div>
-													<input type="hidden" name="items[${i_c.index}].subItems[${s_c.index}].oldresourceurl" value="${data.items[i_c.index].subItems[s_c.index].resourceurl}"/>
+												<div class="flex-fill m-3">
+													<label>Title</label> <input class="form-control"
+														type="text" value="${data.title	}" readonly />
 												</div>
-												<div class="flex-fill w-50 d-flex mt-2">
-													<div class="flex-fill p-3 w-25">
-													<label>Download</label>
-														<form:select class="form-control" path="items[${i_c.index }].subItems[${s_c.index }].downloadable">
-															<form:option value="1">Yes</form:option>
-															<form:option value="0">No</form:option>
-														</form:select>
-													</div>
-													<div class="flex-fill p-3 w-25">
-														<label>Access Level</label>
-														<form:select path="items[${i_c.index }].subItems[${s_c.index }].accesslevel" class="form-control changed_trial" data-id="${s_c.index}">
-															<form:option value="2">Partial</form:option>
-															<form:option value="1">Full</form:option>
-														</form:select>
-													</div>
-													<div class="flex-fill p-3 w-25">
-														<label>Access Page</label>
-														<form:input type="number" path="items[${i_c.index }].subItems[${s_c.index }].accesspages" class="form-control changed_trial" data-id="${s_c.index}"/>
-													</div>
-													<input name="items[${i_c.index }].subItems[${s_c.index }].changed_access" type="hidden" id="changed_trial_${s_c.index}" value="0"/>
+												<div class="flex-fill m-3">
+													<label>Author</label> <input class="form-control"
+														type="text" value="${data.author}" readonly />
 												</div>
 											</div>
-										</c:forEach>
+										</div>
+										<div class="card m-2">
+											<div class="card-header header bg-info">${("biblio" eq searchBean.searchType)? 'Item List':'Item Detail' }
+											</div>
+											<div class="card-body">
+												<c:forEach items="${data.items}" var="item" varStatus="i_c">
+													<div class="card m-2">
+														<form:hidden path="items[${i_c.index}].itemnumber" />
+														<form:hidden path="items[${i_c.index}].collection" />
+														<div class="d-flex justify-content-around flex-wrap">
+															<div class="flex-fill p-3 mt-2">
+																<label>Bar code</label> <input class="form-control"
+																	value="${data.items[i_c.index].barcode }" readonly />
+															</div>
+															<div class="flex-fill p-3 mt-2">
+																<label>Item Call Number</label> <input
+																	class="form-control"
+																	value="${data.items[i_c.index].itemCallNumber }"
+																	readonly />
+															</div>
+															<div class="flex-fill p-3 mt-2">
+																<label>Keyword</label>
+																<form:input class="form-control"
+																	path="items[${i_c.index}].keyword" />
+															</div>
+															<div class="flex-fill p-3">
+																<ul class="nav">
+																	<li class="nav-item"><a
+																		href="#bc-upload-tab-${i_c.index}" data-toggle="pill"
+																		role="tab" class="nav-link active">Upload Book
+																			Cover file</a></li>
+																	<li class="nav-item"><a
+																		href="#bc-url-tab-${i_c.index}" data-toggle="pill"
+																		role="tab" class="nav-link ">Add Book Cover URL</a></li>
+																</ul>
+																<div class="tab-content file-upload-url"
+																	data-url="${data.items[i_c.index].bookcover}">
+																	<div id="bc-upload-tab-${i_c.index}"
+																		class="tab-pane fade show active custom-file">
+																		<input type="file"
+																			name="items[${i_c.index }].bookcoverfile"
+																			class="custom-file-input"
+																			id="file-upload-${i_c.index}" /> <label
+																			class="custom-file-label"
+																			for="file-upload-${i_c.index}">Choose a file</label>
+																	</div>
+																	<div id="bc-url-tab-${i_c.index}" class="tab-pane fade">
+																		<input type="text"
+																			name="items[${i_c.index }].bookcover"
+																			class="form-control" placeholder="Enter Url" />
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div
+															class="card-subtitle w-100 p-1 mt-3 border-top bg-secondary">Resources</div>
+														<div
+															class="d-flex justify-content-around flex-wrap resources p-3 border m-1 rounded"
+															data-item-count="${i_c.index}"
+															data-sitem-count="${data.items[i_c.index].subItems.size() }">
+															<div class="flex-fill w-100 resource-items">
+																<c:forEach items="${item.subItems}" var="sItem"
+																	varStatus="s_c">
+																	<div
+																		class="d-flex justify-content-around flex-wrap border-bottom resource pt-2"
+																		id="resource-${i_c.index}-${s_c.index}">
+																		<form:input type="hidden"
+																			path="items[${i_c.index }].subItems[${s_c.index }].resourceId"
+																			class="resource-id-${i_c.index}-${s_c.index}" />
+																		<div
+																			class="flex-fill w-100 d-flex justify-content-between">
+																			<div># ${s_c.index + 1 }.</div>
+																			<div>
+																				<button type="button"
+																					class="saved-item btn btn-sm btn-danger"
+																					data-index="${i_c.index}-${s_c.index}">
+																					<i class="fa fa-trash"></i>
+																				</button>
+																			</div>
+																		</div>
+																		<div class="flex-fill p-3 w-50">
+																			<ul class="nav">
+																				<li class="nav-item"><a
+																					href="#uploadtab-${i_c.index}-${s_c.index}"
+																					data-toggle="pill" role="tab"
+																					class="nav-link active">Upload Resource file</a></li>
+																				<li class="nav-item"><a
+																					href="#urltab-${i_c.index}-${s_c.index}"
+																					data-toggle="pill" role="tab" class="nav-link">Add
+																						Resource URL</a></li>
+																			</ul>
+																			<div class="tab-content file-upload-url"
+																				data-url="${data.items[i_c.index].subItems[s_c.index].resourceurl}">
+																				<div id="uploadtab-${i_c.index}-${s_c.index}"
+																					class="tab-pane fade show active custom-file">
+																					<input type="file"
+																						name="items[${i_c.index }].subItems[${s_c.index }].resourcefile"
+																						class="custom-file-input"
+																						id="file-upload-${i_c.index}-${s_c.index}" /> <label
+																						class="custom-file-label"
+																						for="file-upload-${i_c.index}-${s_c.index}">Choose
+																						a file</label>
+																				</div>
+																				<div id="urltab-${i_c.index}-${s_c.index}"
+																					class="tab-pane fade">
+																					<input type="text"
+																						name="items[${i_c.index }].subItems[${s_c.index }].resourceurl"
+																						class="form-control" placeholder="Enter Url" />
+																				</div>
+																			</div>
+																			<input type="hidden"
+																				name="items[${i_c.index}].subItems[${s_c.index}].oldresourceurl"
+																				value="${data.items[i_c.index].subItems[s_c.index].resourceurl}" />
+																		</div>
+																		<div class="flex-fill w-50 d-flex mt-2">
+																			<div class="flex-fill p-3 w-25">
+																				<label>Download</label>
+																				<form:select class="form-control"
+																					path="items[${i_c.index }].subItems[${s_c.index }].downloadable">
+																					<form:option value="1">Yes</form:option>
+																					<form:option value="0">No</form:option>
+																				</form:select>
+																			</div>
+																			<div class="flex-fill p-3 w-25">
+																				<label>Access Level</label>
+																				<form:select
+																					path="items[${i_c.index }].subItems[${s_c.index }].accesslevel"
+																					class="form-control changed_trial"
+																					data-id="${s_c.index}">
+																					<form:option value="2">Partial</form:option>
+																					<form:option value="1">Full</form:option>
+																				</form:select>
+																			</div>
+																			<div class="flex-fill p-3 w-25">
+																				<label>Access Page</label>
+																				<form:input type="number"
+																					path="items[${i_c.index }].subItems[${s_c.index }].accesspages"
+																					class="form-control changed_trial"
+																					data-id="${s_c.index}" />
+																			</div>
+																			<input
+																				name="items[${i_c.index }].subItems[${s_c.index }].changed_access"
+																				type="hidden" id="changed_trial_${s_c.index}"
+																				value="0" />
+																		</div>
+																	</div>
+																</c:forEach>
+															</div>
+															<div class="text-center p-3">
+																<button type="button"
+																	class="btn btn-sm btn-primary add-new-resource">Add
+																	New</button>
+															</div>
+														</div>
+													</div>
+												</c:forEach>
+												<div class="text-right m-3">
+													<input type="submit" value="Update" class="btn btn-warning">
+												</div>
+											</div>
+										</div>
+									</form:form>
+								</c:when>
+								<c:otherwise>
+									<div class="card m-2 text-center">
+										<div class="card-header header">Data not found</div>
 									</div>
-									<div class="text-center p-3">
-										<button type="button" class="btn btn-sm btn-primary add-new-resource">Add New</button>
-									</div>
-								</div>
-							</div>
-						</c:forEach>
-						<div class="text-right m-3">
-							<input type="submit" value="Update" class="btn btn-warning">
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 				</div>
-			</form:form>
-			</c:when>
-			<c:otherwise>
-				<div class="card m-2 text-center">
-					<div class="card-header header">Data not found</div>
-				</div>
-			</c:otherwise>
-			</c:choose>
+			</section>
 		</div>
+		<%@ include file="footer.jsp"%>
 	</div>
-	<footer class="main-footer"> </footer>
 	<script src="resources/plugins/jquery/jquery.min.js"></script>
 	<script src="resources/plugins/bootstrap/js/bootstrap.min.js"></script>
 	<script src="resources/dist/js/adminlte.js"></script>
@@ -436,100 +489,145 @@ a.nav-link.active{
 	</script>
 	<script>
 		var pageContext = "${pageContext.request.contextPath}";
-		$(".add-new-resource").on('click',function(e){
-			var parent = $(this).parents(".resources");
-			var i_count = parent.data("item-count");
-			var s_count = parent.data("sitem-count");
-			var new_count = parseInt(s_count) + 1;
-			parent.data("sitem-count", new_count);
-			var source = $("#resource-template").html();
-			var template = Handlebars.compile(source);
-			var context = { item: parseInt(i_count), subitem: (new_count-1), subitemindex: new_count};
-			var html = template(context);
-			parent.find(".resource-items").append(html);
-			var index = i_count + "-" + s_count;
-			$("#unsaved-item-" + index).on('click', function(e){
-				bootbox.confirm("Are you sure to delete?", function(result){
-					$('#resource-'+ index).remove();
+		$(".add-new-resource").on(
+				'click',
+				function(e) {
+					var parent = $(this).parents(".resources");
+					var i_count = parent.data("item-count");
+					var s_count = parent.data("sitem-count");
+					var new_count = parseInt(s_count) + 1;
+					parent.data("sitem-count", new_count);
+					var source = $("#resource-template").html();
+					var template = Handlebars.compile(source);
+					var context = {
+						item : parseInt(i_count),
+						subitem : (new_count - 1),
+						subitemindex : new_count
+					};
+					var html = template(context);
+					parent.find(".resource-items").append(html);
+					var index = i_count + "-" + s_count;
+					$("#unsaved-item-" + index).on(
+							'click',
+							function(e) {
+								bootbox.confirm("Are you sure to delete?",
+										function(result) {
+											$('#resource-' + index).remove();
+										});
+							});
+					$("#file-upload-" + index).on(
+							"change",
+							function() {
+								console.log()
+								var fileName = $(this).val().split("\\").pop();
+								fileName = fileName.split("/").pop();
+								if (fileName.length > 30) {
+									fileName = fileName.substring(0, 30)
+											+ '... .' + fileName.split("\.")[1]
+								}
+								if (fileName == "") {
+									fileName = "Choose a file";
+								}
+								$(this).siblings(".custom-file-label")
+										.addClass("selected").html(fileName);
+							});
 				});
-			});
-			$("#file-upload-" + index).on("change", function() {
-				console.log()
-			  var fileName = $(this).val().split("\\").pop();
-				fileName = fileName.split("/").pop();
-			  if(fileName.length > 30){
-				  fileName = fileName.substring(0, 30) + '... .' + fileName.split("\.")[1]
-			  }
-			  if(fileName == ""){
-				  fileName = "Choose a file";
-			  }
-			  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-			});
-		});
-		$(".saved-item").on('click', function(e){
-			var index = $(this).attr("data-index");
-			var id = $(".resource-id-"+index).val();
-			id = parseInt(id);
-			bootbox.confirm("Are you sure to delete?", function(result){
-				if(result){
-					$.ajax({
-						url: pageContext + '/biblioitemdetail/delete/resource/'+id,
-						method: "DELETE",
-						success: function(resp){
-							bootbox.alert("Resource Deletion Success");
-							$('#resource-'+ index).remove();
-						},
-						error: function(err){
-							bootbox.alert("Failed to delete resource")
+		$(".saved-item")
+				.on(
+						'click',
+						function(e) {
+							var index = $(this).attr("data-index");
+							var id = $(".resource-id-" + index).val();
+							id = parseInt(id);
+							bootbox
+									.confirm(
+											"Are you sure to delete?",
+											function(result) {
+												if (result) {
+													$
+															.ajax({
+																url : pageContext
+																		+ '/biblioitemdetail/delete/resource/'
+																		+ id,
+																method : "DELETE",
+																success : function(
+																		resp) {
+																	bootbox
+																			.alert("Resource Deletion Success");
+																	$(
+																			'#resource-'
+																					+ index)
+																			.remove();
+																},
+																error : function(
+																		err) {
+																	bootbox
+																			.alert("Failed to delete resource")
+																}
+															});
+												}
+											});
+						});
+		$("#detail-form")
+				.on(
+						'submit',
+						function(e) {
+							bootbox
+									.dialog({
+										closeButton : false,
+										message : "<i class='fa fa-spinner fa-spin'></i> Uploading data..."
+									});
+							/* $(".custom-file:not(.active)").html(""); */
+							$(".file-upload-url").each(
+									function() {
+										let data = $(this).attr("data-url");
+										if (data != '--changed--') {
+											$(this).find("input[type='text']")
+													.val(data);
+											$(this).find(".custom-file").html(
+													"");
+										}
+									});
+						});
+		$(".custom-file-input").on(
+				"change",
+				function() {
+					var fileName = $(this).val().split("\\").pop();
+					fileName = fileName.split("/").pop();
+					if (fileName.length > 30) {
+						fileName = fileName.substring(0, 30) + '... .'
+								+ fileName.split("\.")[1]
+					}
+					if (fileName == "") {
+						fileName = "Choose a file";
+					}
+					$(this).siblings(".custom-file-label").addClass("selected")
+							.html(fileName);
+				});
+		$(".file-upload-url").each(
+				function() {
+					let data = $(this).attr("data-url");
+					if (data != "") {
+						if (data.startsWith("http")) {
+							$(this).find("input[type='text']").val(data);
+						} else {
+							var fileName = data.split("\\").pop();
+							fileName = fileName.split("/").pop();
+							if (fileName.length > 30) {
+								fileName = fileName.substring(0, 30) + '... .'
+										+ fileName.split("\.")[1]
+							}
+							$(this).find("label").html(fileName);
 						}
-					});
-				}
-			});
-		});
-		$("#detail-form").on('submit', function(e) {
-			bootbox.dialog({
-				closeButton: false,
-				message: "<i class='fa fa-spinner fa-spin'></i> Uploading data..."
-			});
-			/* $(".custom-file:not(.active)").html(""); */
-			$(".file-upload-url").each(function(){
-				let data = $(this).attr("data-url");
-				if(data != '--changed--'){
-					$(this).find("input[type='text']").val(data);
-					$(this).find(".custom-file").html("");
-				}
-			});
-		});
-		$(".custom-file-input").on("change", function() {
-		  var fileName = $(this).val().split("\\").pop();
-		  fileName = fileName.split("/").pop();
-		  if(fileName.length > 30){
-			  fileName = fileName.substring(0, 30) + '... .' + fileName.split("\.")[1]
-		  }
-		  if(fileName == ""){
-			  fileName = "Choose a file";
-		  }
-		  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-		});
-		$(".file-upload-url").each(function(){
-		    let data = $(this).attr("data-url");
-		    if(data != ""){
-		        if(data.startsWith("http")){
-		            $(this).find("input[type='text']").val(data);
-		        } else {
-		        	var fileName = data.split("\\").pop();
-		        	fileName = fileName.split("/").pop();
-		        	if(fileName.length > 30){
-			  			  fileName = fileName.substring(0, 30) + '... .' + fileName.split("\.")[1]
-			  		}
-		            $(this).find("label").html(fileName);
-		        }
-		    }
-		});
-		$(".file-upload-url input").on("change", function(){
-			$(this).closest(".file-upload-url").attr("data-url", "--changed--");
-		});
-		$(".changed_trial").on('change', function(){
+					}
+				});
+		$(".file-upload-url input").on(
+				"change",
+				function() {
+					$(this).closest(".file-upload-url").attr("data-url",
+							"--changed--");
+				});
+		$(".changed_trial").on('change', function() {
 			let id = $(this).attr("data-id");
 			$("#changed_trial_" + id).val("1");
 		});

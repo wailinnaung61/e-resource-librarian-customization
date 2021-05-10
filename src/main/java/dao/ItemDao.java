@@ -277,7 +277,7 @@ public class ItemDao {
 				biblio.setPages(rs.getString(9));
 				biblio.setBookcover(rs.getString(10));
 				biblio.setTitle(rs.getString(11));
-				biblio.setAuthorname(rs.getString(12));
+				biblio.setAuthorname(rs.getString(12));	
 				biblio.setBarcode(rs.getString(13));
 				biblio.setItemcallnumber(rs.getString(14));
 				biblio.setCollection(rs.getString(15));

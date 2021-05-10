@@ -24,6 +24,7 @@
 			<password-encoder ref="passwordEncoder" />
 		</authentication-provider>
 	</authentication-manager>
+	
 	<beans:bean id="userDetailService"
 		class="services.UserDetailService" />
 	<!-- <beans:bean id="authSuccessHandler" class="services.AuthSuccessHandler"/> -->
