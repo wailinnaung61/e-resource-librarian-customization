@@ -1,3 +1,4 @@
+
 package services;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,11 @@ import org.springframework.stereotype.Service;
 import dao.UserDao;
 
 @Service
-public class UserDetailService implements UserDetailsService{
+public class UserDetailService implements UserDetailsService {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 		return userDao.getUserByUsername(username);

@@ -16,13 +16,13 @@
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 <!-- Font Awesome Icons -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
 <!-- IonIcons -->
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <!-- Theme style -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/dist/css/adminlte.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -101,7 +101,7 @@
 
 								<div class="col-md-10" style="margin: auto;">
 									<form:form method="post"
-										action="${pageContext.request.contextPath }/savebibliodata"
+										action="${pageContext.request.contextPath }/records/savebibliodata"
 										modelAttribute="savedata">
 										<div class="card card-info">
 											<div class="card-header header">
@@ -170,10 +170,10 @@
 
 	</div>
 
-	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="resources/AdminLTE/dist/js/adminlte.js"></script>
-	<script src="resources/AdminLTE/dist/js/demo.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/adminlte.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/demo.js"></script>
 </body>
 </html>

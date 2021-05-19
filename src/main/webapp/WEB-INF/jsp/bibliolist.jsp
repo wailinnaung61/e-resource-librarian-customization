@@ -15,28 +15,28 @@
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/dist/css/adminlte.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/dist/css/adminlte.min.css">
 <link rel="stylesheet"
-	href="resources/plugins/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/resources/plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <link rel="stylesheet"
-	href="resources/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	href="${pageContext.request.contextPath}/resources/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 <link rel="stylesheet"
-	href="resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-<link rel="stylesheet" href="resources/plugins/jqvmap/jqvmap.min.css">
+	href="${pageContext.request.contextPath}/resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/jqvmap/jqvmap.min.css">
 <link rel="stylesheet"
-	href="resources/plugins/summernote/summernote-bs4.css">
+	href="${pageContext.request.contextPath}/resources/plugins/summernote/summernote-bs4.css">
 <link rel="stylesheet"
-	href="resources/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css">
+	href="${pageContext.request.contextPath}/resources/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css">
 
 <style type="text/css">
 .label-info {
@@ -144,7 +144,7 @@
 													<div>
 														<a
 															href="${pageContext.request.contextPath}/sync/biblioitems"
-															class="btn btn-sm btn-primary">Sync All</a>
+															class="btn btn-sm btn-primary">	</a>
 													</div>
 												</div>
 											</c:when>
@@ -196,34 +196,34 @@
 		</div>
 		<%@ include file="footer.jsp"%>
 	</div>
-	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-	<script src="resources/AdminLTE/plugins/jszip/jszip.min.js"></script>
-	<script src="resources/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
-	<script src="resources/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jszip/jszip.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-	<script src="resources/AdminLTE/dist/js/adminlte.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/adminlte.min.js"></script>
 	<script
-		src="resources/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
-	<script src="resources/plugins/bootbox/bootbox.js"></script>
+		src="${pageContext.request.contextPath}/resources/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/plugins/bootbox/bootbox.js"></script>
 	<script>
 		$("#sync_items").on('beforeItemAdd', function(e){
 			if(!/[0-9]+$/.test(e.item)){

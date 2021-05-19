@@ -40,4 +40,9 @@ public class SingleBiblioDataServiceImpl implements SingleBiblioDataService {
 		return dataDao.checkBiblioNumber(biblioNumber);
 	}
 
+	@Override
+	public List<Data> getResourceUrlandBookCoverByItemNumber(int itemID) {
+		return dataDao.getResourceUrlandBookCoverByItemNumber(itemID);
+	}
+
 }

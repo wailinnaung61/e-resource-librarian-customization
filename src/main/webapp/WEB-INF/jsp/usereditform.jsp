@@ -71,7 +71,7 @@
 									<h3 class="card-title">Edit User</h3>
 								</div>
 								<form:form method="post"
-									action="${pageContext.request.contextPath}/editsave"
+									action="${pageContext.request.contextPath}/users/editsave"
 									role="form">
 									<div class="card-body">
 

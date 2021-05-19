@@ -50,13 +50,13 @@ public class ImportExcelController implements ServletContextAware {
 
 	private ServletContext servletContext;
 
-	@GetMapping(value = "/importitemtype")
+	@GetMapping(value = "/itemtypes/importitemtype")
 	public String importItemType(Model m, HttpServletRequest req, HttpServletResponse res) {
 		m.addAttribute("fileItems", new Fileitems());
 		return "importitemtype";
 	}
 
-	@PostMapping(value = "/saveExcelItemtype")
+	@PostMapping(value = "/itemtypes/saveExcelItemtype")
 	public String saveExcelItemType(@RequestParam("file") MultipartFile multipartfile, HttpServletRequest req,
 			HttpServletResponse res, RedirectAttributes redir) throws IOException {
 
@@ -99,7 +99,7 @@ public class ImportExcelController implements ServletContextAware {
 				itemTypesList.add(itemTypes);
 			}
 			itemService.saveItemTypebyExcelorCSV(itemTypesList);
-			return "redirect:/viewitemtype";
+			return "redirect:/itemtypes/viewitemtype";
 		}
 
 		else if (extension.equals("csv")) {
@@ -127,21 +127,21 @@ public class ImportExcelController implements ServletContextAware {
 			}
 
 			itemService.saveItemTypebyExcelorCSV(itemTypesList);
-			return "redirect:/viewitemtype";
+			return "redirect:/itemtypes/viewitemtype";
 
 		}
 
 		return null;
 	}
 
-	@GetMapping(value = "/importcollection")
+	@GetMapping(value = "/collections/importcollection")
 	public String importCollection(Model m, HttpServletResponse res, HttpServletRequest req) {
 
 		m.addAttribute("fileItems", new Fileitems());
 		return "importcollection";
 	}
 
-	@PostMapping(value = "/savecollection")
+	@PostMapping(value = "collections/savecollection")
 	public String saveCollection(@RequestParam("file") MultipartFile multipartfile, HttpServletRequest req,
 			HttpServletResponse res, RedirectAttributes redir) throws IOException {
 
@@ -184,7 +184,7 @@ public class ImportExcelController implements ServletContextAware {
 				collectionList.add(collection);
 			}
 			itemService.saveCollectionbyExcelorCSV(collectionList);
-			return "redirect:/viewcollection";
+			return "redirect:/collections/viewcollection";
 		}
 
 		else if (extension.equals("csv")) {
@@ -212,7 +212,7 @@ public class ImportExcelController implements ServletContextAware {
 			}
 
 			itemService.saveCollectionbyExcelorCSV(collectionList);
-			return "redirect:/viewcollection";
+			return "redirect:/collections/viewcollection";
 
 		}
 
@@ -232,7 +232,7 @@ public class ImportExcelController implements ServletContextAware {
 		}
 	}
 
-	@PostMapping(value = "/saveExcelItem")
+	@PostMapping(value = "/records/saveExcelItem")
 	public String saveExcelItem(@RequestParam("file") MultipartFile multipartfile, HttpServletRequest req,
 			HttpServletResponse res, RedirectAttributes redir, Model m) throws IOException {
 		String recordNumber = req.getParameter("biblionumber");

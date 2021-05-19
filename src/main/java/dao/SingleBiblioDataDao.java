@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
@@ -12,9 +13,11 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 
 import beans.BookFramework;
 import beans.Data;
+import beans.UserBean;
 
 public class SingleBiblioDataDao {
 
@@ -148,5 +151,17 @@ public class SingleBiblioDataDao {
 		return count;
 
 	}
+
+	public List<Data> getResourceUrlandBookCoverByItemNumber(int itemID) {
+		
+	return template.query("SELECT i.bookcover,si.resourceurl FROM items i ,subitems si where i.itemnumber=si.itemnumber and i.itemnumber="+itemID, new RowMapper<Data>() {
+		public Data mapRow(ResultSet rs, int row) throws SQLException {
+			Data e = new Data();
+			e.setBookcover(rs.getString(1));
+			e.setResourceUrl(rs.getString(2));
+			return e;
+		}
+	});
+}
 
 }

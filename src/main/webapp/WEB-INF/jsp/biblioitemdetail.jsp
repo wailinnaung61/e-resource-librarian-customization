@@ -221,7 +221,7 @@ a.nav-link.active {
 											modelAttribute="searchBean">
 											<form:select path="searchType" class="form-control mr-1">
 												<form:option value="item">Item</form:option>
-												<form:option value="biblio">Biblio</form:option>
+												<form:option value="biblio">Record</form:option>
 											</form:select>
 											<form:input type="text" path="id" class="form-control mr-1"
 												required="required"

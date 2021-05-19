@@ -17,4 +17,6 @@ public interface SingleBiblioDataService {
 
 	int checkBiblioNumber(int biblioNumber);
 
+	List<Data> getResourceUrlandBookCoverByItemNumber(int itemID);
+
 }

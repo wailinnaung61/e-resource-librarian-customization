@@ -36,7 +36,7 @@ public class ReportbibliolistController {
 	ItemService itemService;
 	private Logger logger = LogManager.getLogger(BibliolistController.class);
 
-	@RequestMapping("/reportbibliolist")
+	@RequestMapping("/report/reportbibliolist")
 	public String bibliolist(Model m, HttpServletRequest req, HttpServletResponse res) {
 		List<bibliosingledata> forshow = constructBiblioData(dao.getsinglebibliodata());
 		m.addAttribute("list", forshow);

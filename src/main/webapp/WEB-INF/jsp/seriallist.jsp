@@ -11,27 +11,27 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" href="resources/themify-icons/themify-icons.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/themify-icons/themify-icons.css">
 
-  <link rel="stylesheet" href="resources/themify-icons/ie7/ie7.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/themify-icons/ie7/ie7.css">
  
-  <link rel="stylesheet" href="resources/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/fontawesome-free/css/all.min.css">
   
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   
-  <link rel="stylesheet" href="resources/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   
-  <link rel="stylesheet" href="resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   
-  <link rel="stylesheet" href="resources/plugins/jqvmap/jqvmap.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/jqvmap/jqvmap.min.css">
   
-  <link rel="stylesheet" href="resources/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/adminlte.min.css">
   
-  <link rel="stylesheet" href="resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   
-  <link rel="stylesheet" href="resources/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.css">
  
-  <link rel="stylesheet" href="resources/plugins/summernote/summernote-bs4.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/summernote/summernote-bs4.css">
  
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 <style type="text/css">
@@ -232,30 +232,30 @@ background-color:#667cc4;
 
 
 
-<script src="resources/plugins/jquery/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/jquery/jquery.min.js"></script>
 
-<script src="resources/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
-<script src="resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="resources/plugins/chart.js/Chart.min.js"></script>
-<script src="resources/plugins/sparklines/sparkline.js"></script>
-<script src="resources/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<script src="resources/plugins/jquery-knob/jquery.knob.min.js"></script>
-<script src="resources/plugins/moment/moment.min.js"></script>
-<script src="resources/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<script src="resources/plugins/summernote/summernote-bs4.min.js"></script>
-<script src="resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="resources/dist/js/adminlte.js"></script>
-<script src="resources/dist/js/pages/dashboard.js"></script>
-<script src="resources/dist/js/demo.js"></script>
-<script src="resources/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/chart.js/Chart.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/sparklines/sparkline.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/jquery-knob/jquery.knob.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/moment/moment.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/summernote/summernote-bs4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/dist/js/adminlte.js"></script>
+<script src="${pageContext.request.contextPath}/resources/dist/js/pages/dashboard.js"></script>
+<script src="${pageContext.request.contextPath}/resources/dist/js/demo.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script>
 $(function () {
     $("#example1").DataTable({

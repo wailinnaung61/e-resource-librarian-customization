@@ -11,11 +11,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
  
-  <link rel="stylesheet" href="../resources/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/fontawesome-free/css/all.min.css">
  
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-  <link rel="stylesheet" href="../resources/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/css/adminlte.min.css">
   
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 <style type="text/css">
@@ -145,14 +145,14 @@ color:white;
 
 
 
-<script src="../resources/plugins/jquery/jquery.min.js"></script>
-<script src="../resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../resources/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="../resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="../resources/dist/js/adminlte.min.js"></script>
-<script src="../resources/dropzone-5.7.0/dist/dropzone.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/jquery/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/dist/js/adminlte.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/dropzone-5.7.0/dist/dropzone.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
   bsCustomFileInput.init();

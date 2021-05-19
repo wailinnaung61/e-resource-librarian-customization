@@ -16,17 +16,17 @@
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 <!-- Font Awesome -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
 <!-- DataTables -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Theme style -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/dist/css/adminlte.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -88,11 +88,11 @@
 										<tbody>
 											<c:forEach var="tempItemType" items="${list}" varStatus="c">
 
-												<c:url var="updateLink" value="/edititemtype">
+												<c:url var="updateLink" value="/itemtypes/edititemtype">
 													<c:param name="itemtypeId" value="${tempItemType.id}" />
 												</c:url>
 
-												<c:url var="deleteLink" value="/deleteitemtype">
+												<c:url var="deleteLink" value="/itemtypes/deleteitemtype">
 													<c:param name="itemtypeId" value="${tempItemType.id}" />
 												</c:url>
 
@@ -132,36 +132,36 @@
 
 
 	<!-- jQuery -->
-	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
 	<script
-		src="resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- DataTables  & Plugins -->
 	<script
-		src="resources/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-	<script src="resources/AdminLTE/plugins/jszip/jszip.min.js"></script>
-	<script src="resources/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
-	<script src="resources/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jszip/jszip.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="resources/AdminLTE/dist/js/adminlte.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
-	<script src="resources/AdminLTE/dist/js/demo.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/demo.js"></script>
 	<!-- Page specific script -->
 	<script>
 		$(function() {

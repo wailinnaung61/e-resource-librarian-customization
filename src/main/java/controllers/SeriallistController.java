@@ -15,7 +15,7 @@ public class SeriallistController {
 	@Autowired
 	UserDao dao;
 
-	@RequestMapping("/seriallist")
+	@RequestMapping("/serials/seriallist")
 	public String bibliolist(Model m) {
 
 		List<Data> forshow = dao.seriallistview();
@@ -23,7 +23,7 @@ public class SeriallistController {
 		return "seriallist";
 	}
 
-	@RequestMapping("/serialviewdetail/{biblionumber}")
+	@RequestMapping("/serials/serialviewdetail/{biblionumber}")
 	public String serialviewdetail(@PathVariable int biblionumber, Model m) {
 		List<Data> forshow = dao.seriallistdetail(biblionumber);
 		m.addAttribute("list", forshow);

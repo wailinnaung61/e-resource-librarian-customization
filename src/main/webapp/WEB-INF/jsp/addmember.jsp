@@ -13,33 +13,33 @@
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 <!-- Font Awesome -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
 <!-- daterange picker -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/daterangepicker/daterangepicker.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/daterangepicker/daterangepicker.css">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 <!-- Bootstrap Color Picker -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 <!-- Select2 -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/select2/css/select2.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/select2/css/select2.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <!-- Bootstrap4 Duallistbox -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- BS Stepper -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css">
 <!-- Theme style -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/dist/css/adminlte.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -87,7 +87,7 @@
 									<h3 class="card-title textheader">Create Member</h3>
 								</div>
 
-								<form:form method="post" action="savemember"
+								<form:form method="post" action="${pageContext.request.contextPath}/members/savemember"
 									modelAttribute="member">
 									<div class="row">
 										<!-- card row -->
@@ -208,40 +208,40 @@
 	</div>
 
 	<!-- jQuery -->
-	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
 	<script
-		src="resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- Select2 -->
-	<script src="resources/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
 	<!-- Bootstrap4 Duallistbox -->
 	<script
-		src="resources/AdminLTE/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<!-- InputMask -->
-	<script src="resources/AdminLTE/plugins/moment/moment.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/moment/moment.min.js"></script>
 	<script
-		src="resources/AdminLTE/plugins/inputmask/jquery.inputmask.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/inputmask/jquery.inputmask.min.js"></script>
 	<!-- date-range-picker -->
 	<script
-		src="resources/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
 	<!-- bootstrap color picker -->
 	<script
-		src="resources/AdminLTE/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 	<!-- Tempusdominus Bootstrap 4 -->
 	<script
-		src="resources/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 	<!-- Bootstrap Switch -->
 	<script
-		src="resources/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 	<!-- BS-Stepper -->
 	<script
-		src="resources/AdminLTE/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 	<!-- dropzonejs -->
-	<script src="resources/AdminLTE/plugins/dropzone/min/dropzone.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/dropzone/min/dropzone.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="resources/AdminLTE/dist/js/adminlte.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
-	<script src="resources/AdminLTE/dist/js/demo.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/demo.js"></script>
 
 	<script>
 		$(function() {

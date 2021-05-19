@@ -72,14 +72,14 @@
         </div>
       </form>
 
-      <div class="social-auth-links text-center mt-2 mb-3">
+      <!-- <div class="social-auth-links text-center mt-2 mb-3">
         <a href="#" class="btn btn-block" style="background-color:#3b5998;color:white;">
           <i class="fab fa-facebook"></i> Sign in using Facebook
         </a>
         <a href="#" class="btn btn-block" style="background-color:#00acee;color:white;">
           <i class="fab fa-twitter"></i> Sign in using Twitter
         </a>
-      </div>
+      </div> -->	
       <!-- /.social-auth-links -->
 
       <p class="mb-1">

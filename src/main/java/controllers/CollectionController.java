@@ -23,7 +23,7 @@ public class CollectionController {
 	@Autowired
 	ItemService itemService;
 
-	@GetMapping("/addcollection")
+	@GetMapping("collections/addcollection")
 	public String AddCollection(Model m, HttpServletRequest req, HttpServletResponse res) {
 
 		m.addAttribute("collection", new Collection());
@@ -31,19 +31,19 @@ public class CollectionController {
 	}
 
 
-	@PostMapping(value = "/saveCollection")
+	@PostMapping(value = "collections/saveCollection")
 	public String saveRole(@ModelAttribute("collection") Collection collection, RedirectAttributes redir) {
 		int count = itemService.getCollectionByCollectionName(collection.getName());
 
 		if (count > 0) {
 			redir.addFlashAttribute("alert", "Collection name already exist.Please Use another Collection Name!");
-			return "redirect:/addcollection";
+			return "redirect:/collections/addcollection";
 		}
 		itemService.saveCollection(collection);
-		    return "redirect:/viewcollection";
+		    return "redirect:/collections/viewcollection";
 	}
 
-	@GetMapping("/viewcollection")
+	@GetMapping("collections/viewcollection")
 	public String viewcollection(Model m, HttpServletRequest req, HttpServletResponse res) {
 		List<Collection> list = itemService.getCollections();
 		m.addAttribute("list", list);
@@ -51,23 +51,23 @@ public class CollectionController {
 	}
 	
 	
-	@GetMapping(value = "/deletecollection")
+	@GetMapping(value = "/collections/deletecollection")
 	public String deleterole(@RequestParam("collectionId")int collectionID,RedirectAttributes redir) throws Exception {
 		itemService.deleteCollection(collectionID);
-		return "redirect:/viewcollection";
+		return "redirect:/collections/viewcollection";
 	}
 	
-	@GetMapping(value = "/editcollection")
+	@GetMapping(value = "/collections/editcollection")
 	public String editrole(@RequestParam("collectionId")int collectionID, Model m, HttpServletRequest req, HttpServletResponse re) {
 		Collection collections = itemService.getCollectionById(collectionID);
 		m.addAttribute("collection", collections);
 		return "editcollection";
 	}
 	
-	@PostMapping(value = "/editsavecollection")
+	@PostMapping(value = "collections/editsavecollection")
 	public String editsaverole(@ModelAttribute("collection") Collection collection,RedirectAttributes redir) {
 		itemService.updateCollection(collection);
-		return "redirect:/viewcollection";
+		return "redirect:/collections/viewcollection";
 	}
 	
 	

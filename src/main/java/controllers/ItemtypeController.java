@@ -27,28 +27,28 @@ public class ItemtypeController {
 	@Autowired
 	ItemService itemService;
 
-	@GetMapping("/additemtypes")
+	@GetMapping("/itemtypes/additemtypes")
 	public String AddRole(Model m, HttpServletRequest req, HttpServletResponse res) {
 
 		m.addAttribute("itemtypes", new ItemTypes());
 		return "additemtype";
 	}
 
-	@PostMapping(value = "/saveItemtype")
+	@PostMapping(value = "/itemtypes/saveItemtype")
 	public String saveitemtype(@ModelAttribute("itemtypes") ItemTypes itemtypes, RedirectAttributes redir) {
 
 		int count = itemService.getItemtypesByItemName(itemtypes.getName());
 		if (count > 0) {
 			redir.addFlashAttribute("alert", "Itemtype name already exist.Please Use another Itemtype Name!");
-			return "redirect:/additemtypes";
+			return "redirect:/itemtypes/additemtypes";
 		}
 		
 		itemService.saveItemType(itemtypes);
-		return "redirect:/viewitemtype";
+		return "redirect:/itemtypes/viewitemtype";
 	}
 
 	
-	@GetMapping("/viewitemtype")
+	@GetMapping("/itemtypes/viewitemtype")
 	public String viewitemtype(Model m, HttpServletRequest req, HttpServletResponse res) {
 		List<ItemTypes> list = itemService.getItemTypes();
 		m.addAttribute("list", list);
@@ -56,23 +56,23 @@ public class ItemtypeController {
 	}
 	
 	
-	@GetMapping(value = "/edititemtype")
+	@GetMapping(value = "/itemtypes/edititemtype")
 	public String editrole(@RequestParam("itemtypeId")int itemID, Model m, HttpServletRequest req, HttpServletResponse re) {
 		ItemTypes itemTypes = itemService.getitemtypeById(itemID);
 		m.addAttribute("itemtypes", itemTypes);
 		return "edititemtype";
 	}
 	
-	@PostMapping(value = "/editsaveitemtype")
+	@PostMapping(value = "/itemtypes/editsaveitemtype")
 	public String editsaverole(@ModelAttribute("itemtypes") ItemTypes itemtypes,RedirectAttributes redir) {
 		itemService.updateItemType(itemtypes);
-		return "redirect:/viewitemtype";
+		return "redirect:/itemtypes/viewitemtype";
 	}
 	
-	@GetMapping(value = "/deleteitemtype")
+	@GetMapping(value = "/itemtypes/deleteitemtype")
 	public String deleterole(@RequestParam("itemtypeId")int itemID,RedirectAttributes redir) throws Exception {
 		itemService.deleteItemtype(itemID);
-		return "redirect:/viewitemtype";
+		return "redirect:/itemtypes/viewitemtype";
 	}
 
 

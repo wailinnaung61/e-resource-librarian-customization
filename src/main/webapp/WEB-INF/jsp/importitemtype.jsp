@@ -15,36 +15,36 @@
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 <!-- Font Awesome -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/fontawesome-free/css/all.min.css">
 <!-- daterange picker -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/daterangepicker/daterangepicker.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/daterangepicker/daterangepicker.css">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 <!-- Bootstrap Color Picker -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 <!-- Select2 -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/select2/css/select2.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/select2/css/select2.min.css">
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <!-- Bootstrap4 Duallistbox -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 <!-- BS Stepper -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css">
 <!-- dropzonejs -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/plugins/dropzone/min/dropzone.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/plugins/dropzone/min/dropzone.min.css">
 <!-- Theme style -->
 <link rel="stylesheet"
-	href="resources/AdminLTE/dist/css/adminlte.min.css">
+	href="${pageContext.request.contextPath}/resources/AdminLTE/dist/css/adminlte.min.css">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -89,7 +89,7 @@
 									<h3 class="card-title">Import ItemTypes</h3>
 								</div>
 								<div class="card-body">
-									<form action="saveExcelItemtype" method="post"
+									<form action="${pageContext.request.contextPath}/itemtypes/saveExcelItemtype" method="post"
 										enctype="multipart/form-data">
 										<div class="row">
 											<div class="col-md-12">
@@ -142,14 +142,14 @@
 	</div>
 
 	<!-- jQuery -->
-	<script src="resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
 	<script
-		src="resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		src="${pageContext.request.contextPath}/resources/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="resources/AdminLTE/dist/js/adminlte.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
-	<script src="resources/AdminLTE/dist/js/demo.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/AdminLTE/dist/js/demo.js"></script>
 	<!-- Page specific script -->
 	<script>
 		//create CSV file data in an array
